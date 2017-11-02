@@ -13,6 +13,9 @@ type monster =
   |Medium
   |Small
 
+type damage =
+  | Projectile
+  | Enemy
 
 type sprite
 
