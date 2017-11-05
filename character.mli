@@ -12,6 +12,7 @@ type xy = {
 type command = 
   | CLeft
   | CRight
+  | CPause
   | None
 
 (*Types of monsters*)
