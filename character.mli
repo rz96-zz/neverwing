@@ -28,3 +28,7 @@ type damage =
 type sprite
 
 type projectile
+
+type obj =
+  |Damage
+  |Sprite
