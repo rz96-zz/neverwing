@@ -1,21 +1,29 @@
 (*characters are moveable items*)
 
-type direction = Right | Left
+type direction = | Right | Left
 
-type location = {
-  mutable horizontal: float;
-  mutable vertical: float;
+(*Gives xy coordinates of position*)
+type xy = {
+  mutable x: float;
+  mutable y: float;
 }
 
+(*Command corresponds to player keyboard input*)
+type command = 
+  | CLeft
+  | CRight
+  | CPause
+  | None
 
+(*Types of monsters*)
 type monster =
-  |Boss
-  |Medium
-  |Small
+  | Boss
+  | Medium
+  | Small
 
 type damage =
-  | Projectile
-  | Enemy
+  | Boss_Projectile
+  | Monster
 
 type sprite
 
