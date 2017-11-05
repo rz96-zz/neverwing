@@ -9,13 +9,13 @@ type location = {
 
 
 type monster =
-  |Boss
-  |Medium
-  |Small
+  | Boss
+  | Medium
+  | Small
 
 type damage =
   | Projectile
-  | Enemy
+  | Monster
 
 type sprite
 
