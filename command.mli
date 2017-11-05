@@ -1,1 +1,4 @@
-val 
+type control =
+  |Left
+  |Right
+  |Pause
