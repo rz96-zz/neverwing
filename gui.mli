@@ -9,4 +9,3 @@ val game_over: Dom_html.canvasRenderingContext2D Js.t -> unit
 
 (*Draw characters*)
 val draw_char: Character.sprite -> float * float-> unit
-
