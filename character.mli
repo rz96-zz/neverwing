@@ -17,20 +17,27 @@ type command =
   | CPause
   | None
 
-(*Types of monsters*)
+(*Type monsters represents the different types of monsters
+there are in the game*)
 type monster =
   | Boss
   | Medium
   | Small
 
+(*Type damage represents the objects that could inflict damage
+on a player*)
 type damage =
   | Boss_Projectile
   | Monster
 
+(*Type sprite represents a GAME character (player or monster)*)
 type sprite
 
+(*Type projectile represents the projectiles that the player
+or boss monsters shoot*)
 type projectile
 
+(*Type object is any object that appears on the board*)
 type obj =
-  |Damage
-  |Sprite
+  | Damage
+  | Sprite
