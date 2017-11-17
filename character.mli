@@ -6,8 +6,8 @@ type direction = | Right | Left
 
 (*Gives xy coordinates of a position on the board*)
 type xy = {
-  mutable x: float;
-  mutable y: float;
+  x: float;
+  y: float;
 }
 
 (*Command corresponds to player keyboard input*)
@@ -32,6 +32,8 @@ type damage =
 
 (*Type sprite represents a GAME character (player or monster)*)
 type sprite
+
+type player
 
 (*Type projectile represents the projectiles that the player
 or boss monsters shoot*)
