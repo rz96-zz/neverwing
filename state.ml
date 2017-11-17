@@ -1,10 +1,16 @@
 open Board
+open Sprite
 (*open Command*)
 
 
 type board = Board.board (*state *)
 
-type state = unit
+type state = {
+  bgd: sprite;
+  (* context: Dom_html.canvasRenderingContext2D Js.t; *)
+  mutable score: int;
+  mutable game_over: bool;
+}
 
 (*[update_state] changes the state according to the command that was given
   and moving the rows of monsters down by one each iteration *)
