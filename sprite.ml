@@ -1,0 +1,1 @@
+type sprite = unit 
