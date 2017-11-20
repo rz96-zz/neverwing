@@ -21,7 +21,7 @@ let init_sprite img_src frame_size frame_offset =
     frame_offset;
   }
 
-let make_spirite prop context = 
+let make_sprite prop context = 
   let img = (Dom_html.createImg Dom_html.document) in
   img##src <- (Js.string prop.img_src);
   {
