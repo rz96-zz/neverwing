@@ -1,3 +1,5 @@
+(*essentially drawing everything on the playable gui part*)
+
 let draw_score = failwith "unimplemented"
 
 let game_over = failwith "unimplemented"
