@@ -13,3 +13,7 @@ type sprite = {
   context: Dom_html.canvasRenderingContex2tD Js.t;
   mutable image : Dom_html.imageElement Js.t;
 }
+
+val init_sprite : string -> width_height -> x_y -> sprit_props
+
+val init_bgd: Dom_html.canvasRenderingContext2D Js.t  -> sprite

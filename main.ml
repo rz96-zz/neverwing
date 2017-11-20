@@ -1,5 +1,6 @@
 open Sprite
 open Character
+open State
 module Html = Dom_html
 
 
@@ -8,9 +9,8 @@ let load _ =
     Js.Opt.get
       (Js.Opt.bind ( Html.document##getElementByI(Js.string "canvas"))
         Html.CoerceTo.canvas) in
-  let context = convas##getContet (Html._2d_ )in
-  let bgd = Sprite.setup_sprite "bgd.png"  in
-  let bgd_obj = 
+  let context = convas##getContext (Html._2d_)in
+  let _ = State.update_state canvas sin
   print_endline "loading";
   ()
 

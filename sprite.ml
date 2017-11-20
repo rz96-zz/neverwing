@@ -7,9 +7,10 @@ type sprite_props =
     frame_size: width_height;
     frame_offset: x_y;
   }
+
 type sprite = {
   mutable prop: sprite_props;
-  context: Dom_html.canvasRenderingContex2tD Js.t;
+  context: Dom_html.canvasRenderingContext2D Js.t;
   mutable img: Dom_html.imageElement Js.t;
 }
 
@@ -24,9 +25,9 @@ let init_sprite img_src frame_size frame_offset =
 let make_sprite prop context = 
   let img = (Dom_html.createImg Dom_html.document) in
   img##src <- (Js.string prop.img_src);
-  {
+  { 
     prop;
-    img_src;
+    context;
     img;
   }
 

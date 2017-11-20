@@ -1,5 +1,5 @@
 ### Starting build.
 Backtrace:
-                      - Failed to build the target gui.js
-                          - Building gui.js
+                      - Failed to build the target main.d.js
+                          - Building main.d.js
 # Compilation unsuccessful.
