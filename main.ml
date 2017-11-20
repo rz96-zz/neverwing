@@ -5,13 +5,18 @@ module Html = Dom_html
 
 
 let load _ =
+  Random.self_init();
   let canvas =
     Js.Opt.get
-      (Js.Opt.bind ( Html.document##getElementByI(Js.string "canvas"))
-        Html.CoerceTo.canvas) in
-  let context = convas##getContext (Html._2d_)in
-  let _ = State.update_state canvas sin
+      (Js.Opt.bind ( Html.document##getElementById(Js.string "canvas"))
+        Html.CoerceTo.canvas) 
+        (fun () ->
+        Printf.printf "cant find canvas id";
+        failwith "fail"
+      ) in
+  let context = canvas##getContext (Html._2d_)in
+  let _ = State.update_state canvas in
   print_endline "loading";
   ()
 
-let _ = Html.window##onload <- Dom_html.handler (fun _ -> ignore (load()); Js._true)
+let _ = Html.window##onload <- Html.handler (fun _ -> ignore (load()); Js._true)

@@ -1,3 +1,3 @@
 open Character
 
-type board = damage list list
+type board = (obj option) list list

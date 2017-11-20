@@ -10,7 +10,6 @@ type board = Board.board
   type state = {
     bgd: sprite;
     context: Dom_html.canvasRenderingContext2D Js.t;
-    map: float;
     mutable score: int;
     mutable game_over: bool;
   }
@@ -21,5 +20,5 @@ and moving the rows of monsters down by one each iteration*)
 (*every command, you should also update the hp of the monsters
   and of the sprite itself *)
 
-val update_loop : Dom_html.canvasElement Js.t
-                  -> unit
+val update_state : Dom_html.canvasElement Js.t
+                 -> unit

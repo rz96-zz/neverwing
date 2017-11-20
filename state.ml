@@ -21,14 +21,11 @@ let update_state comm st =
 failwith "Unimplemented" *)
 
 let update_state canvas =
-  let scale = 1. in
   let ctx = canvas##getContext (Dom_html._2d_) in
-  let cwidth = (float_of_int canvas##width) /. scale in
-  let cheight = (float_of_int canvas##height) /. scale in
   let state = {
       bgd = Sprite.init_bgd ctx;
-      ctx;
+      context = ctx;
       score = 0;
       game_over = false;
   } in
-  Gui.draw_bgd state.bgd 0
+  Gui.draw_bgd state.bgd 100.
