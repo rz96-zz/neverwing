@@ -9,7 +9,7 @@ let load _ =
         Html.CoerceTo.canvas) in
   let context = convas##getContet (Html._2d_ )in
   let bgd = Sprite.setup_sprite "bgd.png"  in
-  let bgd_
+  let bgd_obj = 
   print_endline "loading";
   ()
 
