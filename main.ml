@@ -2,8 +2,9 @@ open Sprite
 open Character
 module Html = Dom_html
 
-let load _ = 
-  let canvas = 
+
+let load _ =
+  let canvas =
     Js.Opt.get
       (Js.Opt.bind ( Html.document##getElementByI(Js.string "canvas"))
         Html.CoerceTo.canvas) in
