@@ -1,14 +1,12 @@
 (*characters are moveable items*)
+open Sprite
 
 (*Type direction corresponds to the direction the character moves in,
 either Right or Left*)
 type direction = | Right | Left
 
 (*Gives xy coordinates of a position on the board*)
-type xy = {
-  x: float;
-  y: float;
-}
+type xy = float * float
 
 (*Command corresponds to player keyboard input*)
 type command =
@@ -30,16 +28,11 @@ type damage =
   | Boss_Projectile
   | Monster
 
-(*Type sprite represents a GAME character (player or monster)*)
-type sprite
-
-type player
-
-(*Type projectile represents the projectiles that the player
-or boss monsters shoot*)
-type projectile
-
 (*Type object is any object that appears on the board*)
-type obj =
-  | Damage
-  | Sprite
+type obj = {
+  sprite: Sprite.sprite;
+  pos: xy;
+}
+
+val new_obj : Sprite.sprite_props -> Dom_html.canvasRenderingContext2D Js.t 
+-> xy -> obj
