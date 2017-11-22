@@ -1,54 +1,48 @@
 ### Starting build.
 # Target: main.ml.depends, tags: { package(js_of_ocaml), package(js_of_ocaml.syntax), syntax(camlp4o), extension:ml, file:main.ml, ocaml, ocamldep, quiet, traverse }
-ocamlfind ocamldep -syntax camlp4o -package js_of_ocaml.syntax -package js_of_ocaml -modules main.ml > main.ml.depends
+ocamlfind ocamldep -syntax camlp4o -package js_of_ocaml.syntax -package js_of_ocaml -modules main.ml > main.ml.depends # cached
 # Target: character.mli.depends, tags: { package(js_of_ocaml), package(js_of_ocaml.syntax), syntax(camlp4o), extension:mli, file:character.mli, ocaml, ocamldep, quiet, traverse }
-ocamlfind ocamldep -syntax camlp4o -package js_of_ocaml.syntax -package js_of_ocaml -modules character.mli > character.mli.depends
+ocamlfind ocamldep -syntax camlp4o -package js_of_ocaml.syntax -package js_of_ocaml -modules character.mli > character.mli.depends # cached
 # Target: sprite.mli.depends, tags: { package(js_of_ocaml), package(js_of_ocaml.syntax), syntax(camlp4o), extension:mli, file:sprite.mli, ocaml, ocamldep, quiet, traverse }
-ocamlfind ocamldep -syntax camlp4o -package js_of_ocaml.syntax -package js_of_ocaml -modules sprite.mli > sprite.mli.depends
+ocamlfind ocamldep -syntax camlp4o -package js_of_ocaml.syntax -package js_of_ocaml -modules sprite.mli > sprite.mli.depends # cached
 # Target: sprite.cmi, tags: { package(js_of_ocaml), package(js_of_ocaml.syntax), syntax(camlp4o), byte, compile, extension:mli, file:sprite.mli, interf, ocaml, quiet, traverse }
-ocamlfind ocamlc -c -syntax camlp4o -package js_of_ocaml.syntax -package js_of_ocaml -o sprite.cmi sprite.mli
-# Target: state.mli.depends, tags: { package(js_of_ocaml), package(js_of_ocaml.syntax), syntax(camlp4o), extension:mli, file:state.mli, ocaml, ocamldep, quiet, traverse }
-ocamlfind ocamldep -syntax camlp4o -package js_of_ocaml.syntax -package js_of_ocaml -modules state.mli > state.mli.depends
-# Target: board.mli.depends, tags: { package(js_of_ocaml), package(js_of_ocaml.syntax), syntax(camlp4o), extension:mli, file:board.mli, ocaml, ocamldep, quiet, traverse }
-ocamlfind ocamldep -syntax camlp4o -package js_of_ocaml.syntax -package js_of_ocaml -modules board.mli > board.mli.depends
+ocamlfind ocamlc -c -syntax camlp4o -package js_of_ocaml.syntax -package js_of_ocaml -o sprite.cmi sprite.mli # cached
 # Target: character.cmi, tags: { package(js_of_ocaml), package(js_of_ocaml.syntax), syntax(camlp4o), byte, compile, extension:mli, file:character.mli, interf, ocaml, quiet, traverse }
-ocamlfind ocamlc -c -syntax camlp4o -package js_of_ocaml.syntax -package js_of_ocaml -o character.cmi character.mli
+ocamlfind ocamlc -c -syntax camlp4o -package js_of_ocaml.syntax -package js_of_ocaml -o character.cmi character.mli # cached
+# Target: state.mli.depends, tags: { package(js_of_ocaml), package(js_of_ocaml.syntax), syntax(camlp4o), extension:mli, file:state.mli, ocaml, ocamldep, quiet, traverse }
+ocamlfind ocamldep -syntax camlp4o -package js_of_ocaml.syntax -package js_of_ocaml -modules state.mli > state.mli.depends # cached
+# Target: board.mli.depends, tags: { package(js_of_ocaml), package(js_of_ocaml.syntax), syntax(camlp4o), extension:mli, file:board.mli, ocaml, ocamldep, quiet, traverse }
+ocamlfind ocamldep -syntax camlp4o -package js_of_ocaml.syntax -package js_of_ocaml -modules board.mli > board.mli.depends # cached
 # Target: board.cmi, tags: { package(js_of_ocaml), package(js_of_ocaml.syntax), syntax(camlp4o), byte, compile, extension:mli, file:board.mli, interf, ocaml, quiet, traverse }
-ocamlfind ocamlc -c -syntax camlp4o -package js_of_ocaml.syntax -package js_of_ocaml -o board.cmi board.mli
+ocamlfind ocamlc -c -syntax camlp4o -package js_of_ocaml.syntax -package js_of_ocaml -o board.cmi board.mli # cached
 # Target: state.cmi, tags: { package(js_of_ocaml), package(js_of_ocaml.syntax), syntax(camlp4o), byte, compile, extension:mli, file:state.mli, interf, ocaml, quiet, traverse }
-ocamlfind ocamlc -c -syntax camlp4o -package js_of_ocaml.syntax -package js_of_ocaml -o state.cmi state.mli
+ocamlfind ocamlc -c -syntax camlp4o -package js_of_ocaml.syntax -package js_of_ocaml -o state.cmi state.mli # cached
 # Target: main.cmo, tags: { package(js_of_ocaml), package(js_of_ocaml.syntax), syntax(camlp4o), byte, compile, extension:cmo, extension:ml, file:main.cmo, file:main.ml, implem, ocaml, quiet, traverse }
-ocamlfind ocamlc -c -syntax camlp4o -package js_of_ocaml.syntax -package js_of_ocaml -o main.cmo main.ml
-+ ocamlfind ocamlc -c -syntax camlp4o -package js_of_ocaml.syntax -package js_of_ocaml -o main.cmo main.ml
-File "main.ml", line 17, characters 6-13:
-Warning 26: unused variable context.
+ocamlfind ocamlc -c -syntax camlp4o -package js_of_ocaml.syntax -package js_of_ocaml -o main.cmo main.ml # cached
 # Target: main.d.cmo, tags: { package(js_of_ocaml), package(js_of_ocaml.syntax), syntax(camlp4o), byte, compile, debug, extension:cmo, extension:ml, file:main.d.cmo, file:main.ml, implem, ocaml, quiet, traverse }
-ocamlfind ocamlc -c -g -syntax camlp4o -package js_of_ocaml.syntax -package js_of_ocaml -o main.d.cmo main.ml
-+ ocamlfind ocamlc -c -g -syntax camlp4o -package js_of_ocaml.syntax -package js_of_ocaml -o main.d.cmo main.ml
-File "main.ml", line 17, characters 6-13:
-Warning 26: unused variable context.
+ocamlfind ocamlc -c -g -syntax camlp4o -package js_of_ocaml.syntax -package js_of_ocaml -o main.d.cmo main.ml # cached
 # Target: character.ml.depends, tags: { package(js_of_ocaml), package(js_of_ocaml.syntax), syntax(camlp4o), extension:ml, file:character.ml, ocaml, ocamldep, quiet, traverse }
-ocamlfind ocamldep -syntax camlp4o -package js_of_ocaml.syntax -package js_of_ocaml -modules character.ml > character.ml.depends
-# Target: sprite.ml.depends, tags: { package(js_of_ocaml), package(js_of_ocaml.syntax), syntax(camlp4o), extension:ml, file:sprite.ml, ocaml, ocamldep, quiet, traverse }
-ocamlfind ocamldep -syntax camlp4o -package js_of_ocaml.syntax -package js_of_ocaml -modules sprite.ml > sprite.ml.depends
-# Target: state.ml.depends, tags: { package(js_of_ocaml), package(js_of_ocaml.syntax), syntax(camlp4o), extension:ml, file:state.ml, ocaml, ocamldep, quiet, traverse }
-ocamlfind ocamldep -syntax camlp4o -package js_of_ocaml.syntax -package js_of_ocaml -modules state.ml > state.ml.depends
-# Target: gui.mli.depends, tags: { package(js_of_ocaml), package(js_of_ocaml.syntax), syntax(camlp4o), extension:mli, file:gui.mli, ocaml, ocamldep, quiet, traverse }
-ocamlfind ocamldep -syntax camlp4o -package js_of_ocaml.syntax -package js_of_ocaml -modules gui.mli > gui.mli.depends
-# Target: gui.cmi, tags: { package(js_of_ocaml), package(js_of_ocaml.syntax), syntax(camlp4o), byte, compile, extension:mli, file:gui.mli, interf, ocaml, quiet, traverse }
-ocamlfind ocamlc -c -syntax camlp4o -package js_of_ocaml.syntax -package js_of_ocaml -o gui.cmi gui.mli
+ocamlfind ocamldep -syntax camlp4o -package js_of_ocaml.syntax -package js_of_ocaml -modules character.ml > character.ml.depends # cached
 # Target: character.d.cmo, tags: { package(js_of_ocaml), package(js_of_ocaml.syntax), syntax(camlp4o), byte, compile, debug, extension:cmo, extension:ml, file:character.d.cmo, file:character.ml, implem, ocaml, quiet, traverse }
-ocamlfind ocamlc -c -g -syntax camlp4o -package js_of_ocaml.syntax -package js_of_ocaml -o character.d.cmo character.ml
+ocamlfind ocamlc -c -g -syntax camlp4o -package js_of_ocaml.syntax -package js_of_ocaml -o character.d.cmo character.ml # cached
+# Target: sprite.ml.depends, tags: { package(js_of_ocaml), package(js_of_ocaml.syntax), syntax(camlp4o), extension:ml, file:sprite.ml, ocaml, ocamldep, quiet, traverse }
+ocamlfind ocamldep -syntax camlp4o -package js_of_ocaml.syntax -package js_of_ocaml -modules sprite.ml > sprite.ml.depends # cached
 # Target: sprite.d.cmo, tags: { package(js_of_ocaml), package(js_of_ocaml.syntax), syntax(camlp4o), byte, compile, debug, extension:cmo, extension:ml, file:sprite.d.cmo, file:sprite.ml, implem, ocaml, quiet, traverse }
-ocamlfind ocamlc -c -g -syntax camlp4o -package js_of_ocaml.syntax -package js_of_ocaml -o sprite.d.cmo sprite.ml
+ocamlfind ocamlc -c -g -syntax camlp4o -package js_of_ocaml.syntax -package js_of_ocaml -o sprite.d.cmo sprite.ml # cached
+# Target: state.ml.depends, tags: { package(js_of_ocaml), package(js_of_ocaml.syntax), syntax(camlp4o), extension:ml, file:state.ml, ocaml, ocamldep, quiet, traverse }
+ocamlfind ocamldep -syntax camlp4o -package js_of_ocaml.syntax -package js_of_ocaml -modules state.ml > state.ml.depends # cached
+# Target: gui.mli.depends, tags: { package(js_of_ocaml), package(js_of_ocaml.syntax), syntax(camlp4o), extension:mli, file:gui.mli, ocaml, ocamldep, quiet, traverse }
+ocamlfind ocamldep -syntax camlp4o -package js_of_ocaml.syntax -package js_of_ocaml -modules gui.mli > gui.mli.depends # cached
+# Target: gui.cmi, tags: { package(js_of_ocaml), package(js_of_ocaml.syntax), syntax(camlp4o), byte, compile, extension:mli, file:gui.mli, interf, ocaml, quiet, traverse }
+ocamlfind ocamlc -c -syntax camlp4o -package js_of_ocaml.syntax -package js_of_ocaml -o gui.cmi gui.mli # cached
 # Target: state.d.cmo, tags: { package(js_of_ocaml), package(js_of_ocaml.syntax), syntax(camlp4o), byte, compile, debug, extension:cmo, extension:ml, file:state.d.cmo, file:state.ml, implem, ocaml, quiet, traverse }
-ocamlfind ocamlc -c -g -syntax camlp4o -package js_of_ocaml.syntax -package js_of_ocaml -o state.d.cmo state.ml
+ocamlfind ocamlc -c -g -syntax camlp4o -package js_of_ocaml.syntax -package js_of_ocaml -o state.d.cmo state.ml # cached
 # Target: board.ml.depends, tags: { package(js_of_ocaml), package(js_of_ocaml.syntax), syntax(camlp4o), extension:ml, file:board.ml, ocaml, ocamldep, quiet, traverse }
-ocamlfind ocamldep -syntax camlp4o -package js_of_ocaml.syntax -package js_of_ocaml -modules board.ml > board.ml.depends
+ocamlfind ocamldep -syntax camlp4o -package js_of_ocaml.syntax -package js_of_ocaml -modules board.ml > board.ml.depends # cached
+# Target: board.d.cmo, tags: { package(js_of_ocaml), package(js_of_ocaml.syntax), syntax(camlp4o), byte, compile, debug, extension:cmo, extension:ml, file:board.d.cmo, file:board.ml, implem, ocaml, quiet, traverse }
+ocamlfind ocamlc -c -g -syntax camlp4o -package js_of_ocaml.syntax -package js_of_ocaml -o board.d.cmo board.ml # cached
 # Target: gui.ml.depends, tags: { package(js_of_ocaml), package(js_of_ocaml.syntax), syntax(camlp4o), extension:ml, file:gui.ml, ocaml, ocamldep, quiet, traverse }
 ocamlfind ocamldep -syntax camlp4o -package js_of_ocaml.syntax -package js_of_ocaml -modules gui.ml > gui.ml.depends
-# Target: board.d.cmo, tags: { package(js_of_ocaml), package(js_of_ocaml.syntax), syntax(camlp4o), byte, compile, debug, extension:cmo, extension:ml, file:board.d.cmo, file:board.ml, implem, ocaml, quiet, traverse }
-ocamlfind ocamlc -c -g -syntax camlp4o -package js_of_ocaml.syntax -package js_of_ocaml -o board.d.cmo board.ml
 # Target: gui.d.cmo, tags: { package(js_of_ocaml), package(js_of_ocaml.syntax), syntax(camlp4o), byte, compile, debug, extension:cmo, extension:ml, file:gui.d.cmo, file:gui.ml, implem, ocaml, quiet, traverse }
 ocamlfind ocamlc -c -g -syntax camlp4o -package js_of_ocaml.syntax -package js_of_ocaml -o gui.d.cmo gui.ml
 # Target: main.d.byte, tags: { package(js_of_ocaml), package(js_of_ocaml.syntax), syntax(camlp4o), byte, debug, dont_link_with, extension:byte, file:main.d.byte, link, ocaml, program, quiet, traverse }

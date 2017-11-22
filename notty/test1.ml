@@ -4,7 +4,7 @@ module Term = Notty_unix.Term
 
 let rec play t (x, y) =
   let img =
-    let dot = I.string A.(bg white ++ fg black) "x" |> I.pad ~l:x ~t:y
+    let dot = I.string A.(bg red ++ fg red) "xxxx" |> I.pad ~l:x ~t:y
     and txt = I.strf ~attr:A.(fg lightblack) "@(%d, %d)" x y in
     I.(txt </> dot) in
   Term.image t img;
