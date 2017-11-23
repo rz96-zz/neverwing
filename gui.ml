@@ -15,7 +15,7 @@ let draw sprite (x, y) =
   (* let sx = sx +. (float_of_int !(sprite.frame)) *. sw in *)
   context##drawImage_full(sprite.img, sx, sy, sw, sh, dx, dy, dw, dh)
 
-let draw_bgd bgd off_x = 
+let draw_bgd bgd off_x =
   draw bgd ((fst bgd.prop.frame_size) -. off_x, 0.)
 (* let draw_score = failwith "unimplemented"
 
