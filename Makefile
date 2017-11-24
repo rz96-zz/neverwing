@@ -1,12 +1,5 @@
-# the resulting working website is to be found in _build/html
-#what is this lmao
-all:
-	ocamlbuild -use-ocamlfind \
-	  -plugin-tag "package(js_of_ocaml.ocamlbuild)" \
-	  -no-links \
-	  main.d.js
-		#	ocamlbuild -use-ocamlfind -plugin-tag 'package(js_of_ocaml.ocamlbuild)' \
-		#							 src/ex1.js
+all: byte
+	js_of_ocaml main2.byte
 
-clean:
-	ocamlbuild -clean
+byte:
+	ocamlbuild -use-ocamlfind -pkgs js_of_ocaml-lwt,js_of_ocaml.ppx,lwt.ppx main2.byte
