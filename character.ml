@@ -33,7 +33,7 @@ type obj = {
   pos: xy;
 }
 
-let new_obj spr_props context position = 
+let new_obj spr_props context position =
   let spr = make_sprite spr_props context in
   {
     sprite = spr;
