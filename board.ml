@@ -1,3 +1,3 @@
 open Character
 
-type board = (obj option) list list
+  type board = (obj option) list list

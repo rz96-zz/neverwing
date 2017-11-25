@@ -1,4 +1,5 @@
 ### Starting build.
+<<<<<<< HEAD
 # Target: main.ml.depends, tags: { package(js_of_ocaml), package(js_of_ocaml.syntax), syntax(camlp4o), extension:ml, file:main.ml, ocaml, ocamldep, quiet, traverse }
 ocamlfind ocamldep -syntax camlp4o -package js_of_ocaml.syntax -package js_of_ocaml -modules main.ml > main.ml.depends
 # Target: character.mli.depends, tags: { package(js_of_ocaml), package(js_of_ocaml.syntax), syntax(camlp4o), extension:mli, file:character.mli, ocaml, ocamldep, quiet, traverse }
@@ -55,4 +56,12 @@ ocamlfind ocamlc -c -g -syntax camlp4o -package js_of_ocaml.syntax -package js_o
 ocamlfind ocamlc -linkpkg -g -syntax camlp4o -package js_of_ocaml.syntax -package js_of_ocaml sprite.d.cmo character.d.cmo board.d.cmo gui.d.cmo state.d.cmo main.d.cmo -o main.d.byte
 # Target: main.d.js, tags: { package(js_of_ocaml), package(js_of_ocaml.syntax), syntax(camlp4o), extension:js, file:main.d.js, js_of_ocaml, quiet, traverse }
 js_of_ocaml --no-runtime +js_of_ocaml-compiler/runtime.js -o main.d.js main.d.byte
+=======
+# Target: main2.ml.depends, tags: { package(js_of_ocaml-lwt), package(js_of_ocaml.ppx), package(lwt.ppx), extension:ml, file:main2.ml, ocaml, ocamldep, quiet }
+ocamlfind ocamldep -package lwt.ppx -package js_of_ocaml.ppx -package js_of_ocaml-lwt -modules main2.ml > main2.ml.depends
+# Target: main2.cmo, tags: { package(js_of_ocaml-lwt), package(js_of_ocaml.ppx), package(lwt.ppx), byte, compile, extension:cmo, extension:ml, file:main2.cmo, file:main2.ml, implem, ocaml, quiet }
+ocamlfind ocamlc -c -package lwt.ppx -package js_of_ocaml.ppx -package js_of_ocaml-lwt -o main2.cmo main2.ml
+# Target: main2.byte, tags: { package(js_of_ocaml-lwt), package(js_of_ocaml.ppx), package(lwt.ppx), byte, dont_link_with, extension:byte, file:main2.byte, link, ocaml, program, quiet }
+ocamlfind ocamlc -linkpkg -package lwt.ppx -package js_of_ocaml.ppx -package js_of_ocaml-lwt main2.cmo -o main2.byte
+>>>>>>> b3f0e98f3c7a06a72dda11385da445253a4577e9
 # Compilation successful.

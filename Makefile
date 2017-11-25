@@ -1,12 +1,13 @@
-# the resulting working website is to be found in _build/html
-#what is this lmao
-all:
-	ocamlbuild -use-ocamlfind \
-	  -plugin-tag "package(js_of_ocaml.ocamlbuild)" \
-	  -no-links \
-	  main.d.js
-		#	ocamlbuild -use-ocamlfind -plugin-tag 'package(js_of_ocaml.ocamlbuild)' \
-		#							 src/ex1.js
 
-clean:
-	ocamlbuild -clean
+OBJS= sprite.cmo character.cmo board.cmo gui.cmo state.cmo command.cmo
+NAME=main2
+OCAMLC=ocamlfind ocamlc -thread -package js_of_ocaml-lwt -package js_of_ocaml.ppx -package lwt.ppx
+$(NAME).byte: $(OBJS)
+	$(OCAMLC) -linkpkg -o $@ $(OBJS) $(NAME).ml
+
+$(NAME).js: $(NAME).byte
+	js_of_ocaml $<
+
+%.cmo: %.ml
+	$(OCAMLC) -c $<i
+	$(OCAMLC) -c $<
