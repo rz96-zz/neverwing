@@ -1,8 +1,8 @@
 ### Starting build.
 # Target: main2.ml.depends, tags: { package(js_of_ocaml-lwt), package(js_of_ocaml.ppx), package(lwt.ppx), extension:ml, file:main2.ml, ocaml, ocamldep, quiet }
-ocamlfind ocamldep -package lwt.ppx -package js_of_ocaml.ppx -package js_of_ocaml-lwt -modules main2.ml > main2.ml.depends # cached
+ocamlfind ocamldep -package lwt.ppx -package js_of_ocaml.ppx -package js_of_ocaml-lwt -modules main2.ml > main2.ml.depends
 # Target: main2.cmo, tags: { package(js_of_ocaml-lwt), package(js_of_ocaml.ppx), package(lwt.ppx), byte, compile, extension:cmo, extension:ml, file:main2.cmo, file:main2.ml, implem, ocaml, quiet }
-ocamlfind ocamlc -c -package lwt.ppx -package js_of_ocaml.ppx -package js_of_ocaml-lwt -o main2.cmo main2.ml # cached
+ocamlfind ocamlc -c -package lwt.ppx -package js_of_ocaml.ppx -package js_of_ocaml-lwt -o main2.cmo main2.ml
 # Target: main2.byte, tags: { package(js_of_ocaml-lwt), package(js_of_ocaml.ppx), package(lwt.ppx), byte, dont_link_with, extension:byte, file:main2.byte, link, ocaml, program, quiet }
-ocamlfind ocamlc -linkpkg -package lwt.ppx -package js_of_ocaml.ppx -package js_of_ocaml-lwt main2.cmo -o main2.byte # cached
+ocamlfind ocamlc -linkpkg -package lwt.ppx -package js_of_ocaml.ppx -package js_of_ocaml-lwt main2.cmo -o main2.byte
 # Compilation successful.
