@@ -11,3 +11,8 @@ $(NAME).js: $(NAME).byte
 %.cmo: %.ml
 	$(OCAMLC) -c $<i
 	$(OCAMLC) -c $<
+
+clean: 
+	ocamlbuild -clean
+	rm *.cm*
+	rm *.byte

@@ -34,5 +34,5 @@ type obj = {
   pos: xy;
 }
 
-val new_obj : Sprite.sprite_props -> Dom_html.canvasRenderingContext2D Js.t 
+val new_obj : Sprite.sprite_props -> Dom_html.canvasRenderingContext2D Js.t
 -> xy -> obj

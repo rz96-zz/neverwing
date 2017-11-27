@@ -1,4 +1,6 @@
 open Lwt.Infix
+open Board
+
 
 let flip f x y = f y x
 
@@ -9,13 +11,13 @@ type control =
   | Left
   | Stop
 
-type obj =
-  | Player
+(*type obj =
+  | Player*)
 
 type action =
   | Nothing
 
-type board = (obj option) list list
+(*type board = (obj option) list list*)
 
 type state = {
   mutable board : (obj option) list list;
