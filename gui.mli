@@ -1,5 +1,6 @@
 
 open Sprite
+open Board
 
 (*Draw the player's score in the GUI*)
 (* val draw_score: Dom_html.canvasRenderingContext2D Js.t -> unit *)
@@ -15,3 +16,8 @@ val draw: Sprite.sprite -> float * float-> unit
 
 (* Draw the given sprite as a background *)
 val draw_bgd : Sprite.sprite -> float -> unit
+
+val canvas_coords: int*int -> float*float
+
+val draw_object: Dom_html.canvasRenderingContext2D Js.t
+                    -> int -> int -> obj option -> unit

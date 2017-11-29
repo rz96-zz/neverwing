@@ -1,4 +1,5 @@
 open Sprite
+open Command
 
 (*Type direction corresponds to the direction the character moves in,
 either Right or Left*)
