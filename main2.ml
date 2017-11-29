@@ -49,8 +49,8 @@ let place_obj board i j obj = find_row board i j obj []
 let new_location state (i, j) control =
   let (i, j) = match control with
       (*have to make this move after hitting edges*)
-    | Right -> i, j - 1
-    | Left -> i, j + 1
+    | Right -> if j + 1 > 29 then i, j else i, j + 1
+    | Left -> if j - 1 < 0 then i, j else i, j - 1
     | Stop -> i, j
     in
   i , j
@@ -62,9 +62,18 @@ let move_player state =
   state.player_location <- (i', j');
   if (state.control != Stop) then
     state.board <- (place_obj state.board i j None)
+<<<<<<< HEAD
   else state.board <- (place_obj state.board i j (Some Player))*)
 
 (*let rec init_row len arr =
+=======
+  else state.board <- (place_obj state.board i j (Some Player))
+
+let update state =
+  move_player state
+
+let rec init_row len arr =
+>>>>>>> b1b13ba80d7c3d947c1ae76b5d6c1772a4607a1f
   if (len = 0) then arr else init_row (len-1) (None::arr)
 
 let rec init_board rows cols arr =
@@ -77,10 +86,24 @@ let rec place_objects_list board objs =
   | [] -> board
   | ((i, j), a)::t -> place_objects_list (place_obj board i j a) t
 
+
+let rec new_row_monsters =
+  [((5, 4), Some Monster);
+   ((5, 9), Some Monster);
+   ((5, 14), Some Monster);
+   ((5, 19), Some Monster);
+   ((5, 24), Some Monster)]
+
+
 let make_state ~rows ~cols =
   let board = init_board rows cols ([]) in
   let i, j = rows-5, cols / 2 in
+<<<<<<< HEAD
   let objs = [((i, j), Some Player); ((i-10, j-10), Some Monster)] in
+=======
+  let objs = ((i, j), Some Player)::(new_row_monsters) in
+
+>>>>>>> b1b13ba80d7c3d947c1ae76b5d6c1772a4607a1f
   let state = {
     board = place_objects_list board objs;
     control = Stop;
@@ -100,7 +123,7 @@ let draw_player context x y =
 
 let draw_monster context x y =
   context##.fillStyle := Js.string "#FF0000";
-  context##fillRect x y 10. 20.
+  context##fillRect x y 20. 30.
 
 let draw_object context i j obj =
   let x, y = canvas_coords (i, j) in
@@ -134,8 +157,8 @@ let key_up state = function
   | _ -> ()
 
 let key_down state = function
-  | "d" -> set_control Left state
-  | "a" -> set_control Right state
+  | "d" -> set_control Right state
+  | "a" -> set_control Left state
   | _ -> set_control Stop state
 
 let detect_keyup state =
@@ -166,7 +189,8 @@ let _ : unit Lwt.t =
   let%lwt () = Lwt_js_events.domContentLoaded () in
   let canvas = Dom_html.getElementById "canvas" |> Dom_html.CoerceTo.canvas |> flip Js.Opt.get (fun () -> assert false) in
   let context = canvas##getContext Dom_html._2d_ in
-  let state = make_state 50 20 in
+  let state = make_state 50 30 in
+
   Lwt.join [
     main_loop context state;
     detect_keydown state;

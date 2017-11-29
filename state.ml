@@ -48,8 +48,8 @@ let place_obj board i j obj = find_row board i j obj []
 let new_location state (i, j) control =
   let (i, j) = match control with
     (*have to make this move after hitting edges*)
-    | Right -> i, j - 1
-    | Left -> i, j + 1
+    | Right -> if j + 1 > 29 then i, j else i, j + 1
+    | Left -> if j - 1 < 0 then i, j else i, j - 1
     | Stop -> i, j
   in
   i , j
@@ -89,10 +89,17 @@ let move_player state =
     | [] -> board
     | ((i, j), a)::t -> place_objects_list (place_obj board i j a) t
 
+let rec new_row_monsters =
+  [((5, 4), Some Monster);
+   ((5, 9), Some Monster);
+   ((5, 14), Some Monster);
+   ((5, 19), Some Monster);
+   ((5, 24), Some Monster)]
+
   let make_state rows cols =
     let board = init_board rows cols ([]) in
     let i, j = rows-5, cols / 2 in
-    let objs = [((i, j), Some Player); ((i-10, j-10), Some Monster)] in
+    let objs = ((i, j), Some Player)::(new_row_monsters) in
     let state = {
       board = place_objects_list board objs;
       control = Stop;
