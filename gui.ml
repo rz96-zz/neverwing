@@ -29,7 +29,7 @@ let draw_player context x y =
 
 let draw_monster context x y =
   context##.fillStyle := Js.string "#FF0000";
-  context##fillRect x y 10. 20.
+  context##fillRect x y 20. 30.
 
 let draw_object context i j obj =
   let x, y = canvas_coords (i, j) in

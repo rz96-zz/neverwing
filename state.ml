@@ -89,23 +89,35 @@ let move_player state =
     | [] -> board
     | ((i, j), a)::t -> place_objects_list (place_obj board i j a) t
 
+(*creates a new row, full of monsters at the top of the board*)
 let rec new_row_monsters =
-  [((5, 4), Some Monster);
-   ((5, 9), Some Monster);
-   ((5, 14), Some Monster);
-   ((5, 19), Some Monster);
-   ((5, 24), Some Monster)]
+  [((0, 4), Some Monster);
+   ((0, 9), Some Monster);
+   ((0, 14), Some Monster);
+   ((0, 19), Some Monster);
+   ((0, 24), Some Monster)]
 
-  let make_state rows cols =
-    let board = init_board rows cols ([]) in
-    let i, j = rows-5, cols / 2 in
-    let objs = ((i, j), Some Player)::(new_row_monsters) in
-    let state = {
-      board = place_objects_list board objs;
-      control = Stop;
-      player_location = (i, j);
-    } in
-    state
+(*lowers a given object on the screen by one row, if it is a monster*)
+let lower_mons_obj ((i, j), obj) =
+  match obj with
+  | Some Player -> ((i, j), obj)
+  | Some Monster -> ((i+1, j), obj)
+  | None -> ((i, j), obj)
+
+(*lowers an entire row of monsters (or nothing)*)
+let lower_monster_row row_of_mons =
+  List.map lower_mons_obj row_of_mons
+
+let make_state rows cols =
+  let board = init_board rows cols ([]) in
+  let i, j = rows-5, cols / 2 in
+  let objs = ((i, j), Some Player)::(new_row_monsters) in
+  let state = {
+    board = place_objects_list board objs;
+    control = Stop;
+    player_location = (i, j);
+  } in
+  state
 
 
 let draw_state context state =
