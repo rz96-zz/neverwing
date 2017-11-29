@@ -121,9 +121,6 @@ let move_player state =
   let rec init_board rows cols arr =
     if rows = 0 then arr else init_board (rows-1) cols ((init_row cols [])::arr)
 
-
-
-
 (*creates a new row, full of monsters at the top of the board*)
 let rec new_row_monsters =
   [((0, 4), Some Monster);
@@ -134,17 +131,6 @@ let rec new_row_monsters =
 
 let rec new_projectiles = 
   [((42, 15), Some Projectile);
-  ((40, 15), Some Projectile);
-  ((38, 15), Some Projectile);
-  ((36, 15), Some Projectile);
-  ((34, 15), Some Projectile);
-  ((32, 15), Some Projectile);
-  ((30, 15), Some Projectile);
-  ((28, 15), Some Projectile);
-  ((26, 15), Some Projectile);
-  ((24, 15), Some Projectile);
-  ((22, 15), Some Projectile);
-  ((20, 15), Some Projectile);
   ]
 
 
