@@ -2,6 +2,7 @@ open Lwt.Infix
 open Board
 open Character
 open State
+open Command
 
 
 
