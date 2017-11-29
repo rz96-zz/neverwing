@@ -76,12 +76,24 @@ let rec init_row len arr =
 let rec init_board rows cols arr =
   if rows = 0 then arr else init_board (rows-1) cols ((init_row cols [])::arr)
 
+(*places all objects on the board given list of objects with coordinates of
+  where they are. objs : [((i, j), obj)]*)
+let rec place_objects_list board objs =
+  match objs with
+  | [] -> board
+  | ((i, j), a)::t -> place_objects_list (place_obj board i j a) t
 
 let make_state ~rows ~cols =
   let board = init_board rows cols ([]) in
   let i, j = rows-5, cols / 2 in
+<<<<<<< HEAD
+=======
+
+  let objs = [((i, j), Some Player); ((i-10, j-10), Some Monster)] in
+
+>>>>>>> 65ab254962fd072448c504a1ef71d455beaea0a1
   let state = {
-    board = place_obj board i j (Some Player);
+    board = place_objects_list board objs;
     control = Stop;
     player_location = (i, j);
   } in
@@ -100,11 +112,15 @@ let draw_player context x y =
   context##.fillStyle := Js.string "#0000FF";
   context##fillRect x y 10. 20.
 
+let draw_monster context x y =
+  context##.fillStyle := Js.string "#FF0000";
+  context##fillRect x y 10. 20.
 
 let draw_object context i j obj =
   let x, y = canvas_coords (i, j) in
   match obj with
   | (Some Player) -> draw_player context x y
+  | (Some Monster) -> draw_monster context x y
   | None -> ()
 
 let draw_state context state =
