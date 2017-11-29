@@ -1,5 +1,8 @@
 open Lwt.Infix
 open Board
+open Character
+open State
+
 
 
 let flip f x y = f y x
@@ -19,14 +22,14 @@ type action =
 
 (*type board = (obj option) list list*)
 
-type state = {
+(*type state = {
   mutable board : (obj option) list list;
   mutable control : control;
   mutable player_location : int * int;
-}
+}*)
 
 
-let rec find_coord row j obj new_row =
+(*let rec find_coord row j obj new_row =
   let last_col = if j = 0 then true else false in
   match row with
   |[] -> List.rev new_row
@@ -43,9 +46,7 @@ let rec find_row board i j obj new_board =
 
 let place_obj board i j obj = find_row board i j obj []
 
-
 let new_location state (i, j) control =
-
   let (i, j) = match control with
       (*have to make this move after hitting edges*)
     | Right -> i, j - 1
@@ -55,23 +56,15 @@ let new_location state (i, j) control =
   i , j
 
 let move_player state =
-
   let i, j = state.player_location in
-
   let i', j' = new_location state (i, j) state.control in
-
   state.board <- place_obj state.board i' j' (Some Player);
   state.player_location <- (i', j');
   if (state.control != Stop) then
-
     state.board <- (place_obj state.board i j None)
-  else state.board <- (place_obj state.board i j (Some Player))
+  else state.board <- (place_obj state.board i j (Some Player))*)
 
-let update state =
-
-  move_player state
-
-let rec init_row len arr =
+(*let rec init_row len arr =
   if (len = 0) then arr else init_row (len-1) (None::arr)
 
 let rec init_board rows cols arr =
@@ -87,22 +80,17 @@ let rec place_objects_list board objs =
 let make_state ~rows ~cols =
   let board = init_board rows cols ([]) in
   let i, j = rows-5, cols / 2 in
-
   let objs = [((i, j), Some Player); ((i-10, j-10), Some Monster)] in
-
   let state = {
     board = place_objects_list board objs;
     control = Stop;
     player_location = (i, j);
   } in
-  state
+  state*)
 
 let set_control control state =
-
   state.control <- control
-
-
-
+      (*
 let canvas_coords (i, j) =
   float (j * 10), float (i * 10)
 
@@ -131,12 +119,12 @@ let draw_state context state =
       draw_object context i j (List.nth (List.nth state.board i) j)
     done
   done;
-  context##fill
+  context##fill*)
 
 let rec main_loop context state =
   (*I don't know what this Lwt thing is*)
   Lwt_js.sleep 0.05 >>= fun () ->
-  update state;
+  move_player state;
   draw_state context state;
   main_loop context state
 
@@ -178,7 +166,7 @@ let _ : unit Lwt.t =
   let%lwt () = Lwt_js_events.domContentLoaded () in
   let canvas = Dom_html.getElementById "canvas" |> Dom_html.CoerceTo.canvas |> flip Js.Opt.get (fun () -> assert false) in
   let context = canvas##getContext Dom_html._2d_ in
-  let state = make_state ~rows:50 ~cols:20 in
+  let state = make_state 50 20 in
   Lwt.join [
     main_loop context state;
     detect_keydown state;

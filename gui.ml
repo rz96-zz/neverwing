@@ -1,6 +1,7 @@
 (*essentially drawing everything on the playable gui part*)
 open Character
 open Sprite
+open Board
 module Html = Dom_html
 let document = Html.document
 let jstr = Js.string
@@ -18,6 +19,28 @@ let draw sprite (x, y) =
 
 let draw_bgd bgd off_x =
   draw bgd ((fst bgd.prop.frame_size) -. off_x, 0.)
+
+let canvas_coords (i, j) =
+  float (j * 10), float (i * 10)
+
+let draw_player context x y =
+  context##.fillStyle := Js.string "#0000FF";
+  context##fillRect x y 10. 20.
+
+let draw_monster context x y =
+  context##.fillStyle := Js.string "#FF0000";
+  context##fillRect x y 10. 20.
+
+let draw_object context i j obj =
+  let x, y = canvas_coords (i, j) in
+  match obj with
+  | (Some Player) -> draw_player context x y
+  | (Some Monster) -> draw_monster context x y
+  | None -> ()
+
+
+
+
 (* let draw_score = failwith "unimplemented"
 
 let game_over = failwith "unimplemented"

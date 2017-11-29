@@ -1,3 +1,9 @@
+type control =
+  | Right
+  | Left
+  | Stop
+
+
 (* Initiates the main game loop
 val update_loop : Dom_html.canvasElement Js.t
 -> (Object.collidable * Object.collidable list)
