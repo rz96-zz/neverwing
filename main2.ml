@@ -84,11 +84,19 @@ let rec place_objects_list board objs =
   | [] -> board
   | ((i, j), a)::t -> place_objects_list (place_obj board i j a) t
 
+
+let rec new_row_monsters =
+  [((5, 4), Some Monster);
+   ((5, 9), Some Monster);
+   ((5, 14), Some Monster);
+   ((5, 19), Some Monster);
+   ((5, 24), Some Monster)]
+
+
 let make_state ~rows ~cols =
   let board = init_board rows cols ([]) in
   let i, j = rows-5, cols / 2 in
-
-  let objs = [((i, j), Some Player); ((i-10, j-10), Some Monster)] in
+  let objs = ((i, j), Some Player)::(new_row_monsters) in
 
   let state = {
     board = place_objects_list board objs;
@@ -112,7 +120,7 @@ let draw_player context x y =
 
 let draw_monster context x y =
   context##.fillStyle := Js.string "#FF0000";
-  context##fillRect x y 10. 20.
+  context##fillRect x y 20. 30.
 
 let draw_object context i j obj =
   let x, y = canvas_coords (i, j) in
@@ -178,7 +186,7 @@ let _ : unit Lwt.t =
   let%lwt () = Lwt_js_events.domContentLoaded () in
   let canvas = Dom_html.getElementById "canvas" |> Dom_html.CoerceTo.canvas |> flip Js.Opt.get (fun () -> assert false) in
   let context = canvas##getContext Dom_html._2d_ in
-  let state = make_state ~rows:50 ~cols:20 in
+  let state = make_state ~rows:50 ~cols:30 in
   Lwt.join [
     main_loop context state;
     detect_keydown state;
