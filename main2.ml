@@ -68,7 +68,7 @@ let move_player state =
   else state.board <- (place_obj state.board i j (Some Player))
 
 let update state =
-  move_player state
+  move_player state;
 
 let rec init_row len arr =
   if (len = 0) then arr else init_row (len-1) (None::arr)
@@ -83,13 +83,24 @@ let rec place_objects_list board objs =
   | [] -> board
   | ((i, j), a)::t -> place_objects_list (place_obj board i j a) t
 
-
+(*creates a new row, full of monsters at the top of the board*)
 let rec new_row_monsters =
-  [((5, 4), Some Monster);
-   ((5, 9), Some Monster);
-   ((5, 14), Some Monster);
-   ((5, 19), Some Monster);
-   ((5, 24), Some Monster)]
+  [((0, 4), Some Monster);
+   ((0, 9), Some Monster);
+   ((0, 14), Some Monster);
+   ((0, 19), Some Monster);
+   ((0, 24), Some Monster)]
+
+(*lowers a given object on the screen by one row, if it is a monster*)
+let lower_mons_obj ((i, j), obj) =
+  match obj with
+  | Some Player -> ((i, j), obj)
+  | Some Monster -> ((i+1, j) obj)
+  | None -> ((i, j), obj)
+
+(*lowers an entire row of monsters (or nothing)*)
+let lower_monster_row row_of_mons =
+  List.map lower_obj row_of_mons
 
 
 let make_state ~rows ~cols =
