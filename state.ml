@@ -115,8 +115,6 @@ let move_player state =
   Gui.draw_bgd state.bgd 100.*)
 
 
-
-
   let rec init_row len arr =
     if (len = 0) then arr else init_row (len-1) (None::arr)
 
@@ -134,6 +132,20 @@ let rec new_row_monsters =
    ((0, 19), 10, Some Monster);
    ((0, 24), 10, Some Monster)]
 
+let rec new_projectiles = 
+  [((42, 15), Some Projectile);
+  ((40, 15), Some Projectile);
+  ((38, 15), Some Projectile);
+  ((36, 15), Some Projectile);
+  ((34, 15), Some Projectile);
+  ((32, 15), Some Projectile);
+  ((30, 15), Some Projectile);
+  ((28, 15), Some Projectile);
+  ((26, 15), Some Projectile);
+  ((24, 15), Some Projectile);
+  ((22, 15), Some Projectile);
+  ((20, 15), Some Projectile);
+  ]
 
 
 let make_state rows cols =
@@ -142,8 +154,11 @@ let make_state rows cols =
   let monsters = new_row_monsters in
   let monsboard = place_monsters_list board monsters in (*the board with monsters*)
   let newboard = place_obj monsboard i j (Some Player) in (*board with monsters and player*)
+
+  let final_board = place_objects_list newboard new_projectiles in (*board with monsters, players, and projectiles*)
+
   let state = {
-    board = newboard;
+    board = final_board;
     control = Stop;
     player_location = (i, j);
     mons_info_list = monsters; (*coordinates of the monsters*)
