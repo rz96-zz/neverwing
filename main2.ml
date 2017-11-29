@@ -62,18 +62,9 @@ let move_player state =
   state.player_location <- (i', j');
   if (state.control != Stop) then
     state.board <- (place_obj state.board i j None)
-<<<<<<< HEAD
   else state.board <- (place_obj state.board i j (Some Player))*)
 
 (*let rec init_row len arr =
-=======
-  else state.board <- (place_obj state.board i j (Some Player))
-
-let update state =
-  move_player state;
-
-let rec init_row len arr =
->>>>>>> b1b13ba80d7c3d947c1ae76b5d6c1772a4607a1f
   if (len = 0) then arr else init_row (len-1) (None::arr)
 
 let rec init_board rows cols arr =
@@ -109,12 +100,7 @@ let lower_monster_row row_of_mons =
 let make_state ~rows ~cols =
   let board = init_board rows cols ([]) in
   let i, j = rows-5, cols / 2 in
-<<<<<<< HEAD
-  let objs = [((i, j), Some Player); ((i-10, j-10), Some Monster)] in
-=======
   let objs = ((i, j), Some Player)::(new_row_monsters) in
-
->>>>>>> b1b13ba80d7c3d947c1ae76b5d6c1772a4607a1f
   let state = {
     board = place_objects_list board objs;
     control = Stop;

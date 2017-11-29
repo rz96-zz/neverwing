@@ -74,8 +74,6 @@ let move_player state =
   Gui.draw_bgd state.bgd 100.*)
 
 
-
-
   let rec init_row len arr =
     if (len = 0) then arr else init_row (len-1) (None::arr)
 
@@ -97,6 +95,21 @@ let rec new_row_monsters =
    ((0, 19), Some Monster);
    ((0, 24), Some Monster)]
 
+let rec new_projectiles = 
+  [((42, 15), Some Projectile);
+  ((40, 15), Some Projectile);
+  ((38, 15), Some Projectile);
+  ((36, 15), Some Projectile);
+  ((34, 15), Some Projectile);
+  ((32, 15), Some Projectile);
+  ((30, 15), Some Projectile);
+  ((28, 15), Some Projectile);
+  ((26, 15), Some Projectile);
+  ((24, 15), Some Projectile);
+  ((22, 15), Some Projectile);
+  ((20, 15), Some Projectile);
+  ]
+
 (*lowers a given object on the screen by one row, if it is a monster*)
 let lower_mons_obj ((i, j), obj) =
   match obj with
@@ -112,8 +125,10 @@ let make_state rows cols =
   let board = init_board rows cols ([]) in
   let i, j = rows-5, cols / 2 in
   let objs = ((i, j), Some Player)::(new_row_monsters) in
+  let new_board = place_objects_list board objs in
+  let final_board = place_objects_list new_board new_projectiles in
   let state = {
-    board = place_objects_list board objs;
+    board = final_board;
     control = Stop;
     player_location = (i, j);
   } in
