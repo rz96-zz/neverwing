@@ -95,16 +95,8 @@ let rec new_row_monsters =
 let make_state ~rows ~cols =
   let board = init_board rows cols ([]) in
   let i, j = rows-5, cols / 2 in
-<<<<<<< HEAD
   let objs = ((i, j), Some Player)::(new_row_monsters) in
-=======
-<<<<<<< HEAD
-=======
 
-  let objs = [((i, j), Some Player); ((i-10, j-10), Some Monster)] in
->>>>>>> 6ebd9a8331662eceaa37dd4c5b071eb74e93d97f
-
->>>>>>> 65ab254962fd072448c504a1ef71d455beaea0a1
   let state = {
     board = place_objects_list board objs;
     control = Stop;
