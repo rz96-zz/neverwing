@@ -129,10 +129,14 @@ let rec new_row_monsters =
    ((0, 19), 10, Some Monster);
    ((0, 24), 10, Some Monster)]
 
-let rec new_projectiles = 
+let rec new_projectiles =
   [((42, 15), Some Projectile);
   ]
 
+  let rec place_objects_list board objs =
+    match objs with
+    | [] -> board
+    | ((i, j), a)::t -> place_objects_list (place_obj board i j a) t
 
 let make_state rows cols =
   let board = init_board rows cols ([]) in
