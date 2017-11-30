@@ -99,6 +99,7 @@ let move_player state =
   (*these updates the player's location*)
   state.board <- place_obj state.board i' j' (Some Player);
   state.player_location <- (i', j');
+  if (j = j') then state.control <- (Stop);
   if (state.control != Stop) then
     state.board <- (place_obj state.board i j None)
   else state.board <- (place_obj state.board i j (Some Player))
