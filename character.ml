@@ -40,3 +40,6 @@ let new_obj spr_props context position =
     sprite = spr;
     pos = position;
   }
+
+(*function to get bounding box of a character*)
+(*check_collision checks if there is a collision*)

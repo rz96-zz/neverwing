@@ -1,4 +1,9 @@
-type monster
+type monster =
+  {
+    i : int;
+    j : int;
+    hp: int
+  }
 
 type obj =
   | Player
