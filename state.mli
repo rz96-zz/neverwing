@@ -19,6 +19,7 @@ type state = {
   mutable control : control;
   mutable player_location : int * int;
   mutable mons_info_list: ((int * int) * int * obj option) list;
+  mutable projectile_list: ((int * int) * obj option) list; 
   mutable score : int;
 }
 
