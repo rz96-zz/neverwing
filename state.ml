@@ -17,7 +17,7 @@ type state = {
   mutable board : (obj option) list list;
   mutable control : control;
   mutable player_location : int * int;
-  mutable mons_info_list: ((int * int) * int * obj option) list (*keeps a list of the coordinates of the monsters*)
+  mutable mons_list: (obj option) list (*keeps a list of the monsters*)
 }
 
 (*[update_state] changes the state according to the command that was given
@@ -47,26 +47,29 @@ let rec find_row board i j obj new_board =
 let place_obj board i j obj = find_row board i j obj []
 
 (*places all objects on the board given list of objects with coordinates of
-  where they are. mons : [((i, j), hp, obj)]*)
+  where they are. mons is the list of monsters*)
 let rec place_monsters_list board mons =
   match mons with
   | [] -> board
-  | ((i, j), hp, a)::t -> place_monsters_list (place_obj board i j a) t
+  | m::t ->
+    match m with
+    | Some (Monster m') -> place_monsters_list (place_obj board m'.i m'.j m) t
+    | _ -> board
 
 (*lowers a given object on the screen by one row, if it is a monster*)
-let lower_mons_obj ((i, j), hp, obj) =
-  match obj with
-  | Some Monster -> ((i+1, j), hp, obj)
-  | _ -> ((i, j), hp, obj) (*will never be this case*)
+let lower_mons_obj mons_obj =
+  match mons_obj with
+  | Some (Monster m) -> (m.i <- (m.i+1)); ()
+  | _ -> () (*will never be this case*)
 
 (*lowers all the monsters (that are listed in mons_info_list) *)
-let lower_monster_row mons_info_list =
-  List.map lower_mons_obj mons_info_list
+let lower_monster_row mons_obj_list =
+  List.map lower_mons_obj mons_obj_list
 
 (*replaces ((i, j) obj) with the object as none if object was monster*)
-let replace_mons_with_none ((i, j), hp, obj) =
+let replace_mons_with_none mons_obj =
   match obj with
-  | Some Monster -> ((i, j), hp, None)
+  | Some (Monster m) -> ((i, j), hp, None)
   | _ -> ((i, j), hp, obj)
 
 (*replaces all the coordinates with monsters here with None*)
@@ -85,7 +88,7 @@ let new_location state (i, j) control =
 let move_player state =
   let i, j = state.player_location in
   let i', j' = new_location state (i, j) state.control in
-  let new_mons_info_list = lower_monster_row state.mons_info_list in
+  let new_mons_list = lower_monster_row state.mons_list in
 
   (*the next three lines of code updates the monster*)
   (*update board: the row that used to have monsters is replaced with None*)
@@ -94,7 +97,7 @@ let move_player state =
   (*update board: the new row with monsters now is updated to reflect the monsters*)
   state.board <- (place_monsters_list state.board new_mons_info_list);
   (*update mons_coord_list: the new coordinate list of where the monsters are*)
-  state.mons_info_list <- new_mons_info_list;
+  state.mons_list <- new_mons_list;
 
   (*these updates the player's location*)
   state.board <- place_obj state.board i' j' (Some Player);
@@ -132,7 +135,7 @@ let rec new_row_monsters =
    ((0, 19), 10, Some Monster);
    ((0, 24), 10, Some Monster)]
 
-let rec new_projectiles = 
+let rec new_projectiles =
   [((42, 15), Some Projectile);
   ((40, 15), Some Projectile);
   ((38, 15), Some Projectile);
