@@ -20,6 +20,7 @@ type state = {
   mutable player_location : int * int;
   mutable mons_list: (obj option) list;
   mutable score : int;
+  mutable game_over : bool
 }
 
 (*[update_state] changes the state according to the command that was given

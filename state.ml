@@ -18,7 +18,8 @@ type state = {
   mutable control : control;
   mutable player_location : int * int;
   mutable mons_list: (obj option) list; (*keeps a list of the monsters*)
-  mutable score : int
+  mutable score : int;
+  mutable game_over : bool
 }
 
 (*[update_state] changes the state according to the command that was given
@@ -183,6 +184,7 @@ let make_state rows cols =
     player_location = (i, j);
     mons_list = monsters;
     score = 0;
+    game_over = false
     (*coordinates of the monsters*)
   } in
   state
