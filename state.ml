@@ -142,12 +142,12 @@ let rec new_projectiles =
 
 (*update_obj updates objects when something collides*)
 
-=======
+
   let rec place_objects_list board objs =
     match objs with
     | [] -> board
     | ((i, j), a)::t -> place_objects_list (place_obj board i j a) t
->>>>>>> 03dbde9f033ff28eec5f7a6bcbc826c1fb34669e
+
 
 let make_state rows cols =
   let board = init_board rows cols ([]) in
