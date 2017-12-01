@@ -114,16 +114,11 @@ let move_player state =
   } in
   Gui.draw_bgd state.bgd 100.*)
 
-
-
-
   let rec init_row len arr =
     if (len = 0) then arr else init_row (len-1) (None::arr)
 
   let rec init_board rows cols arr =
     if rows = 0 then arr else init_board (rows-1) cols ((init_row cols [])::arr)
-
-
 
 
 (*creates a new row, full of monsters at the top of the board*)
@@ -134,6 +129,13 @@ let rec new_row_monsters =
    ((0, 19), Some Monster);
    ((0, 24), Some Monster)]
 
+
+(*run_collision should pattern match for each possibile collision that could happen
+  and execute what happens during the collision eg. new items being made or disappearing*)
+
+(*update_collision should constantly check through update loop if there is a collision occuring*)
+
+(*update_obj updates objects when something collides*)
 
 
 let make_state rows cols =
