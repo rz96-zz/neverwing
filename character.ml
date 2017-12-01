@@ -43,3 +43,26 @@ let new_obj spr_props context position =
 
 (*function to get bounding box of a character*)
 (*check_collision checks if there is a collision*)
+(*run collisions by updating all the collidables & running in update loop
+  run on player, also iterate through the list of objects & see if in same
+  bounding box as other objects*)
+
+let get_row_coord obj =
+  match obj with
+  |Monster m -> m.i
+  |_ -> 0
+
+let get_col_coord obj =
+  match obj with
+  |Monster m -> m.j
+  |_ -> 0
+
+let check_collision obj1 obj2 =
+  let row_coord_1 = get_row_coord obj1 and row_coord_2 = get_row_coord obj2
+  and col_coord_1 = get_col_coord obj1 and col_coord_2 = get_col_coord obj2 in
+  if ((row_coord_1 = row_coord_2) && (col_coord_1 = col_coord_2)) then
+    true else false
+
+
+    (*get coordinates of obj1 and obj2
+    check if there is overlap*)
