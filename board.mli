@@ -1,6 +1,13 @@
+type monster =
+  {
+    i : int;
+    j : int;
+    hp: int
+  }
+
 type obj =
   | Player
-  | Monster
+  | Monster of monster
   | Projectile
 
 (*Type board represents the 2-D grid layout of in the GUI where
