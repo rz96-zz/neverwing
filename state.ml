@@ -17,7 +17,9 @@ type state = {
   mutable board : (obj option) list list;
   mutable control : control;
   mutable player_location : int * int;
-  mutable mons_info_list: ((int * int) * int * obj option) list (*keeps a list of the coordinates of the monsters*)
+  mutable mons_info_list: ((int * int) * int * obj option) list;
+  mutable score : int
+(*keeps a list of the coordinates of the monsters*)
 }
 
 (*[update_state] changes the state according to the command that was given
@@ -152,7 +154,9 @@ let make_state rows cols =
     board = final_board;
     control = Stop;
     player_location = (i, j);
-    mons_info_list = monsters; (*coordinates of the monsters*)
+    mons_info_list = monsters;
+    score = 0;
+    (*coordinates of the monsters*)
   } in
   state
 

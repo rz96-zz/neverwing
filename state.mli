@@ -18,7 +18,8 @@ type state = {
   mutable board : (obj option) list list;
   mutable control : control;
   mutable player_location : int * int;
-  mutable mons_info_list: ((int * int) * int * obj option) list
+  mutable mons_info_list: ((int * int) * int * obj option) list;
+  mutable score : int;
 }
 
 (*[update_state] changes the state according to the command that was given
