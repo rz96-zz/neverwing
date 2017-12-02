@@ -156,15 +156,18 @@ let rec main_loop context state =
   draw_state context state;
   let key_elt = Dom_html.getElementById "score" in
   key_elt##.innerHTML := (Js.string ("Score :" ^ string_of_int state.score));
-  main_loop context state
+  if (state.phase <> Active) then
+  start_loop context state
+  else main_loop context state
 
-let rec start_loop context state =
+and start_loop context state =
   Lwt_js.sleep 0.05 >>= fun () ->
   let key_elt = Dom_html.getElementById "score" in
   if (state.phase = Start) then
     key_elt##.innerHTML := (Js.string ("Press any key to begin the game"))
   else if (state.phase = End) then
     key_elt##.innerHTML := (Js.string ("Game over. Your score is "^ string_of_int state.score));
+    state = make_state 50 30;
   if (state.phase = Active) then main_loop context state
   else start_loop context state
 

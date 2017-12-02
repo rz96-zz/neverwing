@@ -145,6 +145,7 @@ let move_player state =
   let new_projectile_list = raise_projectile state.projectile_list in
 
   (*the next three lines of code updates the monster*)
+  
   state.board <- (place_objects_list state.board (replace_all_proj_with_none state.projectile_list));
   (*updates board with new projectiles*)
   state.board <- (place_objects_list state.board new_projectile_list);
