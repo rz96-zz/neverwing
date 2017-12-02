@@ -12,15 +12,19 @@ type board = Board.board (*state *)
   mutable score: int;
   mutable game_over: bool;
   }*)
+type phase =
+  |Start
+  |Active
+  |End
 
 type state = {
   mutable board : (obj option) list list;
   mutable control : control;
   mutable player_location : int * int;
-  mutable projectile_list: ((int * int) * obj option) list; 
+  mutable projectile_list: ((int * int) * obj option) list;
   mutable mons_list: (obj option) list; (*keeps a list of the monsters*)
   mutable score : int;
-  mutable game_over : bool
+  mutable phase : phase
 }
 
 (*[update_state] changes the state according to the command that was given
@@ -77,21 +81,21 @@ let lower_monster_row mons_obj_list =
   List.map lower_mons_obj mons_obj_list
 
 (*raise all projectiles listed in projectiles_list*)
-let raise_projectile_obj ((i, j), obj) = 
-  match obj with 
+let raise_projectile_obj ((i, j), obj) =
+  match obj with
   | Some Projectile -> ((i-1, j), obj)
   | _ -> ((i, j), obj)
 
 (*raise the projectiles *)
-let raise_projectile projectile_list = 
+let raise_projectile projectile_list =
   List.map raise_projectile_obj projectile_list
 
-(* let move_projectile_obj new_j ((i, j), obj) = 
-  match obj with 
+(* let move_projectile_obj new_j ((i, j), obj) =
+  match obj with
   | Some Projectile -> ((i, new_j), obj)
-  | _ -> ((i, j), obj) 
+  | _ -> ((i, j), obj)
 
-let rec move_projectile new_j project_list = 
+let rec move_projectile new_j project_list =
   match project_list with
   | [] ->  *)
 
@@ -145,7 +149,7 @@ let move_player state =
   (*updates board with new projectiles*)
   state.board <- (place_objects_list state.board new_projectile_list);
   (*update the projectile list: the new coordinate list of where projectiles are*)
-  state.projectile_list <- new_projectile_list; 
+  state.projectile_list <- new_projectile_list;
   let new_mons_list = lower_monster_row state.mons_list in (*an obj option list)*)
 
   (*the next three lines of code updates the monster*)
@@ -224,7 +228,7 @@ let make_state rows cols =
     projectile_list = new_projectiles;
     mons_list = monsters;
     score = 0;
-    game_over = false
+    phase = Start
     (*coordinates of the monsters*)
   } in
   state
