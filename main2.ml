@@ -161,6 +161,8 @@ let rec main_loop context state =
 
   let rec start_loop context state =
     Lwt_js.sleep 0.05 >>= fun () ->
+    let key_elt = Dom_html.getElementById "score" in
+    key_elt##.innerHTML := (Js.string ("Press any key to begin the game"));
     if (state.phase = Active) then main_loop context state
     else start_loop context state
 
