@@ -151,7 +151,6 @@ let draw_state context state =
 
 
 let rec main_loop context state =
-  (*I don't know what this Lwt thing is*)
   Lwt_js.sleep 0.05 >>= fun () ->
   move_player state;
   draw_state context state;
@@ -159,12 +158,16 @@ let rec main_loop context state =
   key_elt##.innerHTML := (Js.string ("Score :" ^ string_of_int state.score));
   main_loop context state
 
-  let rec start_loop context state =
-    Lwt_js.sleep 0.05 >>= fun () ->
-    let key_elt = Dom_html.getElementById "score" in
-    key_elt##.innerHTML := (Js.string ("Press any key to begin the game"));
-    if (state.phase = Active) then main_loop context state
-    else start_loop context state
+let rec start_loop context state =
+  Lwt_js.sleep 0.05 >>= fun () ->
+  let key_elt = Dom_html.getElementById "score" in
+  if (state.phase = Start) then
+    key_elt##.innerHTML := (Js.string ("Press any key to begin the game"))
+  else if (state.phase = End) then
+    key_elt##.innerHTML := (Js.string ("Game over. Your score is "^ string_of_int state.score));
+  if (state.phase = Active) then main_loop context state
+  else start_loop context state
+
 
 let key_up state = function
   | "d" -> set_control Stop state
