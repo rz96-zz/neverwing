@@ -19,7 +19,8 @@ type state = {
   mutable player_location : int * int;
   mutable projectile_list: ((int * int) * obj option) list; 
   mutable mons_list: (obj option) list; (*keeps a list of the monsters*)
-  mutable score : int
+  mutable score : int;
+  mutable game_over : bool
 }
 
 (*[update_state] changes the state according to the command that was given
@@ -223,6 +224,7 @@ let make_state rows cols =
     projectile_list = new_projectiles;
     mons_list = monsters;
     score = 0;
+    game_over = false
     (*coordinates of the monsters*)
   } in
   state

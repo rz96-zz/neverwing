@@ -142,9 +142,11 @@ let draw_state context state =
   done;
   context##fill*)
 
-let rec main_loop context state =
+let rec main_loop context initstate =
   (*I don't know what this Lwt thing is*)
   Lwt_js.sleep 0.05 >>= fun () ->
+  let state = if (initstate.game_over = true) then make_state 50 30
+    else initstate in
   move_player state;
   draw_state context state;
   let key_elt = Dom_html.getElementById "score" in

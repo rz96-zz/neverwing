@@ -21,6 +21,7 @@ type state = {
   mutable projectile_list: ((int * int) * obj option) list; 
   mutable mons_list: (obj option) list;
   mutable score : int;
+  mutable game_over : bool
 }
 
 (*[update_state] changes the state according to the command that was given
