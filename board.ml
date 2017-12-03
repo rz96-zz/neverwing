@@ -2,11 +2,19 @@ type monster =
   {
     i : int;
     j : int;
-    hp: int
+    hp: int;
+  }
+
+
+type player =
+  {
+    i: int;
+    mutable j: int;
+    hp: int;
   }
 
 type obj =
-  | Player
+  | Player of player
   | Monster of monster
   | Projectile
 

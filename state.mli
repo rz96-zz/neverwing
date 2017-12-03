@@ -21,7 +21,7 @@ type phase =
 type state = {
   mutable board : (obj option) list list;
   mutable control : control;
-  mutable player_location : int * int;
+  mutable player: obj option;
   mutable projectile_list: ((int * int) * obj option) list;
   mutable mons_list: (obj option) list;
   mutable score : int;
@@ -38,8 +38,10 @@ and moving the rows of monsters down by one each iteration*)
   -> unit*)
 
 
-val move_player: state -> unit
+val move_player: state -> player -> unit
 
 val make_state: int -> int -> state
 
 val draw_state: Dom_html.canvasRenderingContext2D Js.t -> state -> unit
+
+val update_objs_loop: state -> unit

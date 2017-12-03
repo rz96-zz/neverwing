@@ -1,9 +1,10 @@
 open Sprite
 open Command
+open Board
 
 (*Type direction corresponds to the direction the character moves in,
 either Right or Left*)
-type direction = | Right | Left
+(*type direction = | Right | Left
 
 (*Gives xy coordinates of a position on the board*)
 type xy = float * float
@@ -13,33 +14,33 @@ type command =
   | CLeft
   | CRight
   | CPause
-  | None
+  | None*)
 
 (*Type monsters represents the different types of monsters
 there are in the game*)
-type monster =
+(*type monster =
   | Boss
   | Medium
-  | Small
+  | Small*)
 
 (*Type damage represents the objects that could inflict damage
 on a player*)
-type damage =
+(*type damage =
   | Boss_Projectile
-  | Monster
+  | Monster *)
 
 (*Type object is any object that appears on the board*)
-type obj = {
+(*type obj = {
   sprite: sprite;
   pos: xy;
-}
+  }
 
 let new_obj spr_props context position =
   let spr = make_sprite spr_props context in
   {
     sprite = spr;
     pos = position;
-  }
+  }*)
 
 (*function to get bounding box of a character*)
 (*check_collision checks if there is a collision*)
@@ -47,15 +48,17 @@ let new_obj spr_props context position =
   run on player, also iterate through the list of objects & see if in same
   bounding box as other objects*)
 
-let get_row_coord obj =
+let get_row_coord (obj: obj option) =
   match obj with
-  |Monster m -> m.i
-  |_ -> 0
+  | (Some(Monster m)) -> m.i
+  | (Some(Player p)) -> p.i
+  | _ -> 0
 
 let get_col_coord obj =
   match obj with
-  |Monster m -> m.j
-  |_ -> 0
+  | (Some(Monster m)) -> m.j
+  | (Some(Player p)) -> p.j
+  | _ -> 0
 
   (*true if collisions*)
 let check_collision obj1 obj2 =
