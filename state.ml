@@ -123,14 +123,31 @@ let new_location_j state j control =
 let move_player state (player: player) =
   let i = player.i and j = player.j in
   let j' = new_location_j state j state.control in
-  let new_projectile_list = raise_projectile state.projectile_list in
+  (*let new_projectile_list = raise_projectile state.projectile_list in*)
   (*the next three lines of code updates the projectiles*)
-  
+  (*here*)
+  let new_projectile_list = (Some (Projectile {i=i;j=j'}))::(raise_projectile state.projectile_list) in
+
+  (*the next three lines of code updates the monster*)
+  (*here*)
+
+
+  (*state.board <- (place_objects_list state.board (replace_all_proj_with_none state.projectile_list));*)
+  (*updates board with new projectiles*)
+  (*let replaced_projectiles = (raise_projectile new_projectile_list) in*)
+
+  (*state.board <- (place_objects_list state.board replaced_projectiles);*)
+  (*update the projectile list: the new coordinate list of where projectiles are*)
+  (*state.projectile_list <- replaced_projectiles;*)(*here*)
+
+
+
   state.board <- replace_with_none (coord_of_obj_list state.projectile_list []) state.board;
   (*updates board with new projectiles*)
-  state.board <- (place_objects_list state.board new_projectile_list);
+  let replaced_projectiles = (raise_projectile new_projectile_list) in
+  state.board <- (place_objects_list state.board replaced_projectiles);
   (*update the projectile list: the new coordinate list of where projectiles are*)
-  state.projectile_list <- new_projectile_list;
+  state.projectile_list <- replaced_projectiles;
 
   let lowered_monsters = lower_monster_list state.mons_list in
   let new_mons_list =
