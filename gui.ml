@@ -29,7 +29,7 @@ let draw_player context x y =
 
 let draw_monster context x y =
   context##.fillStyle := Js.string "#FF0000";
-  context##fillRect x y 20. 30.
+  context##fillRect x y 30. 30.
 
 let draw_projectile context x y =
   context##.fillStyle := Js.string "#FFFFFF";

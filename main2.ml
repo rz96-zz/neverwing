@@ -155,7 +155,7 @@ let rec main_loop context state =
   move_player state;
   draw_state context state;
   let key_elt = Dom_html.getElementById "score" in
-  key_elt##.innerHTML := (Js.string ("Score :" ^ string_of_int state.score));
+  key_elt##.innerHTML := (Js.string ("Score: " ^ string_of_int state.score));
   if (state.phase <> Active) then
   start_loop context state
   else main_loop context state

@@ -23,6 +23,7 @@ type state = {
   mutable player_location : int * int;
   mutable projectile_list: ((int * int) * obj option) list;
   mutable mons_list: (obj option) list; (*keeps a list of the monsters*)
+  mutable mons_row_counter: int;
   mutable score : int;
   mutable phase : phase
 }
@@ -73,11 +74,11 @@ let rec place_objects_list board objs =
 (*lowers a given object on the screen by one row, if it is a monster*)
 let lower_mons_obj mons_obj =
   match mons_obj with
-  | Some (Monster m) -> Some (Monster {i=m.i+1; j=m.j; hp=m.hp})
+  | Some (Monster m) -> Some (Monster (lower_mons m))
   | _ -> None (*will never be this case*)
 
 (*lowers all the monsters (that are listed in mons_info_list) *)
-let lower_monster_row mons_obj_list =
+let lower_monster_list mons_obj_list =
   List.map lower_mons_obj mons_obj_list
 
 (*raise all projectiles listed in projectiles_list*)
@@ -109,10 +110,10 @@ let rec coord_of_monster_list mons_obj_list init=
 
 (*puts None on every coordinate in coord_list
 returns a new board*)
-let rec replace_mons_with_none coord_list board =
+let rec replace_obj_with_none coord_list board =
   match coord_list with
   | [] -> board
-  | (i, j)::t -> replace_mons_with_none t (place_obj board i j None)
+  | (i, j)::t -> replace_obj_with_none t (place_obj board i j None)
 
 (*
 (*replaces all the coordinates with monsters here with None*)
@@ -125,9 +126,26 @@ let replace_proj_with_none ((i, j), obj) =
   | Some Projectile -> ((i, j),None)
   | _ -> ((i, j), obj)
 
-(*replaces all the coordinates with monsters here with None*)
+(*replaces all the coordinates with monsters there previously with None*)
 let replace_all_proj_with_none projectile_list =
   List.map replace_proj_with_none projectile_list
+
+(*creates a new row, full of monsters at the top of the board
+  initial state of the mons_list field for state*)
+let rec new_row_monsters =
+  [
+    Some (Monster {i=0;j=4;hp=10});
+    Some (Monster {i=0;j=9;hp=10});
+    Some (Monster {i=0;j=14;hp=10});
+    Some (Monster {i=0;j=19;hp=10});
+    Some (Monster {i=0;j=24;hp=10});
+  ]
+(*  [((0, 4), 10, Some Monster);
+    ((0, 9), 10, Some Monster);
+    ((0, 14), 10, Some Monster);
+    ((0, 19), 10, Some Monster);
+    ((0, 24), 10, Some Monster)]
+*)
 
 
 let new_location state (i, j) control =
@@ -145,21 +163,26 @@ let move_player state =
   let new_projectile_list = raise_projectile state.projectile_list in
 
   (*the next three lines of code updates the monster*)
-  
+
   state.board <- (place_objects_list state.board (replace_all_proj_with_none state.projectile_list));
   (*updates board with new projectiles*)
   state.board <- (place_objects_list state.board new_projectile_list);
   (*update the projectile list: the new coordinate list of where projectiles are*)
   state.projectile_list <- new_projectile_list;
-  let new_mons_list = lower_monster_row state.mons_list in (*an obj option list)*)
+
+  let lowered_monsters = lower_monster_list state.mons_list in
+  let new_mons_list =
+    if state.mons_row_counter = 0 then lowered_monsters@new_row_monsters
+    else lowered_monsters in (*an obj option list)*)
 
   (*the next three lines of code updates the monster*)
-  (*update board: the row that used to have monsters is replaced with None*)
-  state.board <- replace_mons_with_none (coord_of_monster_list state.mons_list []) state.board;
-  (*update board: the new row with monsters now is updated to reflect the monsters*)
+  (*update board: the coordinates that used to have monsters is replaced with None*)
+  state.board <- replace_obj_with_none (coord_of_monster_list state.mons_list []) state.board;
+  (*update board: the new rows with monsters now is updated to reflect the monsters*)
   state.board <- (place_monsters_list state.board new_mons_list);
-  (*update mons_coord_list: the new coordinate list of where the monsters are*)
+  (*update mons_list: the new list of monsters, with the updated coordinates*)
   state.mons_list <- new_mons_list;
+  state.mons_row_counter <- (state.mons_row_counter + 1) mod 10;
 
   (*these updates the player's location*)
   state.board <- place_obj state.board i' j' (Some Player);
@@ -186,22 +209,7 @@ let move_player state =
   let rec init_board rows cols arr =
     if rows = 0 then arr else init_board (rows-1) cols ((init_row cols [])::arr)
 
-(*creates a new row, full of monsters at the top of the board
-initial state of the mons_list field for state*)
-let rec new_row_monsters =
-  [
-    Some (Monster {i=0;j=4;hp=10});
-    Some (Monster {i=0;j=9;hp=10});
-    Some (Monster {i=0;j=14;hp=10});
-    Some (Monster {i=0;j=19;hp=10});
-    Some (Monster {i=0;j=24;hp=10});
-  ]
-(*  [((0, 4), 10, Some Monster);
-   ((0, 9), 10, Some Monster);
-   ((0, 14), 10, Some Monster);
-   ((0, 19), 10, Some Monster);
-   ((0, 24), 10, Some Monster)]
-*)
+
 let rec new_projectiles =
   [((42, 15), Some Projectile);
   ]
@@ -228,6 +236,7 @@ let make_state rows cols =
     player_location = (i, j);
     projectile_list = new_projectiles;
     mons_list = monsters;
+    mons_row_counter = 1;
     score = 0;
     phase = Start
     (*coordinates of the monsters*)

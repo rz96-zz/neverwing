@@ -24,6 +24,7 @@ type state = {
   mutable player_location : int * int;
   mutable projectile_list: ((int * int) * obj option) list;
   mutable mons_list: (obj option) list;
+  mutable mons_row_counter: int;
   mutable score : int;
   mutable phase : phase
 }
