@@ -147,7 +147,7 @@ let rec main_loop context state =
   Lwt_js.sleep 0.05 >>= fun () ->
   move_player state;
   draw_state context state;
-  (*update objects loop*)
+  update_objs_loop state;
   let key_elt = Dom_html.getElementById "score" in
   key_elt##.innerHTML := (Js.string ("Score :" ^ string_of_int state.score));
   main_loop context state

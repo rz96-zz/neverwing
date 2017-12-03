@@ -200,12 +200,25 @@ let draw_state context state =
   done;
   context##fill
 
+    (*true if collision??*)
+let rec iter_collision player mon_list =
+  match mon_list with
+  |[] -> false
+  |h::t -> if check_collision player h then true else iter_collision player t
+
 (*this updates the object and runs the collision check*)
-let update_obj =
+let update_obj state player mon_list=
+  if iter_collision player mon_list then
+    (*replace update score w/ actual collision processing later*)
+    state.score <- state.score + 1
 
 
 
-let update_objs_loop mon_list player =
+let update_objs_loop state =
+  let mon_list = state.mons_list and player = state.player in
+  (*need to make player a record*)
+  update_obj state mon_list player
 
-
-    (*object list -- iterate through monster list, projectile list, player*)
+(*object list -- iterate through monster list, projectile list, player.
+  change this later when have projectile list, currently only iterating
+  through player and monster list*)

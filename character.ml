@@ -57,6 +57,7 @@ let get_col_coord obj =
   |Monster m -> m.j
   |_ -> 0
 
+  (*true if collisions*)
 let check_collision obj1 obj2 =
   let row_coord_1 = get_row_coord obj1 and row_coord_2 = get_row_coord obj2
   and col_coord_1 = get_col_coord obj1 and col_coord_2 = get_col_coord obj2 in
