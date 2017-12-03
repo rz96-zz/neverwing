@@ -38,7 +38,7 @@ let draw_projectile context x y =
 let draw_object context i j obj =
   let x, y = canvas_coords (i, j) in
   match obj with
-  | (Some Player) -> draw_player context x y
+  | (Some (Player p)) -> draw_player context x y
   | (Some (Monster m)) -> draw_monster context x y
   | (Some Projectile) -> draw_projectile context x y
   | None -> ()

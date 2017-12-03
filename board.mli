@@ -1,3 +1,10 @@
+type player =
+  {
+    i: int;
+    mutable j: int;
+    hp: int;
+  }
+
 type monster =
   {
     i : int;
@@ -6,7 +13,7 @@ type monster =
   }
 
 type obj =
-  | Player
+  | Player of player
   | Monster of monster
   | Projectile
 

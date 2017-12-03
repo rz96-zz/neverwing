@@ -149,11 +149,16 @@ let draw_state context state =
   done;
   context##fill*)
 
+let extract_player state=
+  match state.player with
+    | Some (Player p) -> p
+    | _ -> failwith "not a player" (*will never be this case*)
 
 let rec main_loop context state =
   Lwt_js.sleep 0.05 >>= fun () ->
-  move_player state;
+  move_player state (extract_player state);
   draw_state context state;
+  update_objs_loop state;
   let key_elt = Dom_html.getElementById "score" in
   key_elt##.innerHTML := (Js.string ("Score: " ^ string_of_int state.score));
   if (state.phase <> Active) then
