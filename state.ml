@@ -2,6 +2,7 @@ open Board
 open Sprite
 open Gui
 open Command
+open Character
 
 
 type board = Board.board (*state *)
@@ -20,9 +21,10 @@ type phase =
 type state = {
   mutable board : (obj option) list list;
   mutable control : control;
-  mutable player_location : int * int;
+  mutable player: obj option;
   mutable projectile_list: (obj option) list;
   mutable mons_list: (obj option) list; (*keeps a list of the monsters*)
+  mutable mons_row_counter: int;
   mutable score : int;
   mutable phase : phase
 }
@@ -65,11 +67,11 @@ let rec place_objects_list board objs =
 (*lowers a given object on the screen by one row, if it is a monster*)
 let lower_mons_obj mons_obj =
   match mons_obj with
-  | Some (Monster m) -> Some (Monster {i=m.i+1; j=m.j; hp=m.hp})
+  | Some (Monster m) -> Some (Monster (lower_mons m))
   | _ -> None (*will never be this case*)
 
 (*lowers all the monsters (that are listed in mons_info_list) *)
-let lower_monster_row mons_obj_list =
+let lower_monster_list mons_obj_list =
   List.map lower_mons_obj mons_obj_list
 
 (*raise all projectiles listed in projectiles_list*)
@@ -98,20 +100,30 @@ let rec replace_with_none coord_list board =
   | [] -> board
   | (i, j)::t -> replace_with_none t (place_obj board i j None)
 
-let new_location state (i, j) control =
-  let (i, j) = match control with
+(*creates a new row, full of monsters at the top of the board
+  initial state of the mons_list field for state*)
+let rec new_row_monsters =
+  [
+    Some (Monster {i=0;j=4;hp=10});
+    Some (Monster {i=0;j=9;hp=10});
+    Some (Monster {i=0;j=14;hp=10});
+    Some (Monster {i=0;j=19;hp=10});
+    Some (Monster {i=0;j=24;hp=10});
+  ]
+
+let new_location_j state j control =
+  let j = match control with
     (*have to make this move after hitting edges*)
-    | Right -> if j + 1 > 29 then i, j else i, j + 1
-    | Left -> if j - 1 < 0 then i, j else i, j - 1
-    | Stop -> i, j
+    | Right -> if j + 1 > 29 then j else j + 1
+    | Left -> if j - 1 < 0 then j else j - 1
+    | Stop -> j
   in
-  i , j
+  j
 
-let move_player state =
-  let i, j = state.player_location in
-  let i', j' = new_location state (i, j) state.control in
+let move_player state (player: player) =
+  let i = player.i and j = player.j in
+  let j' = new_location_j state j state.control in
   let new_projectile_list = raise_projectile state.projectile_list in
-
   (*the next three lines of code updates the projectiles*)
   
   state.board <- replace_with_none (coord_of_obj_list state.projectile_list []) state.board;
@@ -119,7 +131,11 @@ let move_player state =
   state.board <- (place_objects_list state.board new_projectile_list);
   (*update the projectile list: the new coordinate list of where projectiles are*)
   state.projectile_list <- new_projectile_list;
-  let new_mons_list = lower_monster_row state.mons_list in (*an obj option list)*)
+
+  let lowered_monsters = lower_monster_list state.mons_list in
+  let new_mons_list =
+    if state.mons_row_counter = 0 then lowered_monsters@new_row_monsters
+    else lowered_monsters in (*an obj option list)*)
 
   (*the next three lines of code updates the monster*)
   (*update board: the row that used to have monsters is replaced with None*)
@@ -128,14 +144,16 @@ let move_player state =
   state.board <- (place_objects_list state.board new_mons_list);
   (*update mons_coord_list: the new coordinate list of where the monsters are*)
   state.mons_list <- new_mons_list;
+  state.mons_row_counter <- (state.mons_row_counter + 1) mod 10;
 
   (*these updates the player's location*)
-  state.board <- place_obj state.board i' j' (Some Player);
-  state.player_location <- (i', j');
+  state.board <- place_obj state.board i j' (Some (Player player));
+  player.j <- j'; (*THIS ISN'T MUTABLE!!! HOW DID MONSTERS UPDATE??*)
+  (*what the heck does this do?? no change??*)
   if (j = j') then state.control <- (Stop);
   if (state.control != Stop) then
     state.board <- (place_obj state.board i j None)
-  else state.board <- (place_obj state.board i j (Some Player))
+  else state.board <- (place_obj state.board i j (Some (Player player)))
 
 
 (*let update_state canvas =
@@ -155,7 +173,7 @@ let move_player state =
     if rows = 0 then arr else init_board (rows-1) cols ((init_row cols [])::arr)
 
 (*creates a new row, full of monsters at the top of the board
-initial state of the mons_list field for state*)
+(* initial state of the mons_list field for state*)
 let rec new_row_monsters =
   [
     Some (Monster {i=0;j=4;hp=10});
@@ -163,11 +181,12 @@ let rec new_row_monsters =
     Some (Monster {i=0;j=14;hp=10});
     Some (Monster {i=0;j=19;hp=10});
     Some (Monster {i=0;j=24;hp=10});
-  ]
+  ] *)
 
 let rec new_projectiles =
   [Some (Projectile {i=42;j=15});
   ]
+
 
 (*run_collision should pattern match for each possibile collision that could happen
   and execute what happens during the collision eg. new items being made or disappearing*)
@@ -179,18 +198,20 @@ let rec new_projectiles =
 
 let make_state rows cols =
   let board = init_board rows cols ([]) in
-  let i, j = rows-5, cols / 2 in
+  let i = rows-5 and j = cols/2 in
+  let main_player = Some (Player {i=i;j=j;hp=0}) in
   let monsters = new_row_monsters in
   let monsboard = place_objects_list board monsters in (*the board with monsters*)
-  let newboard = place_obj monsboard i j (Some Player) in (*board with monsters and player*)
+  let newboard = place_obj monsboard i j main_player in (*board with monsters and player*)
   let final_board = place_objects_list newboard new_projectiles in (*board with monsters, players, and projectiles*)
 
   let state = {
     board = final_board;
     control = Stop;
-    player_location = (i, j);
+    player = main_player;
     projectile_list = new_projectiles;
     mons_list = monsters;
+    mons_row_counter = 1;
     score = 0;
     phase = Start
     (*coordinates of the monsters*)
@@ -209,3 +230,25 @@ let draw_state context state =
     done
   done;
   context##fill
+
+    (*true if collision??*)
+let rec iter_collision player mon_list =
+  match mon_list with
+  |[] -> false
+  |h::t -> if check_collision player h then true else iter_collision player t
+
+(*this updates the object and runs the collision check*)
+let update_obj state player mon_list=
+  if iter_collision player mon_list then
+    (*replace update score w/ actual collision processing later*)
+    state.score <- state.score + 1
+
+
+
+let update_objs_loop state =
+  let mon_list = state.mons_list and player = state.player in
+  update_obj state player mon_list
+
+(*object list -- iterate through monster list, projectile list, player.
+  change this later when have projectile list, currently only iterating
+  through player and monster list*)

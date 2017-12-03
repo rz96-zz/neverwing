@@ -1,9 +1,10 @@
 (*characters are moveable items*)
 open Sprite
+open Board
 
 (*Type direction corresponds to the direction the character moves in,
 either Right or Left*)
-type direction = | Right | Left
+(*type direction = | Right | Left
 
 (*Gives xy coordinates of a position on the board*)
 type xy = float * float
@@ -13,9 +14,9 @@ type command =
   | CLeft
   | CRight
   | CPause
-  | None
+  | None*)
 
-(*Type monsters represents the different types of monsters
+      (*)(*Type monsters represents the different types of monsters
 there are in the game*)
 type monster =
   | Boss
@@ -32,7 +33,9 @@ type damage =
 type obj = {
   sprite: Sprite.sprite;
   pos: xy;
-}
+}*)
 
-val new_obj : Sprite.sprite_props -> Dom_html.canvasRenderingContext2D Js.t
--> xy -> obj
+(*val new_obj : Sprite.sprite_props -> Dom_html.canvasRenderingContext2D Js.t
+  -> xy -> obj*)
+
+val check_collision: obj option -> obj option -> bool

@@ -29,7 +29,7 @@ let draw_player context x y =
 
 let draw_monster context x y =
   context##.fillStyle := Js.string "#FF0000";
-  context##fillRect x y 20. 30.
+  context##fillRect x y 30. 30.
 
 let draw_projectile context x y =
   context##.fillStyle := Js.string "#FFFFFF";
@@ -38,7 +38,7 @@ let draw_projectile context x y =
 let draw_object context i j obj =
   let x, y = canvas_coords (i, j) in
   match obj with
-  | (Some Player) -> draw_player context x y
+  | (Some (Player p)) -> draw_player context x y
   | (Some (Monster m)) -> draw_monster context x y
   | (Some (Projectile p)) -> draw_projectile context x y
   | None -> ()

@@ -2,7 +2,15 @@ type monster =
   {
     i : int;
     j : int;
-    hp: int
+    hp: int;
+  }
+
+
+type player =
+  {
+    i: int;
+    mutable j: int;
+    hp: int;
   }
 
 type projectile = 
@@ -12,11 +20,14 @@ type projectile =
   }
 
 type obj =
-  | Player
+  | Player of player
   | Monster of monster
   | Projectile of projectile
 
 type board = (obj option) list list
 
-let lower_mons monster =
-  {monster with i = monster.i+1}
+(*who put this in here, and why do we need it here?
+  i've used it in the state.ml now though, so if delete, also
+  have to fix that ~morena*)
+let lower_mons (mons : monster): monster=
+  {mons with i = mons.i+1}
