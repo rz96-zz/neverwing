@@ -5,10 +5,16 @@ type monster =
     hp: int
   }
 
+type projectile = 
+  {
+    i  : int;
+    j  : int;
+  }
+
 type obj =
   | Player
   | Monster of monster
-  | Projectile
+  | Projectile of projectile
 
 type board = (obj option) list list
 

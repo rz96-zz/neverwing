@@ -22,7 +22,7 @@ type state = {
   mutable board : (obj option) list list;
   mutable control : control;
   mutable player_location : int * int;
-  mutable projectile_list: ((int * int) * obj option) list;
+  mutable projectile_list: (obj option) list;
   mutable mons_list: (obj option) list;
   mutable score : int;
   mutable phase : phase

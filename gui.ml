@@ -40,7 +40,7 @@ let draw_object context i j obj =
   match obj with
   | (Some Player) -> draw_player context x y
   | (Some (Monster m)) -> draw_monster context x y
-  | (Some Projectile) -> draw_projectile context x y
+  | (Some (Projectile p)) -> draw_projectile context x y
   | None -> ()
 
 
