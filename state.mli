@@ -5,6 +5,10 @@ open Command
 (*Type board represents the coordinate board with objects in it*)
 type board = Board.board
 
+type phase =
+  |Start
+  |Active
+  |End
 (*Type state represents the current game state, including information
   such as monster locations, HP levels, rows until next boss, and game over
   type state = {
@@ -18,8 +22,10 @@ type state = {
   mutable board : (obj option) list list;
   mutable control : control;
   mutable player_location : int * int;
+  mutable projectile_list: ((int * int) * obj option) list;
   mutable mons_list: (obj option) list;
   mutable score : int;
+  mutable phase : phase
 }
 
 (*[update_state] changes the state according to the command that was given

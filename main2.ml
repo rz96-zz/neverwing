@@ -111,6 +111,13 @@ let make_state ~rows ~cols =
 
 let set_control control state =
   state.control <- control
+
+let set_phase phase state =
+  state.phase <- phase
+
+let start_game state = function
+  | _ -> set_phase Active state
+
       (*
 let canvas_coords (i, j) =
   float (j * 10), float (i * 10)
@@ -142,15 +149,29 @@ let draw_state context state =
   done;
   context##fill*)
 
+
 let rec main_loop context state =
-  (*I don't know what this Lwt thing is*)
   Lwt_js.sleep 0.05 >>= fun () ->
   move_player state;
   draw_state context state;
   update_objs_loop state;
   let key_elt = Dom_html.getElementById "score" in
   key_elt##.innerHTML := (Js.string ("Score :" ^ string_of_int state.score));
-  main_loop context state
+  if (state.phase <> Active) then
+  start_loop context state
+  else main_loop context state
+
+and start_loop context state =
+  Lwt_js.sleep 0.05 >>= fun () ->
+  let key_elt = Dom_html.getElementById "score" in
+  if (state.phase = Start) then
+    key_elt##.innerHTML := (Js.string ("Press any key to begin the game"))
+  else if (state.phase = End) then
+    key_elt##.innerHTML := (Js.string ("Game over. Your score is "^ string_of_int state.score));
+    state = make_state 50 30;
+  if (state.phase = Active) then main_loop context state
+  else start_loop context state
+
 
 let key_up state = function
   | "d" -> set_control Stop state
@@ -170,6 +191,7 @@ let detect_keyup state =
        let key_pressed =
          Js.Optdef.get ev##.key
            (fun () -> assert false) in
+
        key_up state (Js.to_string key_pressed);
        Lwt.return ())
 
@@ -181,7 +203,9 @@ let detect_keydown state =
        let key_pressed =
          Js.Optdef.get ev##.key
            (fun () -> assert false) in
-       key_down state (Js.to_string key_pressed);
+       if (state.phase = Active) then
+         key_down state (Js.to_string key_pressed)
+       else start_game state (Js.to_string key_pressed);
        Lwt.return ())
 
 
@@ -193,7 +217,7 @@ let _ : unit Lwt.t =
   let state = make_state 50 30 in
 
   Lwt.join [
-    main_loop context state;
+    start_loop context state;
     detect_keydown state;
     detect_keyup state;
   ]
