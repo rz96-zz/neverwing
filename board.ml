@@ -2,7 +2,8 @@ type monster =
   {
     i : int;
     j : int;
-    hp: int;
+    mutable hp: int;
+    level: int;
   }
 
 
@@ -13,7 +14,7 @@ type player =
     hp: int;
   }
 
-type projectile = 
+type projectile =
   {
     i  : int;
     j  : int;

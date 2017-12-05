@@ -102,13 +102,31 @@ let rec replace_with_none coord_list board =
 
 (*creates a new row, full of monsters at the top of the board
   initial state of the mons_list field for state*)
-let rec new_row_monsters =
+let rec new_row_monsters1 =
   [
-    Some (Monster {i=0;j=4;hp=10});
-    Some (Monster {i=0;j=9;hp=10});
-    Some (Monster {i=0;j=14;hp=10});
-    Some (Monster {i=0;j=19;hp=10});
-    Some (Monster {i=0;j=24;hp=10});
+    Some (Monster {i=0;j=4;hp=10;level=1});
+    Some (Monster {i=0;j=9;hp=10;level=1});
+    Some (Monster {i=0;j=14;hp=10;level=1});
+    Some (Monster {i=0;j=19;hp=10;level=1});
+    Some (Monster {i=0;j=24;hp=10;level=1});
+  ]
+
+let rec new_row_monsters2 =
+  [
+    Some (Monster {i=0;j=4;hp=20;level=2});
+    Some (Monster {i=0;j=9;hp=20;level=2});
+    Some (Monster {i=0;j=14;hp=20;level=2});
+    Some (Monster {i=0;j=19;hp=20;level=2});
+    Some (Monster {i=0;j=24;hp=20;level=2});
+  ]
+
+let rec new_row_monsters3 =
+  [
+    Some (Monster {i=0;j=4;hp=40;level=3});
+    Some (Monster {i=0;j=9;hp=40;level=3});
+    Some (Monster {i=0;j=14;hp=40;level=3});
+    Some (Monster {i=0;j=19;hp=40;level=3});
+    Some (Monster {i=0;j=24;hp=40;level=3});
   ]
 
 let new_location_j state j control =
@@ -149,9 +167,14 @@ let move_player state (player: player) =
   (*update the projectile list: the new coordinate list of where projectiles are*)
   state.projectile_list <- replaced_projectiles;
 
+
+
   let lowered_monsters = lower_monster_list state.mons_list in
   let new_mons_list =
-    if state.mons_row_counter = 0 then lowered_monsters@new_row_monsters
+    if state.mons_row_counter = 0 then
+      (if state.score > 50 then lowered_monsters@new_row_monsters3
+       else if state.score > 25 then lowered_monsters@new_row_monsters2
+       else lowered_monsters@new_row_monsters1)
     else lowered_monsters in (*an obj option list)*)
 
   (*the next three lines of code updates the monster*)
@@ -217,7 +240,7 @@ let make_state rows cols =
   let board = init_board rows cols ([]) in
   let i = rows-5 and j = cols/2 in
   let main_player = Some (Player {i=i;j=j;hp=0}) in
-  let monsters = new_row_monsters in
+  let monsters = new_row_monsters1 in
   let monsboard = place_objects_list board monsters in (*the board with monsters*)
   let newboard = place_obj monsboard i j main_player in (*board with monsters and player*)
   let final_board = place_objects_list newboard new_projectiles in (*board with monsters, players, and projectiles*)

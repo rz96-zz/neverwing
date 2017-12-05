@@ -27,9 +27,16 @@ let draw_player context x y =
   context##.fillStyle := Js.string "#0000FF";
   context##fillRect x y 10. 20.
 
-let draw_monster context x y =
-  context##.fillStyle := Js.string "#FF0000";
-  context##fillRect x y 30. 30.
+let draw_monster context x y level =
+  if level = 1 then
+  (context##.fillStyle := Js.string "#FF0000";
+   context##fillRect x y 30. 30.)
+  else if level = 2 then
+  (context##.fillStyle := Js.string "#FFFF00";
+   context##fillRect x y 30. 30.)
+  else
+  (context##.fillStyle := Js.string "#FF00FF";
+  context##fillRect x y 30. 30.)
 
 let draw_projectile context x y =
   context##.fillStyle := Js.string "#FFFFFF";
@@ -39,7 +46,7 @@ let draw_object context i j obj =
   let x, y = canvas_coords (i, j) in
   match obj with
   | (Some (Player p)) -> draw_player context x y
-  | (Some (Monster m)) -> draw_monster context x y
+  | (Some (Monster m)) -> draw_monster context x y m.level
   | (Some (Projectile p)) -> draw_projectile context x y
   | None -> ()
 
