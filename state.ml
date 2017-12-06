@@ -67,7 +67,7 @@ let rec place_objects_list board objs =
 (*lowers a given object on the screen by one row, if it is a monster*)
 let lower_mons_obj mons_obj =
   match mons_obj with
-  | Some (Monster m) -> Some (Monster (lower_mons m))
+  | Some (Monster m) -> if m.hp = 0 then None else Some (Monster (lower_mons m))
   | _ -> None (*will never be this case*)
 
 (*lowers all the monsters (that are listed in mons_info_list) *)
@@ -184,7 +184,7 @@ let move_player state (player: player) =
   state.board <- (place_objects_list state.board new_mons_list);
   (*update mons_coord_list: the new coordinate list of where the monsters are*)
   state.mons_list <- new_mons_list;
-  state.mons_row_counter <- (state.mons_row_counter + 1) mod 10;
+  state.mons_row_counter <- (state.mons_row_counter + 1) mod 20;
 
   (*these updates the player's location*)
   state.board <- place_obj state.board i j' (Some (Player player));
