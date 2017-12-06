@@ -163,6 +163,7 @@ let rec main_loop context state =
   key_elt##.innerHTML := (Js.string ("Score: " ^ string_of_int state.score));
   let key_elt = Dom_html.getElementById "temp" in
   key_elt##.innerHTML := (Js.string ("HP: " ^ string_of_int (extract_player state).hp));
+  if ((extract_player state).hp = 0) then state.phase <- End;
   if (state.phase <> Active) then
   start_loop context state
   else main_loop context state
