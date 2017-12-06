@@ -11,7 +11,7 @@ type player =
   {
     i: int;
     mutable j: int;
-    hp: int;
+    mutable hp: int;
   }
 
 type projectile =
