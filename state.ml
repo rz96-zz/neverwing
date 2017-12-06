@@ -36,6 +36,11 @@ let update_state comm st =
   and of the sprite itself*)
   failwith "Unimplemented" *)
 
+let extract_player state=
+  match state.player with
+    | Some (Player p) -> p
+    | _ -> failwith "not a player"
+
 let rec find_coord row j obj new_row =
   let last_col = if j = 0 then true else false in
   match row with
@@ -239,7 +244,7 @@ let rec new_projectiles =
 let make_state rows cols =
   let board = init_board rows cols ([]) in
   let i = rows-5 and j = cols/2 in
-  let main_player = Some (Player {i=i;j=j;hp=0}) in
+  let main_player = Some (Player {i=i;j=j;hp=10}) in
   let monsters = new_row_monsters1 in
   let monsboard = place_objects_list board monsters in (*the board with monsters*)
   let newboard = place_obj monsboard i j main_player in (*board with monsters and player*)
@@ -277,11 +282,13 @@ let rec iter_collision player mon_list =
   |[] -> false
   |h::t -> if check_collision player h then true else iter_collision player t
 
+
 (*this updates the object and runs the collision check*)
 let update_obj state player mon_list=
   if iter_collision player mon_list then
     (*replace update score w/ actual collision processing later*)
-    state.score <- state.score + 1
+
+    (extract_player state).hp <- (extract_player state).hp-1
 
 
 

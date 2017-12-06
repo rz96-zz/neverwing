@@ -161,6 +161,8 @@ let rec main_loop context state =
   update_objs_loop state;
   let key_elt = Dom_html.getElementById "score" in
   key_elt##.innerHTML := (Js.string ("Score: " ^ string_of_int state.score));
+  let key_elt = Dom_html.getElementById "temp" in
+  key_elt##.innerHTML := (Js.string ("HP: " ^ string_of_int (extract_player state).hp));
   if (state.phase <> Active) then
   start_loop context state
   else main_loop context state
@@ -168,6 +170,7 @@ let rec main_loop context state =
 and start_loop context state =
   Lwt_js.sleep 0.05 >>= fun () ->
   let key_elt = Dom_html.getElementById "score" in
+
   if (state.phase = Start) then
     key_elt##.innerHTML := (Js.string ("Press any key to begin the game"))
   else if (state.phase = End) then
