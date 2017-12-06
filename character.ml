@@ -52,13 +52,13 @@ let get_row_coord (obj: obj option) =
   match obj with
   | (Some(Monster m)) -> m.i
   | (Some(Player p)) -> p.i
-  | _ -> 0
+  | (Some (Projectile pro)) -> pro.i
 
 let get_col_coord obj =
   match obj with
   | (Some(Monster m)) -> m.j
   | (Some(Player p)) -> p.j
-  | _ -> 0
+  | (Some(Projectile pro)) -> pro.j
 
   (*true if collisions*)
 let check_collision obj1 obj2 =

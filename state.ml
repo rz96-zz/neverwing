@@ -125,7 +125,7 @@ let move_player state (player: player) =
   let j' = new_location_j state j state.control in
   let new_projectile_list = raise_projectile state.projectile_list in
   (*the next three lines of code updates the projectiles*)
-  
+
   state.board <- replace_with_none (coord_of_obj_list state.projectile_list []) state.board;
   (*updates board with new projectiles*)
   state.board <- (place_objects_list state.board new_projectile_list);
@@ -188,7 +188,7 @@ let rec new_projectiles =
   ]
 
 
-(*run_collision should pattern match for each possibile collision that could happen
+(*run_collision should pattern match for each possible collision that could happen
   and execute what happens during the collision eg. new items being made or disappearing*)
 
 (*update_collision should constantly check through update loop if there is a collision occuring*)
@@ -231,6 +231,18 @@ let draw_state context state =
   done;
   context##fill
 
+
+let rec iter_project_list projectile_list monster =
+  match projectile_list with
+  |[] -> false
+  |h::t -> if check_collision h monster then true else iter_project_list t monster
+        (*also need to change monster's hp if collision is true*)
+
+let rec iter_mons_list projectile_list mons_list =
+  match mons_list with
+  |[] -> false
+  |h::t -> if iter_project_list projectile_list h then true else false
+
     (*true if collision??*)
 let rec iter_collision player mon_list =
   match mon_list with
@@ -238,16 +250,18 @@ let rec iter_collision player mon_list =
   |h::t -> if check_collision player h then true else iter_collision player t
 
 (*this updates the object and runs the collision check*)
-let update_obj state player mon_list=
-  if iter_collision player mon_list then
-    (*replace update score w/ actual collision processing later*)
+let update_obj state player mon_list projectile_list =
+  (*if iter_collision player mon_list then*)
+  (*replace update score w/ actual collision processing later*)
+  if iter_mons_list projectile_list mon_list then
     state.score <- state.score + 1
 
 
 
 let update_objs_loop state =
-  let mon_list = state.mons_list and player = state.player in
-  update_obj state player mon_list
+  let mon_list = state.mons_list and player = state.player
+      and projectile_list = state.projectile_list in
+  update_obj state player mon_list projectile_list
 
 (*object list -- iterate through monster list, projectile list, player.
   change this later when have projectile list, currently only iterating
