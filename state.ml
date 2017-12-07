@@ -420,7 +420,7 @@ let rec new_row_monsters3 count difficulty state =
 let new_location_j state j control =
   let j = match control with
     (*have to make this move after hitting edges*)
-    | Right -> if j + 1 > 29 then j else j + 1
+    | Right -> if j + 1 > 27 then j else j + 1
     | Left -> if j - 1 < 0 then j else j - 1
     | Stop -> j
   in
