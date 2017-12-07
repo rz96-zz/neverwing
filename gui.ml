@@ -50,16 +50,21 @@ let draw_monster context x y level =
     (context##.fillStyle := Js.string "#B31B1B";
      context##fillRect x y 60. 60.)
 
-let draw_projectile context x y =
-  context##.fillStyle := Js.string "#000000";
-  context##fillRect x y 10. 10.
+let draw_projectile context x y collided =
+  if collided then
+  (context##.fillStyle := Js.string "#FFFFFF";
+   context##fillRect x y 0. 0.)
+  else
+    (context##.fillStyle := Js.string "#000000";
+    context##fillRect x y 10. 10.;)
+
 
 let draw_object context i j obj =
   let x, y = canvas_coords (i, j) in
   match obj with
   | (Some (Player p)) -> draw_player context x y
   | (Some (Monster m)) -> draw_monster context x y m.level
-  | (Some (Projectile p)) -> draw_projectile context x y
+  | (Some (Projectile p)) -> draw_projectile context x y p.collided
   | None -> ()
 
 

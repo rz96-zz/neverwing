@@ -18,6 +18,7 @@ type projectile =
   {
     i  : int;
     j  : int;
+    mutable collided: bool;
   }
 
 type obj =
@@ -254,4 +255,6 @@ let raise_proj (proj : projectile): projectile =
 
 (*Initializes new projectiles*)
 let new_projectiles =
-  [Some (Projectile {i=42;j=16});Some (Projectile {i=44;j=16});Some (Projectile {i=46;j=16})]
+  [Some (Projectile {i=42;j=16;collided = false});
+   Some (Projectile {i=44;j=16;collided = false});
+   Some (Projectile {i=46;j=16;collided = false})]
