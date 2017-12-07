@@ -510,8 +510,7 @@ let move_player state (player: player) =
 
 
 let rec new_projectiles =
-  [Some (Projectile {i=42;j=15});
-  ]
+  [Some (Projectile {i=42;j=16});Some (Projectile {i=44;j=16});Some (Projectile {i=46;j=16})]
 
 
 (*run_collision should pattern match for each possible collision that could happen
