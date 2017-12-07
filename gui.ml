@@ -53,10 +53,10 @@ let draw_monster context x y level =
 let draw_projectile context x y collided =
   if collided then
   (context##.fillStyle := Js.string "#FFFFFF";
-  context##fillRect x y 10. 10.)
+   context##fillRect x y 0. 0.)
   else
-  (context##.fillStyle := Js.string "#000000";
-  context##fillRect x y 10. 10.)
+    (context##.fillStyle := Js.string "#000000";
+    context##fillRect x y 10. 10.;)
 
 
 let draw_object context i j obj =

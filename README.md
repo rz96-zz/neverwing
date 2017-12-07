@@ -17,7 +17,7 @@ To play, follow the following instructions:
 
 1. Download the files or git clone
 
-2. Install js_of_ocaml-lwt
+2. Install js_of_ocaml-lwt with dependencies:
 
 ```
 opam install jbuilder
@@ -28,6 +28,10 @@ opam install js_of_ocaml
 ```
 opam install js_of_ocaml-ppx
 ```
+```
+opam install lwt
+```
+And finally:
 ```
 opam install js_of_ocaml-lwt
 ```
