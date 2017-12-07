@@ -25,13 +25,13 @@ let canvas_coords (i, j) =
 
 let draw_player context x y =
   context##.fillStyle := Js.string "#0000FF";
-  context##fillRect x y 30. 30.
+  context##fillRect x y 10. 20.
 
-  (* let make_image img_src = 
+  (* let make_image img_src =
     let img = (Html.createImg Dom_html.document) in
     img##src := Js.string img_src
-    
-  let draw_player context x y = 
+
+  let draw_player context x y =
     let img_src = "./sprites/" ^ ".png" in
     let img = make_image img_src in
     context##drawImage_full(img, x, y, 10., 20., 0, 0, 10., 20.) *)
