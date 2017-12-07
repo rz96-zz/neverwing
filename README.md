@@ -39,4 +39,4 @@ make
 
 4. Open the index.html page within the folder
 
-5. Enjoy!
+5. Press any key to start the game.
