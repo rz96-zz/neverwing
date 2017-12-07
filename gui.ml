@@ -25,7 +25,16 @@ let canvas_coords (i, j) =
 
 let draw_player context x y =
   context##.fillStyle := Js.string "#0000FF";
-  context##fillRect x y 10. 20.
+  context##fillRect x y 30. 30.
+
+  (* let make_image img_src = 
+    let img = (Html.createImg Dom_html.document) in
+    img##src := Js.string img_src
+    
+  let draw_player context x y = 
+    let img_src = "./sprites/" ^ ".png" in
+    let img = make_image img_src in
+    context##drawImage_full(img, x, y, 10., 20., 0, 0, 10., 20.) *)
 
 let draw_monster context x y level =
   if level = 1 then
@@ -49,7 +58,6 @@ let draw_object context i j obj =
   | (Some (Monster m)) -> draw_monster context x y m.level
   | (Some (Projectile p)) -> draw_projectile context x y
   | None -> ()
-
 
 
 
