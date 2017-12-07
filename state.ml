@@ -563,22 +563,33 @@ let draw_state context state =
   done;
   context##fill
 
+(*let rec hide_projectile projectile projectile_list =
+  match projectile_list with
+  |[] -> []
+  |h::t -> if (h = projectile) then None :: hide_projectile projectile t else
+      h :: hide_projectile projectile t
+
+let filter_projectile projectile projectile_list =
+  List.filter (fun proj -> projectile <> proj) projectile_list*)
 
 (*true if collisions exists between projectile list and the monster*)
-let rec iter_mons_list monster_list projectile affected_list =
+let rec iter_mons_list state monster_list projectile affected_list =
   match monster_list with
   |[] -> []
   |h::t -> if check_collision h projectile
-           then h :: iter_mons_list t projectile affected_list
-           else iter_mons_list t projectile affected_list
+    then
+      ((*state.projectile_list <-
+          filter_projectile projectile (hide_projectile projectile state.projectile_list)*)
+      (h :: iter_mons_list state t None affected_list))
+    else iter_mons_list state t projectile affected_list
         (*also need to change monster's hp if collision is true*)
 
 (*true if collisions exist between projectile list and monster list*)
-let rec iter_project_list projectile_list mons_list affected_list : (obj option list) list =
+let rec iter_project_list state projectile_list mons_list affected_list : (obj option list) list =
   match projectile_list with
   |[] -> []
-  |h::t -> iter_mons_list mons_list h affected_list ::
-           iter_project_list t mons_list affected_list
+  |h::t -> iter_mons_list state mons_list h affected_list ::
+           iter_project_list state t mons_list affected_list
 
 (*true if collision between player and monster list*)
 let rec iter_collision player mon_list =
@@ -599,7 +610,7 @@ let update_obj state player mon_list projectile_list=
 
   if iter_collision player mon_list then
     (extract_player state).hp <- (extract_player state).hp-1;
-  List.map update_monsters (List.concat (iter_project_list projectile_list mon_list []))
+  List.map update_monsters (List.concat (iter_project_list state projectile_list mon_list []))
 
 
   (*if iter_collision player mon_list then state.score <- state.score + 1*)
