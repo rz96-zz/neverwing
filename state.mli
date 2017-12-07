@@ -27,7 +27,8 @@ type state = {
   mutable mons_row_counter: int;
   mutable mons_type_counter: int;
   mutable score : int;
-  mutable phase : phase
+  mutable phase : phase;
+  mutable level : int
 }
 
 (*[update_state] changes the state according to the command that was given
