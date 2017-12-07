@@ -1,5 +1,5 @@
 # Neverwing Overview
-Our team implemented a version of the Facebook messenger game EverWing (working title is currently NeverWing).
+Our team implemented a version of the Facebook messenger game EverWing, called Neverwing
 
 Key features:
 - Interactive web GUI
