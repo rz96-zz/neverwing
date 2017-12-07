@@ -420,13 +420,12 @@ let rec new_row_monsters3 count difficulty state =
     ]
 
 let new_location_j state j control =
-  let j = match control with
+  match control with
     (*have to make this move after hitting edges*)
     | Right -> if j + 1 > 27 then j else j + 1
     | Left -> if j - 1 < 0 then j else j - 1
     | Stop -> j
-  in
-  j
+
 
 let move_player state (player: player) =
   let i = player.i and j = player.j in
@@ -439,13 +438,6 @@ let move_player state (player: player) =
   let new_projectile_list =
     (Some (Projectile {i=i;j=j'+1}))::(raise_projectile state.projectile_list) in
 
-<<<<<<< HEAD
-=======
-  (*state.board <- (place_objects_list state.board replaced_projectiles);*)
-  (*update the projectile list: the new coordinate list of where projectiles are*)
-  (*state.projectile_list <- replaced_projectiles;*)(*here*)
-
->>>>>>> 81cef8a32abf407635ddd98e9669c3dbc55e22b7
   state.comet_interval <- (state.comet_interval + 1) mod (90 / (state.level)) ;
   state.board <- replace_with_none (coord_of_obj_list state.projectile_list []) state.board;
 
