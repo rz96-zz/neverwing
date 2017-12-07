@@ -62,7 +62,8 @@ let get_col_coord obj =
 
 let get_obj_bounds obj =
   match obj with
-  | (Some(Monster m)) -> (m.i, m.j, m.i - 2, m.j + 2)
+  | (Some(Monster m)) -> if (m.level = 4) then
+      (m.i, m.j, m.i - 8, m.j + 8) else (m.i, m.j, m.i - 2, m.j + 2)
   | (Some(Player p)) -> (p.i, p.j, p.i - 1, p.j)
   | (Some(Projectile pro)) -> (pro.i, pro.j, pro.i, pro.j)
   | None -> (0, 0, 0, 0)

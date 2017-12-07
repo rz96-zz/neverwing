@@ -51,7 +51,7 @@ let draw_monster context x y level =
      context##fillRect x y 60. 60.)
 
 let draw_projectile context x y =
-  context##.fillStyle := Js.string "#FFFFFF";
+  context##.fillStyle := Js.string "#000000";
   context##fillRect x y 10. 10.
 
 let draw_object context i j obj =
