@@ -474,8 +474,8 @@ let move_player state (player: player) =
   if (state.mons_row_counter = 0) then
     state.mons_type_counter <- (state.mons_type_counter + 1) mod 13;
 
-  if ((state.item_count mod 201)  = 200) then (extract_player state).hp <- (extract_player state).hp+2;
-  if ((state.item_count mod 201)  = 200) then state.item_msg <- "Undamaged streak: HP +2";
+  if ((state.item_count mod 201)  = 200 && (extract_player state).hp < 8) then (extract_player state).hp <- (extract_player state).hp+1;
+  if ((state.item_count mod 201)  = 200 && (extract_player state).hp < 8) then state.item_msg <- "Undamaged streak: HP +2";
   if ((state.item_count mod 201)  = 70) then state.item_msg <- "";
   (*the next three lines of code updates the monster*)
   (*update board: the row that used to have monsters is replaced with None*)
