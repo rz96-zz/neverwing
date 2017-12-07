@@ -62,8 +62,8 @@ let get_col_coord obj =
 
 let get_obj_bounds obj =
   match obj with
-  | (Some(Monster m)) -> (m.i, m.j, m.i + 3, m.j + 3)
-  | (Some(Player p)) -> (p.i, p.j, p.i + 1, p.j + 1)
+  | (Some(Monster m)) -> (m.i, m.j, m.i - 2, m.j + 2)
+  | (Some(Player p)) -> (p.i, p.j, p.i - 1, p.j)
   | (Some(Projectile pro)) -> (pro.i, pro.j, pro.i, pro.j)
   | None -> (0, 0, 0, 0)
 
@@ -72,16 +72,16 @@ let check_collision obj1 obj2 =
   let bounds1 = get_obj_bounds obj1 and bounds2 = get_obj_bounds obj2 in
   match (bounds1, bounds2) with
   | ((bottom_row1, left_col1, top_row1, right_col1), (bottom_row2, left_col2, top_row2, right_col2))
-    -> if (bottom_row1 = bottom_row2) && (left_col1 = left_col2)
-      then true else false
+    -> if  (top_row1 = bottom_row2) &&
+         (left_col1 <= right_col2) && (right_col1 >= left_col2)
+    then true else false
 
           (*
   let row_coord_1 = get_row_coord obj1 and row_coord_2 = get_row_coord obj2
   and col_coord_1 = get_col_coord obj1 and col_coord_2 = get_col_coord obj2 in
   if ((row_coord_1 = row_coord_2) && (col_coord_1 = col_coord_2)) then
             true else false
-            && (top_row1 >= bottom_row2) &&
-                  (left_col1 >= right_col2) && (right_col1 <= left_col2)
+
 
 *)
 

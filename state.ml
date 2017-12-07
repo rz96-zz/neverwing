@@ -426,7 +426,6 @@ let new_location_j state j control =
   j
 
 let move_player state (player: player) =
-  state.score <- state.score + 1;
   let i = player.i and j = player.j in
   let j' = new_location_j state j state.control in
   (*let new_projectile_list = raise_projectile state.projectile_list in*)
