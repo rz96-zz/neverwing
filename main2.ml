@@ -10,16 +10,9 @@ let flip f x y = f y x
 
 let () = Random.self_init ()
 
-type control =
-  | Right
-  | Left
-  | Stop
-
 (*type obj =
   | Player*)
 
-type action =
-  | Nothing
 
 (*type board = (obj option) list list*)
 

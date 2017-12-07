@@ -69,12 +69,12 @@ let rec place_objects_list board objs =
     match obj with
     | Some (Projectile p) -> place_objects_list (place_obj board (p.i) (p.j) obj) t
     | Some (Monster m) -> place_objects_list (place_obj board (m.i) (m.j) obj) t
-    | _ -> board
+    | _ -> place_objects_list board t (*if monster was turned to None*)
 
 (*lowers a given object on the screen by one row, if it is a monster*)
 let lower_mons_obj mons_obj =
   match mons_obj with
-  | Some (Monster m) -> (*if m.hp = 0 then None else*) Some (Monster (lower_mons m))
+  | Some (Monster m) -> if m.hp = 0 then None else Some (Monster (lower_mons m))
   | _ -> None (*will never be this case*)
 
 (*lowers all the monsters (that are listed in mons_info_list) *)
@@ -445,8 +445,6 @@ let move_player state (player: player) =
   (*update the projectile list: the new coordinate list of where projectiles are*)
   (*state.projectile_list <- replaced_projectiles;*)(*here*)
 
-
-
   state.board <- replace_with_none (coord_of_obj_list state.projectile_list []) state.board;
   (*updates board with new projectiles*)
   let replaced_projectiles = (raise_projectile new_projectile_list) in
@@ -457,23 +455,31 @@ let move_player state (player: player) =
 
 
   let lowered_monsters = lower_monster_list state.mons_list in
+  let lowmons_filtered =
+    List.filter (fun x -> match x with | Some _ -> true | _ -> false)
+                lowered_monsters in
   let new_mons_list =
     if state.mons_row_counter = 0 then
-      (if state.score > 50 then lowered_monsters@(new_row_monsters3 state.mons_type_counter state.level state)
-       else if state.score > 25 then lowered_monsters@(new_row_monsters2 state.mons_type_counter)
-       else lowered_monsters@(new_row_monsters1 state.mons_type_counter))
-    else lowered_monsters in (*an obj option list)*)
+      (if state.score > 50 then lowmons_filtered@(new_row_monsters3 state.mons_type_counter state.level state)
+       else if state.score > 25 then lowmons_filtered@(new_row_monsters2 state.mons_type_counter)
+       else lowmons_filtered@(new_row_monsters1 state.mons_type_counter))
+    else lowmons_filtered in (*an obj option list)*)
+
+
+  if (state.mons_row_counter = 0) then
+    state.mons_type_counter <- (state.mons_type_counter + 1) mod 13;
 
   (*the next three lines of code updates the monster*)
   (*update board: the row that used to have monsters is replaced with None*)
-  if (state.mons_row_counter = 0) then
-  state.mons_type_counter <- (state.mons_type_counter + 1) mod 13;
   state.board <- replace_with_none (coord_of_obj_list state.mons_list []) state.board;
   (*update board: the new row with monsters now is updated to reflect the monsters*)
   state.board <- (place_objects_list state.board new_mons_list);
   (*update mons_coord_list: the new coordinate list of where the monsters are*)
   state.mons_list <- new_mons_list;
   state.mons_row_counter <- (state.mons_row_counter + 1) mod 20;
+
+  state.score <- state.score +
+                 (List.length lowered_monsters) - (List.length lowmons_filtered);
 
   (*these updates the player's location*)
   state.board <- place_obj state.board i j' (Some (Player player));
@@ -501,16 +507,7 @@ let move_player state (player: player) =
   let rec init_board rows cols arr =
     if rows = 0 then arr else init_board (rows-1) cols ((init_row cols [])::arr)
 
-(*creates a new row, full of monsters at the top of the board
-(* initial state of the mons_list field for state*)
-let rec new_row_monsters =
-  [
-    Some (Monster {i=0;j=4;hp=10});
-    Some (Monster {i=0;j=9;hp=10});
-    Some (Monster {i=0;j=14;hp=10});
-    Some (Monster {i=0;j=19;hp=10});
-    Some (Monster {i=0;j=24;hp=10});
-  ] *)
+
 
 let rec new_projectiles =
   [Some (Projectile {i=42;j=15});
