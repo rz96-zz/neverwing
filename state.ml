@@ -69,12 +69,12 @@ let rec place_objects_list board objs =
     match obj with
     | Some (Projectile p) -> place_objects_list (place_obj board (p.i) (p.j) obj) t
     | Some (Monster m) -> place_objects_list (place_obj board (m.i) (m.j) obj) t
-    | _ -> board
+    | _ -> place_objects_list board t
 
 (*lowers a given object on the screen by one row, if it is a monster*)
 let lower_mons_obj mons_obj =
   match mons_obj with
-  | Some (Monster m) -> (*if m.hp = 0 then None else*) Some (Monster (lower_mons m))
+  | Some (Monster m) -> if m.hp = 0 then None else Some (Monster (lower_mons m))
   | _ -> None (*will never be this case*)
 
 (*lowers all the monsters (that are listed in mons_info_list) *)
@@ -501,16 +501,7 @@ let move_player state (player: player) =
   let rec init_board rows cols arr =
     if rows = 0 then arr else init_board (rows-1) cols ((init_row cols [])::arr)
 
-(*creates a new row, full of monsters at the top of the board
-(* initial state of the mons_list field for state*)
-let rec new_row_monsters =
-  [
-    Some (Monster {i=0;j=4;hp=10});
-    Some (Monster {i=0;j=9;hp=10});
-    Some (Monster {i=0;j=14;hp=10});
-    Some (Monster {i=0;j=19;hp=10});
-    Some (Monster {i=0;j=24;hp=10});
-  ] *)
+
 
 let rec new_projectiles =
   [Some (Projectile {i=42;j=15});
