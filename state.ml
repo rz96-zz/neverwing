@@ -28,7 +28,8 @@ type state = {
   mutable mons_type_counter: int;
   mutable score : int;
   mutable phase : phase;
-  mutable level : int
+  mutable level : int;
+  mutable comet_interval : int
 }
 
 (*[update_state] changes the state according to the command that was given
@@ -444,7 +445,7 @@ let move_player state (player: player) =
   (*state.board <- (place_objects_list state.board replaced_projectiles);*)
   (*update the projectile list: the new coordinate list of where projectiles are*)
   (*state.projectile_list <- replaced_projectiles;*)(*here*)
-
+  state.comet_interval <- (state.comet_interval + 1) mod (90 / (state.level)) ;
   state.board <- replace_with_none (coord_of_obj_list state.projectile_list []) state.board;
   (*updates board with new projectiles*)
   let replaced_projectiles = (raise_projectile new_projectile_list) in
@@ -465,6 +466,8 @@ let move_player state (player: player) =
        else lowmons_filtered@(new_row_monsters1 state.mons_type_counter))
     else lowmons_filtered in (*an obj option list)*)
 
+  let new_mons_list = if (state.comet_interval = 30) then (Some (Monster {i=0;j=(extract_player state).j;hp=999;level=4}))::new_mons_list
+    else new_mons_list in
 
   if (state.mons_row_counter = 0) then
     state.mons_type_counter <- (state.mons_type_counter + 1) mod 13;
@@ -542,6 +545,7 @@ let make_state rows cols =
     score = 0;
     phase = Start;
     level = 1;
+    comet_interval = 0
     (*coordinates of the monsters*)
   } in
   state
