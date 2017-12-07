@@ -27,11 +27,11 @@ let draw_player context x y =
   context##.fillStyle := Js.string "#0000FF";
   context##fillRect x y 30. 30.
 
-  (* let make_image img_src = 
+  (* let make_image img_src =
     let img = (Html.createImg Dom_html.document) in
     img##src := Js.string img_src
-    
-  let draw_player context x y = 
+
+  let draw_player context x y =
     let img_src = "./sprites/" ^ ".png" in
     let img = make_image img_src in
     context##drawImage_full(img, x, y, 10., 20., 0, 0, 10., 20.) *)
@@ -43,9 +43,12 @@ let draw_monster context x y level =
   else if level = 2 then
   (context##.fillStyle := Js.string "#FFFF00";
    context##fillRect x y 30. 30.)
+  else if level = 3 then
+    (context##.fillStyle := Js.string "#FF00FF";
+     context##fillRect x y 30. 30.)
   else
-  (context##.fillStyle := Js.string "#FF00FF";
-  context##fillRect x y 30. 30.)
+    (context##.fillStyle := Js.string "#8b0000";
+     context##fillRect x y 60. 60.)
 
 let draw_projectile context x y =
   context##.fillStyle := Js.string "#FFFFFF";
