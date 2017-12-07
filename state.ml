@@ -257,8 +257,6 @@ let move_player state (player: player) =
   (*update the projectile list: the new coordinate list of where projectiles are*)
   (*state.projectile_list <- replaced_projectiles;*)(*here*)
 
-
-
   state.board <- replace_with_none (coord_of_obj_list state.projectile_list []) state.board;
   (*updates board with new projectiles*)
   let replaced_projectiles = (raise_projectile new_projectile_list) in
@@ -276,10 +274,12 @@ let move_player state (player: player) =
        else lowered_monsters@(new_row_monsters1 state.mons_type_counter))
     else lowered_monsters in (*an obj option list)*)
 
+
+  if (state.mons_row_counter = 0) then
+    state.mons_type_counter <- (state.mons_type_counter + 1) mod 13;
+  
   (*the next three lines of code updates the monster*)
   (*update board: the row that used to have monsters is replaced with None*)
-  if (state.mons_row_counter = 0) then
-  state.mons_type_counter <- (state.mons_type_counter + 1) mod 13;
   state.board <- replace_with_none (coord_of_obj_list state.mons_list []) state.board;
   (*update board: the new row with monsters now is updated to reflect the monsters*)
   state.board <- (place_objects_list state.board new_mons_list);

@@ -1,3 +1,4 @@
+(*Type player represents the player of the game*)
 type player =
   {
     i: int;
@@ -5,6 +6,8 @@ type player =
     mutable hp: int;
   }
 
+(*Type monster represents a monster that would descend on the board
+  and could damage a player's health, but also be destroyed*)
 type monster =
   {
     i : int;
@@ -13,12 +16,15 @@ type monster =
     level: int;
   }
 
+(*Type projectile represents a projectile that is shot from the player
+  to damage monsters*)
 type projectile =
   {
     i  : int;
     j  : int;
   }
 
+(*Type obj represents any entity/object that would appear on the board*)
 type obj =
   | Player of player
   | Monster of monster
@@ -26,6 +32,7 @@ type obj =
 
 (*Type board represents the 2-D grid layout of in the GUI where
   characters would be located*)
-  type board = (obj option) list list
+type board = (obj option) list list
 
+(*[lower_mons] lowers a monster entity on the board, towards the player*)
 val lower_mons : monster -> monster
