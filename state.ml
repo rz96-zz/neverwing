@@ -277,7 +277,7 @@ let move_player state (player: player) =
 
   if (state.mons_row_counter = 0) then
     state.mons_type_counter <- (state.mons_type_counter + 1) mod 13;
-  
+
   (*the next three lines of code updates the monster*)
   (*update board: the row that used to have monsters is replaced with None*)
   state.board <- replace_with_none (coord_of_obj_list state.mons_list []) state.board;
