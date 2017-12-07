@@ -28,7 +28,8 @@ type state = {
   mutable mons_type_counter: int;
   mutable score : int;
   mutable phase : phase;
-  mutable level : int
+  mutable level : int;
+  mutable comet_interval : int
 }
 
 (*[update_state] changes the state according to the command that was given
@@ -432,7 +433,18 @@ let move_player state (player: player) =
   (*the next three lines of code updates the projectiles*)
   (*here*)
   let new_projectile_list = (Some (Projectile {i=i;j=j'+1}))::(raise_projectile state.projectile_list) in
+  (*the next three lines of code updates the monster*)
+  (*here*)
 
+
+  (*state.board <- (place_objects_list state.board (replace_all_proj_with_none state.projectile_list));*)
+  (*updates board with new projectiles*)
+  (*let replaced_projectiles = (raise_projectile new_projectile_list) in*)
+
+  (*state.board <- (place_objects_list state.board replaced_projectiles);*)
+  (*update the projectile list: the new coordinate list of where projectiles are*)
+  (*state.projectile_list <- replaced_projectiles;*)(*here*)
+  state.comet_interval <- (state.comet_interval + 1) mod (90 / (state.level)) ;
   state.board <- replace_with_none (coord_of_obj_list state.projectile_list []) state.board;
   (*updates board with new projectiles*)
   let replaced_projectiles = (raise_projectile new_projectile_list) in
@@ -451,6 +463,8 @@ let move_player state (player: player) =
        else lowmons_filtered@(new_row_monsters1 state.mons_type_counter))
     else lowmons_filtered in (*an obj option list)*)
 
+  let new_mons_list = if (state.comet_interval = 30) then (Some (Monster {i=0;j=(extract_player state).j;hp=999;level=4}))::new_mons_list
+    else new_mons_list in
 
   if (state.mons_row_counter = 0) then
     state.mons_type_counter <- (state.mons_type_counter + 1) mod 13;
@@ -528,6 +542,7 @@ let make_state rows cols =
     score = 0;
     phase = Start;
     level = 1;
+    comet_interval = 0
     (*coordinates of the monsters*)
   } in
   state
@@ -545,22 +560,33 @@ let draw_state context state =
   done;
   context##fill
 
+(*let rec hide_projectile projectile projectile_list =
+  match projectile_list with
+  |[] -> []
+  |h::t -> if (h = projectile) then None :: hide_projectile projectile t else
+      h :: hide_projectile projectile t
+
+let filter_projectile projectile projectile_list =
+  List.filter (fun proj -> projectile <> proj) projectile_list*)
 
 (*true if collisions exists between projectile list and the monster*)
-let rec iter_mons_list monster_list projectile affected_list =
+let rec iter_mons_list state monster_list projectile affected_list =
   match monster_list with
   |[] -> []
   |h::t -> if check_collision h projectile
-           then h :: iter_mons_list t projectile affected_list
-           else iter_mons_list t projectile affected_list
+    then
+      ((*state.projectile_list <-
+          filter_projectile projectile (hide_projectile projectile state.projectile_list)*)
+      (h :: iter_mons_list state t None affected_list))
+    else iter_mons_list state t projectile affected_list
         (*also need to change monster's hp if collision is true*)
 
 (*true if collisions exist between projectile list and monster list*)
-let rec iter_project_list projectile_list mons_list affected_list : (obj option list) list =
+let rec iter_project_list state projectile_list mons_list affected_list : (obj option list) list =
   match projectile_list with
   |[] -> []
-  |h::t -> iter_mons_list mons_list h affected_list ::
-           iter_project_list t mons_list affected_list
+  |h::t -> iter_mons_list state mons_list h affected_list ::
+           iter_project_list state t mons_list affected_list
 
 (*true if collision between player and monster list*)
 let rec iter_collision player mon_list =
@@ -581,7 +607,7 @@ let update_obj state player mon_list projectile_list=
 
   if iter_collision player mon_list then
     (extract_player state).hp <- (extract_player state).hp-1;
-  List.map update_monsters (List.concat (iter_project_list projectile_list mon_list []))
+  List.map update_monsters (List.concat (iter_project_list state projectile_list mon_list []))
 
 
   (*if iter_collision player mon_list then state.score <- state.score + 1*)
