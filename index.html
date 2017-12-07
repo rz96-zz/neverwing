@@ -2,7 +2,9 @@
 <html>
 
     <head>
-      <script src="main2.js"></script>
+      <script src="main.js"></script>
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
       <link href="https://fonts.googleapis.com/css?family=Work+Sans" rel="stylesheet">
         <style>
         html {
@@ -21,23 +23,94 @@
             text-align: center;
             margin: auto;
         }
+        h4, p {
+            text-align: left;
+        }
         #canvas {
           border: 1px solid #e4d7ff;
           background-color: #e4d7ff;
 
         }
+        #player {
+            width: 20px;
+            height: 20px;
+            background: #144e83;
+            text-align: right;
+        }
+        #projectile {
+            width: 20px;
+            height: 20px;
+            background: black;
+            text-align: left;
+        }
+        #mon1 {
+            width: 20px;
+            height: 20px;
+            background: #B75DF2;
+            text-align: left;
+        }
+        #mon2 {
+            width: 20px;
+            height: 20px;
+            background: #7224a7;
+            text-align: left;
+        }
+        #mon3 {
+            width: 20px;
+            height: 20px;
+            background: #4d0083;
+            text-align: left;
+        }
+        #fireball {
+            width: 20px;
+            height: 20px;
+            background: #B31B1B;
+            text-align: left;
+        }
+
       </style>
     </head>
     <body>
         <div class = "center">
             <h1> Neverwing </h1>
-            <canvas id="canvas" width="300" height="500"></canvas>
+            <div class = "row">
+                    <div class = "col">
+                            <h4> Legion </h4>
+                            <br>
+                            <p>
+                                <div id = "player"></div> 
+                                Player
+                                
+                            </p>
+                            <p> 
+                                <div id = "projectile"></div>
+                                Projectile
+                            <p> 
+                                <div id = "mon1"></div>
+                                Lvl 1 Monster </p>
+                            <p> 
+                                <div id = "mon2"></div>
+                                Lvl 2 Monster </p>
+                            <p> 
+                                <div id = "mon3"></div>
+                                Lvl 3 Monster </p>
+                            <p> 
+                                <div id = "fireball"></div>
+                                Fireball </p>
+                        </div>
+                        <div class = "col">
+                                <canvas id="canvas" width="300" height="500"></canvas>
+                        </div>
+                        <div class = "col">
+                        </div>
+            </div>
             <div id="score"> Score: </div>
             <div id="temp"> HP: 10</div>
             <div id="powerups"> Powerups: </div>
 
             <h3> Use keyboard characters A and D to move </h3>
-        </div>
 
+            
+        </div>
     </body>
 </html>
