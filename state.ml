@@ -431,19 +431,7 @@ let move_player state (player: player) =
   (*let new_projectile_list = raise_projectile state.projectile_list in*)
   (*the next three lines of code updates the projectiles*)
   (*here*)
-  let new_projectile_list = (Some (Projectile {i=i;j=j'}))::(raise_projectile state.projectile_list) in
-
-  (*the next three lines of code updates the monster*)
-  (*here*)
-
-
-  (*state.board <- (place_objects_list state.board (replace_all_proj_with_none state.projectile_list));*)
-  (*updates board with new projectiles*)
-  (*let replaced_projectiles = (raise_projectile new_projectile_list) in*)
-
-  (*state.board <- (place_objects_list state.board replaced_projectiles);*)
-  (*update the projectile list: the new coordinate list of where projectiles are*)
-  (*state.projectile_list <- replaced_projectiles;*)(*here*)
+  let new_projectile_list = (Some (Projectile {i=i;j=j'+1}))::(raise_projectile state.projectile_list) in
 
   state.board <- replace_with_none (coord_of_obj_list state.projectile_list []) state.board;
   (*updates board with new projectiles*)
@@ -451,8 +439,6 @@ let move_player state (player: player) =
   state.board <- (place_objects_list state.board replaced_projectiles);
   (*update the projectile list: the new coordinate list of where projectiles are*)
   state.projectile_list <- replaced_projectiles;
-
-
 
   let lowered_monsters = lower_monster_list state.mons_list in
   let lowmons_filtered =
