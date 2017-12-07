@@ -36,3 +36,21 @@ type board = (obj option) list list
 
 (*[lower_mons] lowers a monster entity on the board, towards the player*)
 val lower_mons : monster -> monster
+
+(*[new_row_monsters1] creates a new row full of monsters at the easiest
+  level of difficulty*)
+val new_row_monsters1 : int -> (obj option) list
+
+(*[new_row_monsters1] creates a new row full of monsters at the easiest
+  level of difficulty*)
+val new_row_monsters2 : int -> (obj option) list
+
+(*[new_row_monsters3] creates a new row full of monsters at the highest
+  level of difficulty*)
+val new_row_monsters3_init : int -> int -> (obj option) list
+
+(*[raise_proj] raises a projectile entity on the board, away from player*)
+val raise_proj : projectile -> projectile
+
+(*Initializes new projectiles*)
+val new_projectiles : (obj option) list

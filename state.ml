@@ -83,7 +83,7 @@ let lower_monster_list mons_obj_list =
 peojectile object up one in the board*)
 let raise_projectile_obj proj_obj =
   match proj_obj with
-  | Some (Projectile p)-> Some (Projectile {i=p.i-1; j=p.j})
+  | Some (Projectile p)-> Some (Projectile (raise_proj p))
   | _ -> None
 
 (*[raise_projectile] raises the projectiles in [projectile_list] up one y
@@ -107,306 +107,9 @@ let rec replace_with_none coord_list board =
   | [] -> board
   | (i, j)::t -> replace_with_none t (place_obj board i j None)
 
-(*[new_row_monsters1 count] creates a new row, full of monsters at the top of
-  the board. This row varies depending on what value [count] is. These cases
-  for [count] give us varied patterns for the monsters. These are all monsters
-at the easiest difficulty*)
-let rec new_row_monsters1 count =
-  match count with
-  |1->[
-    Some (Monster {i=0;j=4;hp=10;level=1});
-    Some (Monster {i=0;j=9;hp=10;level=1});
-    Some (Monster {i=0;j=14;hp=10;level=1});
-    Some (Monster {i=0;j=19;hp=10;level=1});
-    Some (Monster {i=0;j=24;hp=10;level=1});
-  ]
-  |2-> [
-      Some (Monster {i=0;j=4;hp=10;level=1});
-      Some (Monster {i=0;j=14;hp=10;level=1});
-      Some (Monster {i=0;j=24;hp=10;level=1});
-    ]
-  |13 ->[
-      Some (Monster {i=0;j=4;hp=10;level=1});
-      Some (Monster {i=0;j=9;hp=10;level=1});
-      Some (Monster {i=0;j=19;hp=10;level=1});
-    ]
-  |3 ->[
-      Some (Monster {i=0;j=4;hp=10;level=1});
-      Some (Monster {i=0;j=24;hp=10;level=1});
-    ]
-  |4 ->[
-      Some (Monster {i=0;j=4;hp=10;level=1});
-      Some (Monster {i=0;j=9;hp=10;level=1});
-      Some (Monster {i=0;j=24;hp=10;level=1});
-    ]
-  |5 ->[
-      Some (Monster {i=0;j=14;hp=10;level=1});
-      Some (Monster {i=0;j=19;hp=10;level=1});
-    ]
-  |6 ->[
-
-      Some (Monster {i=0;j=9;hp=10;level=1});
-      Some (Monster {i=0;j=24;hp=10;level=1});
-    ]
-  |7 ->[
-      Some (Monster {i=0;j=4;hp=10;level=1});
-      Some (Monster {i=0;j=9;hp=10;level=1});
-      Some (Monster {i=0;j=14;hp=10;level=1});
-      Some (Monster {i=0;j=19;hp=10;level=1});
-    ]
-  |8 ->[
-      Some (Monster {i=0;j=9;hp=10;level=1});
-      Some (Monster {i=0;j=14;hp=10;level=1});
-      Some (Monster {i=0;j=19;hp=10;level=1});
-    ]
-  |9 ->[
-      (*Some (Monster {i=0;j=4;hp=10;level=1});*)
-      Some (Monster {i=0;j=9;hp=10;level=1});
-      (*Some (Monster {i=0;j=14;hp=10;level=1});*)
-      Some (Monster {i=0;j=19;hp=10;level=1});
-      (*Some (Monster {i=0;j=24;hp=10;level=1});*)
-    ]
-  |10 ->[
-      Some (Monster {i=0;j=4;hp=10;level=1});
-      (*Some (Monster {i=0;j=9;hp=10;level=1});*)
-      (*Some (Monster {i=0;j=14;hp=10;level=1});*)
-      Some (Monster {i=0;j=19;hp=10;level=1});
-      (*Some (Monster {i=0;j=24;hp=10;level=1});*)
-    ]
-  |11 ->[
-      (*Some (Monster {i=0;j=4;hp=10;level=1});*)
-      Some (Monster {i=0;j=9;hp=10;level=1});
-      (*Some (Monster {i=0;j=14;hp=10;level=1});*)
-      Some (Monster {i=0;j=19;hp=10;level=1});
-      (*Some (Monster {i=0;j=24;hp=10;level=1});*)
-
-    ]
-  |12 ->[
-      Some (Monster {i=0;j=4;hp=10;level=1});
-      Some (Monster {i=0;j=9;hp=10;level=1});
-      (*Some (Monster {i=0;j=14;hp=10;level=1});*)
-      (*Some (Monster {i=0;j=19;hp=10;level=1});
-        Some (Monster {i=0;j=24;hp=10;level=1});*)
-    ]
-  |_-> [
-      (*Some (Monster {i=0;j=4;hp=10;level=1});*)
-      (*Some (Monster {i=0;j=9;hp=10;level=1});*)
-      Some (Monster {i=0;j=14;hp=10;level=1});
-      (*Some (Monster {i=0;j=19;hp=10;level=1});*)
-      Some (Monster {i=0;j=24;hp=10;level=1});
-    ]
-(*[new_row_monsters2 count] creates a new row, full of monsters at the top of
-  the board. This row varies depending on what value [count] is. These cases
-  for [count] give us varied patterns for the monsters. These are all monsters
-  at the middle difficulty*)
-let rec new_row_monsters2 count =
-  match count with
-  |1->[
-      Some (Monster {i=0;j=4;hp=20;level=2});
-      Some (Monster {i=0;j=9;hp=20;level=2});
-      Some (Monster {i=0;j=14;hp=20;level=2});
-      Some (Monster {i=0;j=19;hp=20;level=2});
-      Some (Monster {i=0;j=24;hp=20;level=2});
-    ]
-  |2-> [
-      Some (Monster {i=0;j=4;hp=20;level=2});
-      (*Some (Monster {i=0;j=9;hp=10;level=1});*)
-      Some (Monster {i=0;j=14;hp=20;level=2});
-      (*Some (Monster {i=0;j=19;hp=10;level=1});*)
-      Some (Monster {i=0;j=24;hp=20;level=2});
-    ]
-  |3 ->[
-      Some (Monster {i=0;j=4;hp=20;level=2});
-      Some (Monster {i=0;j=9;hp=20;level=2});
-      (*Some (Monster {i=0;j=14;hp=10;level=1});*)
-      Some (Monster {i=0;j=19;hp=20;level=2});
-      (*Some (Monster {i=0;j=24;hp=10;level=1});*)
-    ]
-  |13 ->[
-      Some (Monster {i=0;j=4;hp=20;level=2});
-      (*Some (Monster {i=0;j=9;hp=10;level=1});*)
-      (*Some (Monster {i=0;j=14;hp=10;level=1});*)
-      (*Some (Monster {i=0;j=19;hp=10;level=1});*)
-      Some (Monster {i=0;j=24;hp=20;level=2});
-    ]
-  |4 ->[
-      Some (Monster {i=0;j=4;hp=20;level=2});
-      Some (Monster {i=0;j=9;hp=20;level=2});
-      (*Some (Monster {i=0;j=14;hp=10;level=1});*)
-      (*Some (Monster {i=0;j=19;hp=10;level=1});*)
-      Some (Monster {i=0;j=24;hp=20;level=2});
-    ]
-  |5 ->[
-      (*Some (Monster {i=0;j=4;hp=10;level=1});
-        Some (Monster {i=0;j=9;hp=10;level=1});*)
-      Some (Monster {i=0;j=14;hp=20;level=2});
-      Some (Monster {i=0;j=19;hp=20;level=2});
-      (*Some (Monster {i=0;j=24;hp=10;level=1});*)
-    ]
-  |6 ->[
-      (*Some (Monster {i=0;j=4;hp=10;level=1});*)
-      Some (Monster {i=0;j=9;hp=20;level=2});
-      (*Some (Monster {i=0;j=14;hp=10;level=1});
-        Some (Monster {i=0;j=19;hp=10;level=1});*)
-      Some (Monster {i=0;j=24;hp=20;level=2});
-    ]
-  |7 ->[
-      Some (Monster {i=0;j=4;hp=20;level=2});
-      Some (Monster {i=0;j=9;hp=20;level=2});
-      Some (Monster {i=0;j=14;hp=20;level=2});
-      Some (Monster {i=0;j=19;hp=20;level=2});
-      (*Some (Monster {i=0;j=24;hp=10;level=1});*)
-    ]
-  |8 ->[
-      (*Some (Monster {i=0;j=4;hp=10;level=1});*)
-      Some (Monster {i=0;j=9;hp=20;level=2});
-      Some (Monster {i=0;j=14;hp=20;level=2});
-      Some (Monster {i=0;j=19;hp=20;level=2});
-      (*Some (Monster {i=0;j=24;hp=10;level=1});*)
-    ]
-  |9 ->[
-      (*Some (Monster {i=0;j=4;hp=10;level=1});*)
-      Some (Monster {i=0;j=9;hp=20;level=2});
-      (*Some (Monster {i=0;j=14;hp=10;level=1});*)
-      Some (Monster {i=0;j=19;hp=20;level=2});
-      (*Some (Monster {i=0;j=24;hp=10;level=1});*)
-    ]
-  |10 ->[
-      Some (Monster {i=0;j=4;hp=20;level=2});
-      (*Some (Monster {i=0;j=9;hp=10;level=1});*)
-      (*Some (Monster {i=0;j=14;hp=10;level=1});*)
-      Some (Monster {i=0;j=19;hp=20;level=2});
-      (*Some (Monster {i=0;j=24;hp=10;level=1});*)
-    ]
-  |11 ->[
-      (*Some (Monster {i=0;j=4;hp=10;level=1});*)
-      Some (Monster {i=0;j=9;hp=20;level=2});
-      (*Some (Monster {i=0;j=14;hp=10;level=1});*)
-      Some (Monster {i=0;j=19;hp=20;level=2});
-      (*Some (Monster {i=0;j=24;hp=10;level=1});*)
-
-    ]
-  |12 ->[
-      Some (Monster {i=0;j=4;hp=20;level=2});
-      Some (Monster {i=0;j=9;hp=20;level=2});
-      (*Some (Monster {i=0;j=14;hp=10;level=1});*)
-      (*Some (Monster {i=0;j=19;hp=10;level=1});
-        Some (Monster {i=0;j=24;hp=10;level=1});*)
-    ]
-  |_-> [
-      (*Some (Monster {i=0;j=4;hp=10;level=1});*)
-      (*Some (Monster {i=0;j=9;hp=10;level=1});*)
-      Some (Monster {i=0;j=14;hp=20;level=2});
-      (*Some (Monster {i=0;j=19;hp=10;level=1});*)
-      Some (Monster {i=0;j=24;hp=20;level=2});
-    ]
-
-(*[new_row_monsters3 count] creates a new row, full of monsters at the top of
-  the board. This row varies depending on what value [count] is. These cases
-  for [count] give us varied patterns for the monsters. These are all monsters
-  at the hardest difficulty*)
 let rec new_row_monsters3 count difficulty state =
   state.level <- (state.level + 1) mod 8;
-  match count with
-  |1->[
-      Some (Monster {i=0;j=4;hp=20+(difficulty*5);level=3});
-      Some (Monster {i=0;j=9;hp=20+(difficulty*5);level=3});
-      Some (Monster {i=0;j=14;hp=20+(difficulty*5);level=3});
-      Some (Monster {i=0;j=19;hp=20+(difficulty*5);level=3});
-      Some (Monster {i=0;j=24;hp=20+(difficulty*5);level=3});
-    ]
-  |2-> [
-      Some (Monster {i=0;j=4;hp=20+(difficulty*5);level=3});
-      (*Some (Monster {i=0;j=9;hp=10;level=1});*)
-      Some (Monster {i=0;j=14;hp=20+(difficulty*5);level=3});
-      (*Some (Monster {i=0;j=19;hp=10;level=1});*)
-      Some (Monster {i=0;j=24;hp=20+(difficulty*5);level=3});
-    ]
-  |3 ->[
-      Some (Monster {i=0;j=4;hp=20+(difficulty*5);level=3});
-      Some (Monster {i=0;j=9;hp=20+(difficulty*5);level=3});
-      (*Some (Monster {i=0;j=14;hp=10;level=1});*)
-      Some (Monster {i=0;j=19;hp=20+(difficulty*5);level=3});
-      (*Some (Monster {i=0;j=24;hp=10;level=1});*)
-    ]
-  |13 ->[
-      Some (Monster {i=0;j=4;hp=20+(difficulty*5);level=3});
-      (*Some (Monster {i=0;j=9;hp=10;level=1});*)
-      (*Some (Monster {i=0;j=14;hp=10;level=1});*)
-      (*Some (Monster {i=0;j=19;hp=10;level=1});*)
-      Some (Monster {i=0;j=24;hp=20+(difficulty*5);level=3});
-    ]
-  |4 ->[
-      Some (Monster {i=0;j=4;hp=20+(difficulty*5);level=3});
-      Some (Monster {i=0;j=9;hp=20+(difficulty*5);level=3});
-      (*Some (Monster {i=0;j=14;hp=10;level=1});*)
-      (*Some (Monster {i=0;j=19;hp=10;level=1});*)
-      Some (Monster {i=0;j=24;hp=20+(difficulty*5);level=3});
-    ]
-  |5 ->[
-      (*Some (Monster {i=0;j=4;hp=10;level=1});
-        Some (Monster {i=0;j=9;hp=10;level=1});*)
-      Some (Monster {i=0;j=14;hp=20+(difficulty*5);level=3});
-      Some (Monster {i=0;j=19;hp=20+(difficulty*5);level=3});
-      (*Some (Monster {i=0;j=24;hp=10;level=1});*)
-    ]
-  |6 ->[
-      (*Some (Monster {i=0;j=4;hp=10;level=1});*)
-      Some (Monster {i=0;j=9;hp=20+(difficulty*5);level=3});
-      (*Some (Monster {i=0;j=14;hp=10;level=1});
-        Some (Monster {i=0;j=19;hp=10;level=1});*)
-      Some (Monster {i=0;j=24;hp=20+(difficulty*5);level=3});
-    ]
-  |7 ->[
-      Some (Monster {i=0;j=4;hp=20+(difficulty*5);level=3});
-      Some (Monster {i=0;j=9;hp=20+(difficulty*5);level=3});
-      Some (Monster {i=0;j=14;hp=20+(difficulty*5);level=3});
-      Some (Monster {i=0;j=19;hp=20+(difficulty*5);level=3});
-      (*Some (Monster {i=0;j=24;hp=10;level=1});*)
-    ]
-  |8 ->[
-      (*Some (Monster {i=0;j=4;hp=10;level=1});*)
-      Some (Monster {i=0;j=9;hp=20+(difficulty*5);level=3});
-      Some (Monster {i=0;j=14;hp=20+(difficulty*5);level=3});
-      Some (Monster {i=0;j=19;hp=20+(difficulty*5);level=3});
-      (*Some (Monster {i=0;j=24;hp=10;level=1});*)
-    ]
-  |9 ->[
-      (*Some (Monster {i=0;j=4;hp=10;level=1});*)
-      Some (Monster {i=0;j=9;hp=20+(difficulty*5);level=3});
-      (*Some (Monster {i=0;j=14;hp=10;level=1});*)
-      Some (Monster {i=0;j=19;hp=20+(difficulty*5);level=3});
-      (*Some (Monster {i=0;j=24;hp=10;level=1});*)
-    ]
-  |10 ->[
-      Some (Monster {i=0;j=4;hp=20+(difficulty*5);level=3});
-      (*Some (Monster {i=0;j=9;hp=10;level=1});*)
-      (*Some (Monster {i=0;j=14;hp=10;level=1});*)
-      Some (Monster {i=0;j=19;hp=20+(difficulty*5);level=3});
-      (*Some (Monster {i=0;j=24;hp=10;level=1});*)
-    ]
-  |11 ->[
-      (*Some (Monster {i=0;j=4;hp=10;level=1});*)
-      Some (Monster {i=0;j=9;hp=20+(difficulty*5);level=3});
-      (*Some (Monster {i=0;j=14;hp=10;level=1});*)
-      Some (Monster {i=0;j=19;hp=20+(difficulty*5);level=3});
-      (*Some (Monster {i=0;j=24;hp=10;level=1});*)
-
-    ]
-  |12 ->[
-      Some (Monster {i=0;j=4;hp=20+(difficulty*5);level=3});
-      Some (Monster {i=0;j=9;hp=20+(difficulty*5);level=3});
-      (*Some (Monster {i=0;j=14;hp=10;level=1});*)
-      (*Some (Monster {i=0;j=19;hp=10;level=1});
-        Some (Monster {i=0;j=24;hp=10;level=1});*)
-    ]
-  |_-> [
-      (*Some (Monster {i=0;j=4;hp=10;level=1});*)
-      (*Some (Monster {i=0;j=9;hp=10;level=1});*)
-      Some (Monster {i=0;j=14;hp=20+(difficulty*5);level=3});
-      (*Some (Monster {i=0;j=19;hp=10;level=1});*)
-      Some (Monster {i=0;j=24;hp=20+(difficulty*5);level=3});
-    ]
+  new_row_monsters3_init count difficulty
 
 (*[new_location_j] returns the new x coordinate [j] the player will move to
   on the user's input [control]*)
@@ -426,14 +129,12 @@ let move_player state (player: player) =
   let i = player.i and j = player.j in
   let j' = new_location_j state j state.control in
   state.item_count <- state.item_count + 1;
+  state.comet_interval <- (state.comet_interval + 1) mod (90 / (state.level)) ;
 
+  (******************************PROJECTILES***********************************)
   let new_projectile_list =
     (Some (Projectile {i=i;j=j'+1}))::(raise_projectile state.projectile_list) in
-
-  state.comet_interval <- (state.comet_interval + 1) mod (90 / (state.level)) ;
   state.board <- replace_with_none (coord_of_obj_list state.projectile_list []) state.board;
-
-
   (*updates board with new projectiles*)
   let replaced_projectiles = (raise_projectile new_projectile_list) in
 
@@ -443,10 +144,9 @@ let move_player state (player: player) =
   state.board <- (place_objects_list state.board filtered_projectiles);
   (*update the projectile list: the new coordinate list of where projectiles are*)
   state.projectile_list <- filtered_projectiles;
+  (****************************************************************************)
 
-
-
-
+  (*******************************MONSTERS*************************************)
   let lowered_monsters = lower_monster_list state.mons_list in
   let lowmons_filtered =
     List.filter (fun x -> match x with | Some _ -> true | _ -> false)
@@ -465,15 +165,6 @@ let move_player state (player: player) =
   if (state.mons_row_counter = 0) then
     state.mons_type_counter <- (state.mons_type_counter + 1) mod 13;
 
-  (*Examines counters and health to determine if player has earned a health
-  recovery*)
-  if ((state.item_count mod 201)  = 200 && (extract_player state).hp < 8)
-    then (extract_player state).hp <- (extract_player state).hp+1;
-  if ((state.item_count mod 201)  = 200 && (extract_player state).hp < 8)
-    then state.item_msg <- "Undamaged streak: HP +1";
-  if ((state.item_count mod 201)  = 70) then state.item_msg <- "";
-
-
   (*update board: the row that used to have monsters is replaced with None*)
   state.board <- replace_with_none (coord_of_obj_list state.mons_list []) state.board;
   (*update board: the new row with monsters now is updated to reflect the monsters*)
@@ -482,10 +173,21 @@ let move_player state (player: player) =
 
   state.mons_list <- new_mons_list;
   state.mons_row_counter <- (state.mons_row_counter + 1) mod 20;
+  (****************************************************************************)
 
   state.score <- state.score +
                  (List.length lowered_monsters) - (List.length lowmons_filtered);
 
+  (********************************ITEMS**************************************)
+  (*Examines counters and health to determine if player has earned a health
+    recovery*)
+  if ((state.item_count mod 201)  = 200 && (extract_player state).hp < 8) then (extract_player state).hp <- (extract_player state).hp+1;
+  if ((state.item_count mod 201)  = 200 && (extract_player state).hp < 8) then state.item_msg <- "Undamaged streak: HP +1";
+  if ((state.item_count mod 201)  = 70) then state.item_msg <- "";
+  (****************************************************************************)
+
+
+  (********************************PLAYER**************************************)
   (*these updates the player's location*)
   state.board <- place_obj state.board i j' (Some (Player player));
   player.j <- j';
@@ -494,7 +196,9 @@ let move_player state (player: player) =
   if (state.control != Stop) then
     state.board <- (place_obj state.board i j None)
   else state.board <- (place_obj state.board i j (Some (Player player)))
+  (****************************************************************************)
 
+(**END MOVEPLAYER LOOP*********************************************************)
 
 (*These functions create the board at the start of the Active phase*)
 let rec init_row len arr =
@@ -503,17 +207,7 @@ let rec init_row len arr =
 let rec init_board rows cols arr =
   if rows = 0 then arr else init_board (rows-1) cols ((init_row cols [])::arr)
 
-(*Initializes new projectiles*)
-let rec new_projectiles =
-  [Some (Projectile {i=42;j=16});Some (Projectile {i=44;j=16});Some (Projectile {i=46;j=16})]
 
-
-(*run_collision should pattern match for each possible collision that could happen
-  and execute what happens during the collision eg. new items being made or disappearing*)
-
-(*update_collision should constantly check through update loop if there is a collision occuring*)
-
-(*update_obj updates objects when something collides*)
 
 (*Initializes state at the start of the Active phase*)
 let make_state rows cols =
@@ -523,7 +217,7 @@ let make_state rows cols =
   let monsters = new_row_monsters1 1 in
   let monsboard = place_objects_list board monsters in (*the board with monsters*)
   let newboard = place_obj monsboard i j main_player in (*board with monsters and player*)
-  let final_board = place_objects_list newboard new_projectiles in (*board with monsters, players, and projectiles*)
+  let final_board = place_objects_list newboard new_projectiles in (*board with monsters, players, and projectiles (new_projectiles in Board)*)
 
   let state = {
     board = final_board;
@@ -572,7 +266,7 @@ let rec iter_mons_list state monster_list projectile affected_list =
         (h :: iter_mons_list state t None affected_list))
     else iter_mons_list state t projectile affected_list
 
-
+        (***********LOL WHAT*******************************************************************************************)
 (*true if collisions exist between projectile list and monster list*)
 let rec iter_project_list state projectile_list mons_list affected_list : (obj option list) list =
   match projectile_list with
