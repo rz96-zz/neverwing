@@ -27,7 +27,8 @@ type state = {
   mutable mons_row_counter: int;
   mutable mons_type_counter: int;
   mutable score : int;
-  mutable phase : phase
+  mutable phase : phase;
+  mutable level : int
 }
 
 (*[update_state] changes the state according to the command that was given
@@ -124,7 +125,7 @@ let rec new_row_monsters1 count =
       (*Some (Monster {i=0;j=19;hp=10;level=1});*)
       Some (Monster {i=0;j=24;hp=10;level=1});
     ]
-  |3 ->[
+  |13 ->[
       Some (Monster {i=0;j=4;hp=10;level=1});
       Some (Monster {i=0;j=9;hp=10;level=1});
       (*Some (Monster {i=0;j=14;hp=10;level=1});*)
@@ -211,22 +212,209 @@ let rec new_row_monsters1 count =
     ]
 
 let rec new_row_monsters2 count =
-  [
-    Some (Monster {i=0;j=4;hp=20;level=2});
-    Some (Monster {i=0;j=9;hp=20;level=2});
-    Some (Monster {i=0;j=14;hp=20;level=2});
-    Some (Monster {i=0;j=19;hp=20;level=2});
-    Some (Monster {i=0;j=24;hp=20;level=2});
-  ]
+  match count with
+  |1->[
+      Some (Monster {i=0;j=4;hp=20;level=2});
+      Some (Monster {i=0;j=9;hp=20;level=2});
+      Some (Monster {i=0;j=14;hp=20;level=2});
+      Some (Monster {i=0;j=19;hp=20;level=2});
+      Some (Monster {i=0;j=24;hp=20;level=2});
+    ]
+  |2-> [
+      Some (Monster {i=0;j=4;hp=20;level=2});
+      (*Some (Monster {i=0;j=9;hp=10;level=1});*)
+      Some (Monster {i=0;j=14;hp=20;level=2});
+      (*Some (Monster {i=0;j=19;hp=10;level=1});*)
+      Some (Monster {i=0;j=24;hp=20;level=2});
+    ]
+  |3 ->[
+      Some (Monster {i=0;j=4;hp=20;level=2});
+      Some (Monster {i=0;j=9;hp=20;level=2});
+      (*Some (Monster {i=0;j=14;hp=10;level=1});*)
+      Some (Monster {i=0;j=19;hp=20;level=2});
+      (*Some (Monster {i=0;j=24;hp=10;level=1});*)
+    ]
+  |13 ->[
+      Some (Monster {i=0;j=4;hp=20;level=2});
+      (*Some (Monster {i=0;j=9;hp=10;level=1});*)
+      (*Some (Monster {i=0;j=14;hp=10;level=1});*)
+      (*Some (Monster {i=0;j=19;hp=10;level=1});*)
+      Some (Monster {i=0;j=24;hp=20;level=2});
+    ]
+  |4 ->[
+      Some (Monster {i=0;j=4;hp=20;level=2});
+      Some (Monster {i=0;j=9;hp=20;level=2});
+      (*Some (Monster {i=0;j=14;hp=10;level=1});*)
+      (*Some (Monster {i=0;j=19;hp=10;level=1});*)
+      Some (Monster {i=0;j=24;hp=20;level=2});
+    ]
+  |5 ->[
+      (*Some (Monster {i=0;j=4;hp=10;level=1});
+        Some (Monster {i=0;j=9;hp=10;level=1});*)
+      Some (Monster {i=0;j=14;hp=20;level=2});
+      Some (Monster {i=0;j=19;hp=20;level=2});
+      (*Some (Monster {i=0;j=24;hp=10;level=1});*)
+    ]
+  |6 ->[
+      (*Some (Monster {i=0;j=4;hp=10;level=1});*)
+      Some (Monster {i=0;j=9;hp=20;level=2});
+      (*Some (Monster {i=0;j=14;hp=10;level=1});
+        Some (Monster {i=0;j=19;hp=10;level=1});*)
+      Some (Monster {i=0;j=24;hp=20;level=2});
+    ]
+  |7 ->[
+      Some (Monster {i=0;j=4;hp=20;level=2});
+      Some (Monster {i=0;j=9;hp=20;level=2});
+      Some (Monster {i=0;j=14;hp=20;level=2});
+      Some (Monster {i=0;j=19;hp=20;level=2});
+      (*Some (Monster {i=0;j=24;hp=10;level=1});*)
+    ]
+  |8 ->[
+      (*Some (Monster {i=0;j=4;hp=10;level=1});*)
+      Some (Monster {i=0;j=9;hp=20;level=2});
+      Some (Monster {i=0;j=14;hp=20;level=2});
+      Some (Monster {i=0;j=19;hp=20;level=2});
+      (*Some (Monster {i=0;j=24;hp=10;level=1});*)
+    ]
+  |9 ->[
+      (*Some (Monster {i=0;j=4;hp=10;level=1});*)
+      Some (Monster {i=0;j=9;hp=20;level=2});
+      (*Some (Monster {i=0;j=14;hp=10;level=1});*)
+      Some (Monster {i=0;j=19;hp=20;level=2});
+      (*Some (Monster {i=0;j=24;hp=10;level=1});*)
+    ]
+  |10 ->[
+      Some (Monster {i=0;j=4;hp=20;level=2});
+      (*Some (Monster {i=0;j=9;hp=10;level=1});*)
+      (*Some (Monster {i=0;j=14;hp=10;level=1});*)
+      Some (Monster {i=0;j=19;hp=20;level=2});
+      (*Some (Monster {i=0;j=24;hp=10;level=1});*)
+    ]
+  |11 ->[
+      (*Some (Monster {i=0;j=4;hp=10;level=1});*)
+      Some (Monster {i=0;j=9;hp=20;level=2});
+      (*Some (Monster {i=0;j=14;hp=10;level=1});*)
+      Some (Monster {i=0;j=19;hp=20;level=2});
+      (*Some (Monster {i=0;j=24;hp=10;level=1});*)
 
-let rec new_row_monsters3 count =
-  [
-    Some (Monster {i=0;j=4;hp=40;level=3});
-    Some (Monster {i=0;j=9;hp=40;level=3});
-    Some (Monster {i=0;j=14;hp=40;level=3});
-    Some (Monster {i=0;j=19;hp=40;level=3});
-    Some (Monster {i=0;j=24;hp=40;level=3});
-  ]
+    ]
+  |12 ->[
+      Some (Monster {i=0;j=4;hp=20;level=2});
+      Some (Monster {i=0;j=9;hp=20;level=2});
+      (*Some (Monster {i=0;j=14;hp=10;level=1});*)
+      (*Some (Monster {i=0;j=19;hp=10;level=1});
+        Some (Monster {i=0;j=24;hp=10;level=1});*)
+    ]
+  |_-> [
+      (*Some (Monster {i=0;j=4;hp=10;level=1});*)
+      (*Some (Monster {i=0;j=9;hp=10;level=1});*)
+      Some (Monster {i=0;j=14;hp=20;level=2});
+      (*Some (Monster {i=0;j=19;hp=10;level=1});*)
+      Some (Monster {i=0;j=24;hp=20;level=2});
+    ]
+
+let rec new_row_monsters3 count difficulty state =
+  state.level <- state.level + 1;
+  match count with
+  |1->[
+      Some (Monster {i=0;j=4;hp=30+(difficulty*10);level=3});
+      Some (Monster {i=0;j=9;hp=30+(difficulty*10);level=3});
+      Some (Monster {i=0;j=14;hp=30+(difficulty*10);level=3});
+      Some (Monster {i=0;j=19;hp=30+(difficulty*10);level=3});
+      Some (Monster {i=0;j=24;hp=30+(difficulty*10);level=3});
+    ]
+  |2-> [
+      Some (Monster {i=0;j=4;hp=30+(difficulty*10);level=3});
+      (*Some (Monster {i=0;j=9;hp=10;level=1});*)
+      Some (Monster {i=0;j=14;hp=30+(difficulty*10);level=3});
+      (*Some (Monster {i=0;j=19;hp=10;level=1});*)
+      Some (Monster {i=0;j=24;hp=30+(difficulty*10);level=3});
+    ]
+  |3 ->[
+      Some (Monster {i=0;j=4;hp=30+(difficulty*10);level=3});
+      Some (Monster {i=0;j=9;hp=30+(difficulty*10);level=3});
+      (*Some (Monster {i=0;j=14;hp=10;level=1});*)
+      Some (Monster {i=0;j=19;hp=30+(difficulty*10);level=3});
+      (*Some (Monster {i=0;j=24;hp=10;level=1});*)
+    ]
+  |13 ->[
+      Some (Monster {i=0;j=4;hp=30+(difficulty*10);level=3});
+      (*Some (Monster {i=0;j=9;hp=10;level=1});*)
+      (*Some (Monster {i=0;j=14;hp=10;level=1});*)
+      (*Some (Monster {i=0;j=19;hp=10;level=1});*)
+      Some (Monster {i=0;j=24;hp=30+(difficulty*10);level=3});
+    ]
+  |4 ->[
+      Some (Monster {i=0;j=4;hp=30+(difficulty*10);level=3});
+      Some (Monster {i=0;j=9;hp=30+(difficulty*10);level=3});
+      (*Some (Monster {i=0;j=14;hp=10;level=1});*)
+      (*Some (Monster {i=0;j=19;hp=10;level=1});*)
+      Some (Monster {i=0;j=24;hp=30+(difficulty*10);level=3});
+    ]
+  |5 ->[
+      (*Some (Monster {i=0;j=4;hp=10;level=1});
+        Some (Monster {i=0;j=9;hp=10;level=1});*)
+      Some (Monster {i=0;j=14;hp=30+(difficulty*10);level=3});
+      Some (Monster {i=0;j=19;hp=30+(difficulty*10);level=3});
+      (*Some (Monster {i=0;j=24;hp=10;level=1});*)
+    ]
+  |6 ->[
+      (*Some (Monster {i=0;j=4;hp=10;level=1});*)
+      Some (Monster {i=0;j=9;hp=30+(difficulty*10);level=3});
+      (*Some (Monster {i=0;j=14;hp=10;level=1});
+        Some (Monster {i=0;j=19;hp=10;level=1});*)
+      Some (Monster {i=0;j=24;hp=30+(difficulty*10);level=3});
+    ]
+  |7 ->[
+      Some (Monster {i=0;j=4;hp=30+(difficulty*10);level=3});
+      Some (Monster {i=0;j=9;hp=30+(difficulty*10);level=3});
+      Some (Monster {i=0;j=14;hp=30+(difficulty*10);level=3});
+      Some (Monster {i=0;j=19;hp=30+(difficulty*10);level=3});
+      (*Some (Monster {i=0;j=24;hp=10;level=1});*)
+    ]
+  |8 ->[
+      (*Some (Monster {i=0;j=4;hp=10;level=1});*)
+      Some (Monster {i=0;j=9;hp=30+(difficulty*10);level=3});
+      Some (Monster {i=0;j=14;hp=30+(difficulty*10);level=3});
+      Some (Monster {i=0;j=19;hp=30+(difficulty*10);level=3});
+      (*Some (Monster {i=0;j=24;hp=10;level=1});*)
+    ]
+  |9 ->[
+      (*Some (Monster {i=0;j=4;hp=10;level=1});*)
+      Some (Monster {i=0;j=9;hp=30+(difficulty*10);level=3});
+      (*Some (Monster {i=0;j=14;hp=10;level=1});*)
+      Some (Monster {i=0;j=19;hp=30+(difficulty*10);level=3});
+      (*Some (Monster {i=0;j=24;hp=10;level=1});*)
+    ]
+  |10 ->[
+      Some (Monster {i=0;j=4;hp=30+(difficulty*10);level=3});
+      (*Some (Monster {i=0;j=9;hp=10;level=1});*)
+      (*Some (Monster {i=0;j=14;hp=10;level=1});*)
+      Some (Monster {i=0;j=19;hp=30+(difficulty*10);level=3});
+      (*Some (Monster {i=0;j=24;hp=10;level=1});*)
+    ]
+  |11 ->[
+      (*Some (Monster {i=0;j=4;hp=10;level=1});*)
+      Some (Monster {i=0;j=9;hp=30+(difficulty*10);level=3});
+      (*Some (Monster {i=0;j=14;hp=10;level=1});*)
+      Some (Monster {i=0;j=19;hp=30+(difficulty*10);level=3});
+      (*Some (Monster {i=0;j=24;hp=10;level=1});*)
+
+    ]
+  |12 ->[
+      Some (Monster {i=0;j=4;hp=30+(difficulty*10);level=3});
+      Some (Monster {i=0;j=9;hp=30+(difficulty*10);level=3});
+      (*Some (Monster {i=0;j=14;hp=10;level=1});*)
+      (*Some (Monster {i=0;j=19;hp=10;level=1});
+        Some (Monster {i=0;j=24;hp=10;level=1});*)
+    ]
+  |_-> [
+      (*Some (Monster {i=0;j=4;hp=10;level=1});*)
+      (*Some (Monster {i=0;j=9;hp=10;level=1});*)
+      Some (Monster {i=0;j=14;hp=30+(difficulty*10);level=3});
+      (*Some (Monster {i=0;j=19;hp=10;level=1});*)
+      Some (Monster {i=0;j=24;hp=30+(difficulty*10);level=3});
+    ]
 
 let new_location_j state j control =
   let j = match control with
@@ -269,7 +457,7 @@ let move_player state (player: player) =
   let lowered_monsters = lower_monster_list state.mons_list in
   let new_mons_list =
     if state.mons_row_counter = 0 then
-      (if state.score > 50 then lowered_monsters@(new_row_monsters3 state.mons_type_counter)
+      (if state.score > 50 then lowered_monsters@(new_row_monsters3 state.mons_type_counter state.level state)
        else if state.score > 25 then lowered_monsters@(new_row_monsters2 state.mons_type_counter)
        else lowered_monsters@(new_row_monsters1 state.mons_type_counter))
     else lowered_monsters in (*an obj option list)*)
@@ -355,7 +543,8 @@ let make_state rows cols =
     mons_row_counter = 1;
     mons_type_counter = 1;
     score = 0;
-    phase = Start
+    phase = Start;
+    level = 1;
     (*coordinates of the monsters*)
   } in
   state
