@@ -433,11 +433,18 @@ let move_player state (player: player) =
   state.comet_interval <- (state.comet_interval + 1) mod (90 / (state.level)) ;
   state.board <- replace_with_none (coord_of_obj_list state.projectile_list []) state.board;
 
+
   (*updates board with new projectiles*)
   let replaced_projectiles = (raise_projectile new_projectile_list) in
-  state.board <- (place_objects_list state.board replaced_projectiles);
+
+  let filtered_projectiles = List.filter (fun x -> match x with | Some _ -> true | _ -> false)
+                              replaced_projectiles in
+
+  state.board <- (place_objects_list state.board filtered_projectiles);
   (*update the projectile list: the new coordinate list of where projectiles are*)
-  state.projectile_list <- replaced_projectiles;
+  state.projectile_list <- filtered_projectiles;
+
+
 
 
   let lowered_monsters = lower_monster_list state.mons_list in
@@ -451,7 +458,8 @@ let move_player state (player: player) =
        else lowmons_filtered@(new_row_monsters1 state.mons_type_counter))
     else lowmons_filtered in (*an obj option list)*)
 
-  let new_mons_list = if (state.comet_interval = 30) then (Some (Monster {i=0;j=(extract_player state).j;hp=999;level=4}))::new_mons_list
+  let new_mons_list = if (state.comet_interval = 30)
+    then (Some (Monster {i=0;j=(extract_player state).j;hp=999;level=4}))::new_mons_list
     else new_mons_list in
 
   if (state.mons_row_counter = 0) then
@@ -459,15 +467,19 @@ let move_player state (player: player) =
 
   (*Examines counters and health to determine if player has earned a health
   recovery*)
-  if ((state.item_count mod 201)  = 200 && (extract_player state).hp < 8) then (extract_player state).hp <- (extract_player state).hp+1;
-  if ((state.item_count mod 201)  = 200 && (extract_player state).hp < 8) then state.item_msg <- "Undamaged streak: HP +1";
+  if ((state.item_count mod 201)  = 200 && (extract_player state).hp < 8)
+    then (extract_player state).hp <- (extract_player state).hp+1;
+  if ((state.item_count mod 201)  = 200 && (extract_player state).hp < 8)
+    then state.item_msg <- "Undamaged streak: HP +1";
   if ((state.item_count mod 201)  = 70) then state.item_msg <- "";
+
 
   (*update board: the row that used to have monsters is replaced with None*)
   state.board <- replace_with_none (coord_of_obj_list state.mons_list []) state.board;
   (*update board: the new row with monsters now is updated to reflect the monsters*)
   state.board <- (place_objects_list state.board new_mons_list);
   (*update mons_coord_list: the new coordinate list of where the monsters are*)
+
   state.mons_list <- new_mons_list;
   state.mons_row_counter <- (state.mons_row_counter + 1) mod 20;
 
@@ -543,15 +555,21 @@ let draw_state context state =
   done;
   context##fill
 
+let rec update_projectile_list projectile proj_list =
+  match proj_list with
+  | [] -> []
+  | h::t -> if (h = projectile) then None :: t
+    else h :: update_projectile_list projectile t
+
 (*true if collisions exists between projectile list and the monster*)
 let rec iter_mons_list state monster_list projectile affected_list =
   match monster_list with
   | [] -> []
   | h::t -> if check_collision h projectile
     then
-      (*state.projectile_list <-
-          filter_projectile projectile (hide_projectile projectile state.projectile_list)*)
-        ((h :: iter_mons_list state t None affected_list))
+      (state.projectile_list <-
+        (update_projectile_list projectile state.projectile_list);
+        (h :: iter_mons_list state t None affected_list))
     else iter_mons_list state t projectile affected_list
 
 
@@ -579,13 +597,10 @@ let update_monsters monster =
 
 (*this updates the object and runs the collision check*)
 let update_obj state player mon_list projectile_list=
-
   if iter_collision player mon_list then
     (extract_player state).hp <- (extract_player state).hp-1;
-
   if iter_collision player mon_list then
     state.item_count <- 0;
-
   List.map update_monsters (List.concat (iter_project_list state projectile_list mon_list []))
 
 
