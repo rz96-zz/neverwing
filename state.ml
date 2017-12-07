@@ -74,7 +74,7 @@ let rec place_objects_list board objs =
 (*lowers a given object on the screen by one row, if it is a monster*)
 let lower_mons_obj mons_obj =
   match mons_obj with
-  | Some (Monster m) -> if m.hp = 0 then None else Some (Monster (lower_mons m))
+  | Some (Monster m) -> if m.hp <= 0 then None else Some (Monster (lower_mons m))
   | _ -> None (*will never be this case*)
 
 (*lowers all the monsters (that are listed in mons_info_list) *)
@@ -314,96 +314,96 @@ let rec new_row_monsters2 count =
     ]
 
 let rec new_row_monsters3 count difficulty state =
-  state.level <- state.level + 1;
+  state.level <- (state.level + 1) mod 8;
   match count with
   |1->[
-      Some (Monster {i=0;j=4;hp=30+(difficulty*10);level=3});
-      Some (Monster {i=0;j=9;hp=30+(difficulty*10);level=3});
-      Some (Monster {i=0;j=14;hp=30+(difficulty*10);level=3});
-      Some (Monster {i=0;j=19;hp=30+(difficulty*10);level=3});
-      Some (Monster {i=0;j=24;hp=30+(difficulty*10);level=3});
+      Some (Monster {i=0;j=4;hp=20+(difficulty*5);level=3});
+      Some (Monster {i=0;j=9;hp=20+(difficulty*5);level=3});
+      Some (Monster {i=0;j=14;hp=20+(difficulty*5);level=3});
+      Some (Monster {i=0;j=19;hp=20+(difficulty*5);level=3});
+      Some (Monster {i=0;j=24;hp=20+(difficulty*5);level=3});
     ]
   |2-> [
-      Some (Monster {i=0;j=4;hp=30+(difficulty*10);level=3});
+      Some (Monster {i=0;j=4;hp=20+(difficulty*5);level=3});
       (*Some (Monster {i=0;j=9;hp=10;level=1});*)
-      Some (Monster {i=0;j=14;hp=30+(difficulty*10);level=3});
+      Some (Monster {i=0;j=14;hp=20+(difficulty*5);level=3});
       (*Some (Monster {i=0;j=19;hp=10;level=1});*)
-      Some (Monster {i=0;j=24;hp=30+(difficulty*10);level=3});
+      Some (Monster {i=0;j=24;hp=20+(difficulty*5);level=3});
     ]
   |3 ->[
-      Some (Monster {i=0;j=4;hp=30+(difficulty*10);level=3});
-      Some (Monster {i=0;j=9;hp=30+(difficulty*10);level=3});
+      Some (Monster {i=0;j=4;hp=20+(difficulty*5);level=3});
+      Some (Monster {i=0;j=9;hp=20+(difficulty*5);level=3});
       (*Some (Monster {i=0;j=14;hp=10;level=1});*)
-      Some (Monster {i=0;j=19;hp=30+(difficulty*10);level=3});
+      Some (Monster {i=0;j=19;hp=20+(difficulty*5);level=3});
       (*Some (Monster {i=0;j=24;hp=10;level=1});*)
     ]
   |13 ->[
-      Some (Monster {i=0;j=4;hp=30+(difficulty*10);level=3});
+      Some (Monster {i=0;j=4;hp=20+(difficulty*5);level=3});
       (*Some (Monster {i=0;j=9;hp=10;level=1});*)
       (*Some (Monster {i=0;j=14;hp=10;level=1});*)
       (*Some (Monster {i=0;j=19;hp=10;level=1});*)
-      Some (Monster {i=0;j=24;hp=30+(difficulty*10);level=3});
+      Some (Monster {i=0;j=24;hp=20+(difficulty*5);level=3});
     ]
   |4 ->[
-      Some (Monster {i=0;j=4;hp=30+(difficulty*10);level=3});
-      Some (Monster {i=0;j=9;hp=30+(difficulty*10);level=3});
+      Some (Monster {i=0;j=4;hp=20+(difficulty*5);level=3});
+      Some (Monster {i=0;j=9;hp=20+(difficulty*5);level=3});
       (*Some (Monster {i=0;j=14;hp=10;level=1});*)
       (*Some (Monster {i=0;j=19;hp=10;level=1});*)
-      Some (Monster {i=0;j=24;hp=30+(difficulty*10);level=3});
+      Some (Monster {i=0;j=24;hp=20+(difficulty*5);level=3});
     ]
   |5 ->[
       (*Some (Monster {i=0;j=4;hp=10;level=1});
         Some (Monster {i=0;j=9;hp=10;level=1});*)
-      Some (Monster {i=0;j=14;hp=30+(difficulty*10);level=3});
-      Some (Monster {i=0;j=19;hp=30+(difficulty*10);level=3});
+      Some (Monster {i=0;j=14;hp=20+(difficulty*5);level=3});
+      Some (Monster {i=0;j=19;hp=20+(difficulty*5);level=3});
       (*Some (Monster {i=0;j=24;hp=10;level=1});*)
     ]
   |6 ->[
       (*Some (Monster {i=0;j=4;hp=10;level=1});*)
-      Some (Monster {i=0;j=9;hp=30+(difficulty*10);level=3});
+      Some (Monster {i=0;j=9;hp=20+(difficulty*5);level=3});
       (*Some (Monster {i=0;j=14;hp=10;level=1});
         Some (Monster {i=0;j=19;hp=10;level=1});*)
-      Some (Monster {i=0;j=24;hp=30+(difficulty*10);level=3});
+      Some (Monster {i=0;j=24;hp=20+(difficulty*5);level=3});
     ]
   |7 ->[
-      Some (Monster {i=0;j=4;hp=30+(difficulty*10);level=3});
-      Some (Monster {i=0;j=9;hp=30+(difficulty*10);level=3});
-      Some (Monster {i=0;j=14;hp=30+(difficulty*10);level=3});
-      Some (Monster {i=0;j=19;hp=30+(difficulty*10);level=3});
+      Some (Monster {i=0;j=4;hp=20+(difficulty*5);level=3});
+      Some (Monster {i=0;j=9;hp=20+(difficulty*5);level=3});
+      Some (Monster {i=0;j=14;hp=20+(difficulty*5);level=3});
+      Some (Monster {i=0;j=19;hp=20+(difficulty*5);level=3});
       (*Some (Monster {i=0;j=24;hp=10;level=1});*)
     ]
   |8 ->[
       (*Some (Monster {i=0;j=4;hp=10;level=1});*)
-      Some (Monster {i=0;j=9;hp=30+(difficulty*10);level=3});
-      Some (Monster {i=0;j=14;hp=30+(difficulty*10);level=3});
-      Some (Monster {i=0;j=19;hp=30+(difficulty*10);level=3});
+      Some (Monster {i=0;j=9;hp=20+(difficulty*5);level=3});
+      Some (Monster {i=0;j=14;hp=20+(difficulty*5);level=3});
+      Some (Monster {i=0;j=19;hp=20+(difficulty*5);level=3});
       (*Some (Monster {i=0;j=24;hp=10;level=1});*)
     ]
   |9 ->[
       (*Some (Monster {i=0;j=4;hp=10;level=1});*)
-      Some (Monster {i=0;j=9;hp=30+(difficulty*10);level=3});
+      Some (Monster {i=0;j=9;hp=20+(difficulty*5);level=3});
       (*Some (Monster {i=0;j=14;hp=10;level=1});*)
-      Some (Monster {i=0;j=19;hp=30+(difficulty*10);level=3});
+      Some (Monster {i=0;j=19;hp=20+(difficulty*5);level=3});
       (*Some (Monster {i=0;j=24;hp=10;level=1});*)
     ]
   |10 ->[
-      Some (Monster {i=0;j=4;hp=30+(difficulty*10);level=3});
+      Some (Monster {i=0;j=4;hp=20+(difficulty*5);level=3});
       (*Some (Monster {i=0;j=9;hp=10;level=1});*)
       (*Some (Monster {i=0;j=14;hp=10;level=1});*)
-      Some (Monster {i=0;j=19;hp=30+(difficulty*10);level=3});
+      Some (Monster {i=0;j=19;hp=20+(difficulty*5);level=3});
       (*Some (Monster {i=0;j=24;hp=10;level=1});*)
     ]
   |11 ->[
       (*Some (Monster {i=0;j=4;hp=10;level=1});*)
-      Some (Monster {i=0;j=9;hp=30+(difficulty*10);level=3});
+      Some (Monster {i=0;j=9;hp=20+(difficulty*5);level=3});
       (*Some (Monster {i=0;j=14;hp=10;level=1});*)
-      Some (Monster {i=0;j=19;hp=30+(difficulty*10);level=3});
+      Some (Monster {i=0;j=19;hp=20+(difficulty*5);level=3});
       (*Some (Monster {i=0;j=24;hp=10;level=1});*)
 
     ]
   |12 ->[
-      Some (Monster {i=0;j=4;hp=30+(difficulty*10);level=3});
-      Some (Monster {i=0;j=9;hp=30+(difficulty*10);level=3});
+      Some (Monster {i=0;j=4;hp=20+(difficulty*5);level=3});
+      Some (Monster {i=0;j=9;hp=20+(difficulty*5);level=3});
       (*Some (Monster {i=0;j=14;hp=10;level=1});*)
       (*Some (Monster {i=0;j=19;hp=10;level=1});
         Some (Monster {i=0;j=24;hp=10;level=1});*)
@@ -411,9 +411,9 @@ let rec new_row_monsters3 count difficulty state =
   |_-> [
       (*Some (Monster {i=0;j=4;hp=10;level=1});*)
       (*Some (Monster {i=0;j=9;hp=10;level=1});*)
-      Some (Monster {i=0;j=14;hp=30+(difficulty*10);level=3});
+      Some (Monster {i=0;j=14;hp=20+(difficulty*5);level=3});
       (*Some (Monster {i=0;j=19;hp=10;level=1});*)
-      Some (Monster {i=0;j=24;hp=30+(difficulty*10);level=3});
+      Some (Monster {i=0;j=24;hp=20+(difficulty*5);level=3});
     ]
 
 let new_location_j state j control =
