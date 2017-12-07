@@ -25,7 +25,7 @@ let canvas_coords (i, j) =
 
 let draw_player context x y =
   context##.fillStyle := Js.string "#0000FF";
-  context##fillRect x y 10. 20.
+  context##fillRect x y 30. 30.
 
   (* let make_image img_src =
     let img = (Html.createImg Dom_html.document) in

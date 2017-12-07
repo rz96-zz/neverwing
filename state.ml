@@ -420,7 +420,7 @@ let rec new_row_monsters3 count difficulty state =
 let new_location_j state j control =
   let j = match control with
     (*have to make this move after hitting edges*)
-    | Right -> if j + 1 > 29 then j else j + 1
+    | Right -> if j + 1 > 27 then j else j + 1
     | Left -> if j - 1 < 0 then j else j - 1
     | Stop -> j
   in
@@ -432,8 +432,7 @@ let move_player state (player: player) =
   (*let new_projectile_list = raise_projectile state.projectile_list in*)
   (*the next three lines of code updates the projectiles*)
   (*here*)
-  let new_projectile_list = (Some (Projectile {i=i;j=j'}))::(raise_projectile state.projectile_list) in
-
+  let new_projectile_list = (Some (Projectile {i=i;j=j'+1}))::(raise_projectile state.projectile_list) in
   (*the next three lines of code updates the monster*)
   (*here*)
 
@@ -452,8 +451,6 @@ let move_player state (player: player) =
   state.board <- (place_objects_list state.board replaced_projectiles);
   (*update the projectile list: the new coordinate list of where projectiles are*)
   state.projectile_list <- replaced_projectiles;
-
-
 
   let lowered_monsters = lower_monster_list state.mons_list in
   let lowmons_filtered =
