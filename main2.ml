@@ -1,6 +1,6 @@
 open Lwt.Infix
 open Board
-open Character
+open Collision
 open State
 open Command
 
@@ -28,7 +28,7 @@ let extract_player state=
 (*Main game Loop when state is Active and game is ongoing*)
 let rec main_loop context state =
   Lwt_js.sleep 0.05 >>= fun () ->
-  move_player state (extract_player state);
+  update_state state (extract_player state);
   draw_state context state;
   update_objs_loop state;
   let key_elt = Dom_html.getElementById "score" in

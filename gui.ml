@@ -1,5 +1,5 @@
 (*essentially drawing everything on the playable gui part*)
-open Character
+open Collision
 open Sprite
 open Board
 module Html = Dom_html

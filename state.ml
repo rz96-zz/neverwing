@@ -2,7 +2,7 @@ open Board
 open Sprite
 open Gui
 open Command
-open Character
+open Collision
 
 
 type board = Board.board
@@ -125,7 +125,7 @@ let new_location_j state j control =
   functions, updates counters which will determine certain
   events in the game such as health recovery and incoming comets.
   The board is also updated in [move_player].*)
-let move_player state (player: player) =
+let update_state state (player: player) =
   let i = player.i and j = player.j in
   let j' = new_location_j state j state.control in
   state.item_count <- state.item_count + 1;

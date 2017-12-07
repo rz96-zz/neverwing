@@ -44,7 +44,7 @@ and moving the rows of monsters down by one each iteration*)
   -> unit*)
 
 
-val move_player: state -> player -> unit
+val update_state: state -> player -> unit
 
 val make_state: int -> int -> state
 
