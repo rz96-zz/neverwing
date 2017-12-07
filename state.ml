@@ -432,25 +432,18 @@ let move_player state (player: player) =
   (*let new_projectile_list = raise_projectile state.projectile_list in*)
   (*the next three lines of code updates the projectiles*)
   (*here*)
-  let new_projectile_list = (Some (Projectile {i=i;j=j'+1}))::(raise_projectile state.projectile_list) in
-  (*the next three lines of code updates the monster*)
-  (*here*)
+  let new_projectile_list =
+    (Some (Projectile {i=i;j=j'+1}))::(raise_projectile state.projectile_list) in
 
-
-  (*state.board <- (place_objects_list state.board (replace_all_proj_with_none state.projectile_list));*)
-  (*updates board with new projectiles*)
-  (*let replaced_projectiles = (raise_projectile new_projectile_list) in*)
-
-  (*state.board <- (place_objects_list state.board replaced_projectiles);*)
-  (*update the projectile list: the new coordinate list of where projectiles are*)
-  (*state.projectile_list <- replaced_projectiles;*)(*here*)
   state.comet_interval <- (state.comet_interval + 1) mod (90 / (state.level)) ;
   state.board <- replace_with_none (coord_of_obj_list state.projectile_list []) state.board;
+
   (*updates board with new projectiles*)
   let replaced_projectiles = (raise_projectile new_projectile_list) in
   state.board <- (place_objects_list state.board replaced_projectiles);
   (*update the projectile list: the new coordinate list of where projectiles are*)
   state.projectile_list <- replaced_projectiles;
+
 
   let lowered_monsters = lower_monster_list state.mons_list in
   let lowmons_filtered =
@@ -572,8 +565,8 @@ let filter_projectile projectile projectile_list =
 (*true if collisions exists between projectile list and the monster*)
 let rec iter_mons_list state monster_list projectile affected_list =
   match monster_list with
-  |[] -> []
-  |h::t -> if check_collision h projectile
+  | [] -> []
+  | h::t -> if check_collision h projectile
     then
       ((*state.projectile_list <-
           filter_projectile projectile (hide_projectile projectile state.projectile_list)*)
@@ -584,15 +577,15 @@ let rec iter_mons_list state monster_list projectile affected_list =
 (*true if collisions exist between projectile list and monster list*)
 let rec iter_project_list state projectile_list mons_list affected_list : (obj option list) list =
   match projectile_list with
-  |[] -> []
-  |h::t -> iter_mons_list state mons_list h affected_list ::
+  | [] -> []
+  | h::t -> iter_mons_list state mons_list h affected_list ::
            iter_project_list state t mons_list affected_list
 
 (*true if collision between player and monster list*)
 let rec iter_collision player mon_list =
   match mon_list with
-  |[] -> false
-  |h::t -> if check_collision player h then true else iter_collision player t
+  | [] -> false
+  | h::t -> if check_collision player h then true else iter_collision player t
 
 let update_monsters monster =
   match monster with
