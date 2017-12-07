@@ -28,7 +28,8 @@ type state = {
   mutable mons_type_counter: int;
   mutable score : int;
   mutable phase : phase;
-  mutable level : int
+  mutable level : int;
+  mutable comet_interval : int;
 }
 
 (*[update_state] changes the state according to the command that was given
