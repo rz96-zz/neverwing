@@ -3,6 +3,10 @@ open Command
 open Board
 
 
+(*[get_obj_bounds obj] takes [obj] and determines the bounding parameters
+  of the object. It returns the parameters in a tuple of type
+  int*int*int*int. The values correspond to the parameters
+  (bottom row, left column, top row, right column). *)
 let get_obj_bounds obj =
   match obj with
   | (Some(Monster m)) -> if (m.level = 4) then

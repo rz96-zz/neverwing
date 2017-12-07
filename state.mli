@@ -50,4 +50,6 @@ val make_state: int -> int -> state
 
 val draw_state: Dom_html.canvasRenderingContext2D Js.t -> state -> unit
 
+(*[update_objs_loop state] takes [state] and extracts fields [mon_list], [player]
+  and [projectile_list] and calls [update_obj] on those fields.*)
 val update_objs_loop: state -> unit list
