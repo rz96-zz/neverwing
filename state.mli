@@ -46,4 +46,4 @@ val make_state: int -> int -> state
 
 val draw_state: Dom_html.canvasRenderingContext2D Js.t -> state -> unit
 
-val update_objs_loop: state -> unit
+val update_objs_loop: state -> unit list
