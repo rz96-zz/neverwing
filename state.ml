@@ -524,7 +524,7 @@ let rec new_projectiles =
 
 let make_state rows cols =
   let board = init_board rows cols ([]) in
-  let i = rows-5 and j = cols/2 in
+  let i = rows-3 and j = cols/2 in
   let main_player = Some (Player {i=i;j=j;hp=10}) in
   let monsters = new_row_monsters1 1 in
   let monsboard = place_objects_list board monsters in (*the board with monsters*)
