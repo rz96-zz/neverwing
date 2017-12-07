@@ -30,6 +30,8 @@ type state = {
   mutable phase : phase;
   mutable level : int;
   mutable comet_interval : int;
+  mutable item_count : int;
+  mutable item_msg : string
 }
 
 (*[update_state] changes the state according to the command that was given

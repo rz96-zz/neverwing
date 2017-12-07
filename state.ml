@@ -29,7 +29,9 @@ type state = {
   mutable score : int;
   mutable phase : phase;
   mutable level : int;
-  mutable comet_interval : int
+  mutable comet_interval : int;
+  mutable item_count : int;
+  mutable item_msg : string
 }
 
 (*[update_state] changes the state according to the command that was given
@@ -429,12 +431,21 @@ let new_location_j state j control =
 let move_player state (player: player) =
   let i = player.i and j = player.j in
   let j' = new_location_j state j state.control in
+  state.item_count <- state.item_count + 1;
+
   (*let new_projectile_list = raise_projectile state.projectile_list in*)
   (*the next three lines of code updates the projectiles*)
   (*here*)
   let new_projectile_list =
     (Some (Projectile {i=i;j=j'+1}))::(raise_projectile state.projectile_list) in
 
+<<<<<<< HEAD
+=======
+  (*state.board <- (place_objects_list state.board replaced_projectiles);*)
+  (*update the projectile list: the new coordinate list of where projectiles are*)
+  (*state.projectile_list <- replaced_projectiles;*)(*here*)
+
+>>>>>>> 81cef8a32abf407635ddd98e9669c3dbc55e22b7
   state.comet_interval <- (state.comet_interval + 1) mod (90 / (state.level)) ;
   state.board <- replace_with_none (coord_of_obj_list state.projectile_list []) state.board;
 
@@ -462,6 +473,9 @@ let move_player state (player: player) =
   if (state.mons_row_counter = 0) then
     state.mons_type_counter <- (state.mons_type_counter + 1) mod 13;
 
+  if ((state.item_count mod 201)  = 200) then (extract_player state).hp <- (extract_player state).hp+2;
+  if ((state.item_count mod 201)  = 200) then state.item_msg <- "Undamaged streak: HP +2";
+  if ((state.item_count mod 201)  = 70) then state.item_msg <- "";
   (*the next three lines of code updates the monster*)
   (*update board: the row that used to have monsters is replaced with None*)
   state.board <- replace_with_none (coord_of_obj_list state.mons_list []) state.board;
@@ -478,6 +492,7 @@ let move_player state (player: player) =
   state.board <- place_obj state.board i j' (Some (Player player));
   player.j <- j'; (*THIS ISN'T MUTABLE!!! HOW DID MONSTERS UPDATE??*)
   (*what the heck does this do?? no change??*)
+
   if (j = j') then state.control <- (Stop);
   if (state.control != Stop) then
     state.board <- (place_obj state.board i j None)
@@ -535,7 +550,9 @@ let make_state rows cols =
     score = 0;
     phase = Start;
     level = 1;
-    comet_interval = 0
+    comet_interval = 0;
+    item_count = 0;
+    item_msg = ""
     (*coordinates of the monsters*)
   } in
   state
@@ -600,6 +617,10 @@ let update_obj state player mon_list projectile_list=
 
   if iter_collision player mon_list then
     (extract_player state).hp <- (extract_player state).hp-1;
+
+  if iter_collision player mon_list then
+    state.item_count <- 0;
+
   List.map update_monsters (List.concat (iter_project_list state projectile_list mon_list []))
 
 

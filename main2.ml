@@ -154,6 +154,8 @@ let rec main_loop context state =
   update_objs_loop state;
   let key_elt = Dom_html.getElementById "score" in
   key_elt##.innerHTML := (Js.string ("Score: " ^ string_of_int state.score));
+  let key_elt = Dom_html.getElementById "powerups" in
+  key_elt##.innerHTML := (Js.string ("Power Ups: " ^ state.item_msg));
   let key_elt = Dom_html.getElementById "temp" in
   key_elt##.innerHTML := (Js.string ("HP: " ^ string_of_int (extract_player state).hp));
   if ((extract_player state).hp = 0) then state.phase <- End;
