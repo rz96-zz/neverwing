@@ -545,7 +545,7 @@ let make_state rows cols =
     mons_type_counter = 1;
     score = 0;
     phase = Start;
-    level = 0;
+    level = 1;
     (*coordinates of the monsters*)
   } in
   state
