@@ -22,6 +22,7 @@ type projectile =
   {
     i  : int;
     j  : int;
+    mutable collided: bool;
   }
 
 (*Type obj represents any entity/object that would appear on the board*)
