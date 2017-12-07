@@ -48,7 +48,7 @@ val new_row_monsters2 : int -> (obj option) list
 
 (*[new_row_monsters3] creates a new row full of monsters at the highest
   level of difficulty*)
-val new_row_monsters3_init : int -> int -> (obj option) list
+val new_row_monsters3 : int -> (obj option) list
 
 (*[raise_proj] raises a projectile entity on the board, away from player*)
 val raise_proj : projectile -> projectile

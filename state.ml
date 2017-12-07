@@ -18,7 +18,6 @@ type state = {
   mutable mons_type_counter: int;
   mutable score : int;
   mutable phase : phase;
-  mutable level : int;
   mutable comet_interval : int;
   mutable item_count : int;
   mutable item_msg : string
@@ -102,11 +101,6 @@ let rec replace_with_none coord_list board =
   | [] -> board
   | (i, j)::t -> replace_with_none t (place_obj board i j None)
 
-(*[new_row_monsters3] creates a new row of level 3 mosnters and updates
-the level field in the current state*)
-let rec new_row_monsters3 count difficulty state =
-  state.level <- (state.level + 1) mod 8;
-  new_row_monsters3_init count difficulty
 
 (*[new_location_j] returns the new x coordinate [j] the player will move to
   on the user's input [control]*)
@@ -150,7 +144,7 @@ let update_state state (player: player) =
                 lowered_monsters in
   let new_mons_list =
     if state.mons_row_counter = 0 then
-      (if state.score > 50 then lowmons_filtered@(new_row_monsters3 state.mons_type_counter state.level state)
+      (if state.score > 70 then lowmons_filtered@(new_row_monsters3 state.mons_type_counter)
        else if state.score > 25 then lowmons_filtered@(new_row_monsters2 state.mons_type_counter)
        else lowmons_filtered@(new_row_monsters1 state.mons_type_counter))
     else lowmons_filtered in (*an obj option list)*)
@@ -225,7 +219,6 @@ let make_state rows cols =
     mons_type_counter = 1;
     score = 0;
     phase = Start;
-    level = 1;
     comet_interval = 0;
     item_count = 0;
     item_msg = ""

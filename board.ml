@@ -181,72 +181,72 @@ let new_row_monsters2 count =
   at the top of the board. This row varies depending on what value [count] is.
   These cases for [count] give us varied patterns for the monsters. These are
   all monsters at the hardest difficulty*)
-let new_row_monsters3_init count difficulty =
+let new_row_monsters3 count =
   match count with
   |1->[
-      Some (Monster {i=0;j=4;hp=20+(difficulty*5);level=3});
-      Some (Monster {i=0;j=9;hp=20+(difficulty*5);level=3});
-      Some (Monster {i=0;j=14;hp=20+(difficulty*5);level=3});
-      Some (Monster {i=0;j=19;hp=20+(difficulty*5);level=3});
-      Some (Monster {i=0;j=24;hp=20+(difficulty*5);level=3});
+      Some (Monster {i=0;j=4;hp=35;level=3});
+      Some (Monster {i=0;j=9;hp=35;level=3});
+      Some (Monster {i=0;j=14;hp=35;level=3});
+      Some (Monster {i=0;j=19;hp=35;level=3});
+      Some (Monster {i=0;j=24;hp=35;level=3});
     ]
   |2-> [
-      Some (Monster {i=0;j=4;hp=20+(difficulty*5);level=3});
-      Some (Monster {i=0;j=14;hp=20+(difficulty*5);level=3});
-      Some (Monster {i=0;j=24;hp=20+(difficulty*5);level=3});
+      Some (Monster {i=0;j=4;hp=35;level=3});
+      Some (Monster {i=0;j=14;hp=35;level=3});
+      Some (Monster {i=0;j=24;hp=35;level=3});
     ]
   |3 ->[
-      Some (Monster {i=0;j=4;hp=20+(difficulty*5);level=3});
-      Some (Monster {i=0;j=9;hp=20+(difficulty*5);level=3});
-      Some (Monster {i=0;j=19;hp=20+(difficulty*5);level=3});
+      Some (Monster {i=0;j=4;hp=35;level=3});
+      Some (Monster {i=0;j=9;hp=35;level=3});
+      Some (Monster {i=0;j=19;hp=35;level=3});
     ]
   |4 ->[
-      Some (Monster {i=0;j=4;hp=20+(difficulty*5);level=3});
-      Some (Monster {i=0;j=9;hp=20+(difficulty*5);level=3});
-      Some (Monster {i=0;j=24;hp=20+(difficulty*5);level=3});
+      Some (Monster {i=0;j=4;hp=35;level=3});
+      Some (Monster {i=0;j=9;hp=35;level=3});
+      Some (Monster {i=0;j=24;hp=35;level=3});
     ]
   |5 ->[
-      Some (Monster {i=0;j=14;hp=20+(difficulty*5);level=3});
-      Some (Monster {i=0;j=19;hp=20+(difficulty*5);level=3});
+      Some (Monster {i=0;j=14;hp=35;level=3});
+      Some (Monster {i=0;j=19;hp=35;level=3});
     ]
   |6 ->[
-      Some (Monster {i=0;j=9;hp=20+(difficulty*5);level=3});
-      Some (Monster {i=0;j=24;hp=20+(difficulty*5);level=3});
+      Some (Monster {i=0;j=9;hp=35;level=3});
+      Some (Monster {i=0;j=24;hp=35;level=3});
     ]
   |7 ->[
-      Some (Monster {i=0;j=4;hp=20+(difficulty*5);level=3});
-      Some (Monster {i=0;j=9;hp=20+(difficulty*5);level=3});
-      Some (Monster {i=0;j=14;hp=20+(difficulty*5);level=3});
-      Some (Monster {i=0;j=19;hp=20+(difficulty*5);level=3});
+      Some (Monster {i=0;j=4;hp=35;level=3});
+      Some (Monster {i=0;j=9;hp=35;level=3});
+      Some (Monster {i=0;j=14;hp=35;level=3});
+      Some (Monster {i=0;j=19;hp=35;level=3});
     ]
   |8 ->[
-      Some (Monster {i=0;j=9;hp=20+(difficulty*5);level=3});
-      Some (Monster {i=0;j=14;hp=20+(difficulty*5);level=3});
-      Some (Monster {i=0;j=19;hp=20+(difficulty*5);level=3});
+      Some (Monster {i=0;j=9;hp=35;level=3});
+      Some (Monster {i=0;j=14;hp=35;level=3});
+      Some (Monster {i=0;j=19;hp=35;level=3});
     ]
   |9 ->[
-      Some (Monster {i=0;j=9;hp=20+(difficulty*5);level=3});
-      Some (Monster {i=0;j=19;hp=20+(difficulty*5);level=3});
+      Some (Monster {i=0;j=9;hp=35;level=3});
+      Some (Monster {i=0;j=19;hp=35;level=3});
     ]
   |10 ->[
-      Some (Monster {i=0;j=4;hp=20+(difficulty*5);level=3});
-      Some (Monster {i=0;j=19;hp=20+(difficulty*5);level=3});
+      Some (Monster {i=0;j=4;hp=35;level=3});
+      Some (Monster {i=0;j=19;hp=35;level=3});
     ]
   |11 ->[
-      Some (Monster {i=0;j=9;hp=20+(difficulty*5);level=3});
-      Some (Monster {i=0;j=19;hp=20+(difficulty*5);level=3});
+      Some (Monster {i=0;j=9;hp=35;level=3});
+      Some (Monster {i=0;j=19;hp=35;level=3});
     ]
   |12 ->[
-      Some (Monster {i=0;j=4;hp=20+(difficulty*5);level=3});
-      Some (Monster {i=0;j=9;hp=20+(difficulty*5);level=3});
+      Some (Monster {i=0;j=4;hp=35;level=3});
+      Some (Monster {i=0;j=9;hp=35;level=3});
     ]
   |13 ->[
-      Some (Monster {i=0;j=4;hp=20+(difficulty*5);level=3});
-      Some (Monster {i=0;j=24;hp=20+(difficulty*5);level=3});
+      Some (Monster {i=0;j=4;hp=35;level=3});
+      Some (Monster {i=0;j=24;hp=35;level=3});
     ]
   |_-> [
-      Some (Monster {i=0;j=14;hp=20+(difficulty*5);level=3});
-      Some (Monster {i=0;j=24;hp=20+(difficulty*5);level=3});
+      Some (Monster {i=0;j=14;hp=35;level=3});
+      Some (Monster {i=0;j=24;hp=35;level=3});
     ]
 
 let raise_proj (proj : projectile): projectile =
