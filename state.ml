@@ -72,7 +72,7 @@ let rec place_objects_list board objs =
 (*lowers a given object on the screen by one row, if it is a monster*)
 let lower_mons_obj mons_obj =
   match mons_obj with
-  | Some (Monster m) -> if m.hp = 0 then None else Some (Monster (lower_mons m))
+  | Some (Monster m) -> (*if m.hp = 0 then None else*) Some (Monster (lower_mons m))
   | _ -> None (*will never be this case*)
 
 (*lowers all the monsters (that are listed in mons_info_list) *)
@@ -277,33 +277,45 @@ let draw_state context state =
   context##fill
 
 
-let rec iter_project_list projectile_list monster =
-  match projectile_list with
-  |[] -> false
-  |h::t -> if check_collision h monster then true else iter_project_list t monster
+(*true if collisions exists between projectile list and the monster*)
+let rec iter_mons_list monster_list projectile affected_list =
+  match monster_list with
+  |[] -> []
+  |h::t -> if check_collision h projectile
+           then h :: iter_mons_list t projectile affected_list
+           else iter_mons_list t projectile affected_list
         (*also need to change monster's hp if collision is true*)
 
-let rec iter_mons_list projectile_list mons_list =
-  match mons_list with
-  |[] -> false
-  |h::t -> if iter_project_list projectile_list h then true else false
+(*true if collisions exist between projectile list and monster list*)
+let rec iter_project_list projectile_list mons_list affected_list : (obj option list) list =
+  match projectile_list with
+  |[] -> []
+  |h::t -> iter_mons_list mons_list h affected_list ::
+           iter_project_list t mons_list affected_list
 
-    (*true if collision??*)
+(*true if collision between player and monster list*)
 let rec iter_collision player mon_list =
   match mon_list with
   |[] -> false
   |h::t -> if check_collision player h then true else iter_collision player t
 
+let update_monsters monster =
+  match monster with
+  | Some (Monster m) -> (m.hp <- m.hp - 2)
+  | _ -> failwith "not a monster"
+
+
 
 (*this updates the object and runs the collision check*)
-let update_obj state player mon_list=
-  (*  if iter_collision player mon_list then
-    (*replace update score w/ actual collision processing later*)
+let update_obj state player mon_list projectile_list=
+  (*replace update score w/ actual collision processing later*)
 
-    (extract_player state).hp <- (extract_player state).hp-1
-                                                           *)
-  if iter_mons_list projectile_list mon_list then
-    state.score <- state.score + 1
+  if iter_collision player mon_list then
+    (extract_player state).hp <- (extract_player state).hp-1;
+  List.map update_monsters (List.concat (iter_project_list projectile_list mon_list []))
+
+
+  (*if iter_collision player mon_list then state.score <- state.score + 1*)
 
 
 
