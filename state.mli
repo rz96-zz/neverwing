@@ -24,7 +24,6 @@ type state = {
   mutable mons_type_counter: int;
   mutable score : int;
   mutable phase : phase;
-  mutable level : int;
   mutable comet_interval : int;
   mutable item_count : int;
   mutable item_msg : string
