@@ -206,7 +206,7 @@ let detect_keydown state =
            (fun () -> assert false) in
        if (state.phase = Active) then
          key_down state (Js.to_string key_pressed)
-       else start_game state (Js.to_string key_pressed);
+       else if (state.phase = Start) then start_game state (Js.to_string key_pressed);
        Lwt.return ())
 
 
