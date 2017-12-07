@@ -445,7 +445,7 @@ let move_player state (player: player) =
   (*state.board <- (place_objects_list state.board replaced_projectiles);*)
   (*update the projectile list: the new coordinate list of where projectiles are*)
   (*state.projectile_list <- replaced_projectiles;*)(*here*)
-  state.comet_interval <- state.comet_interval + 1;
+  state.comet_interval <- (state.comet_interval + 1) mod (90 / (state.level)) ;
   state.board <- replace_with_none (coord_of_obj_list state.projectile_list []) state.board;
   (*updates board with new projectiles*)
   let replaced_projectiles = (raise_projectile new_projectile_list) in
@@ -466,7 +466,7 @@ let move_player state (player: player) =
        else lowmons_filtered@(new_row_monsters1 state.mons_type_counter))
     else lowmons_filtered in (*an obj option list)*)
 
-  let new_mons_list = if (state.comet_interval = 30) then (Some (Monster {i=0;j=4;hp=999;level=4}))::new_mons_list
+  let new_mons_list = if (state.comet_interval = 30) then (Some (Monster {i=0;j=(extract_player state).j;hp=999;level=4}))::new_mons_list
     else new_mons_list in
 
   if (state.mons_row_counter = 0) then
