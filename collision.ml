@@ -9,7 +9,7 @@ open Board
 let get_obj_bounds obj =
   match obj with
   | (Some(Monster m)) -> if (m.level = 4) then
-      (m.i, m.j+1, m.i + 5, m.j + 5) else (m.i, m.j+1, m.i + 2, m.j + 2)
+      (m.i, m.j, m.i + 5, m.j + 5) else (m.i, m.j, m.i + 2, m.j + 2)
   | (Some(Player p)) -> (p.i, p.j, p.i + 1, p.j+2)
   | (Some(Projectile pro)) -> (pro.i, pro.j, pro.i, pro.j)
   | None -> (0, 0, 0, 0)
