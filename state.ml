@@ -1,22 +1,13 @@
 open Board
-open Sprite
 open Gui
 open Command
 open Collision
 
-
 type board = Board.board
-
-(*Phase of the game*)
 type phase =
   |Start
   |Active
   |End
-
-(*State represents the game state which consists of the game board
-  user input (control), the player, lists of everything on the board
-  ,score, game phase, level of diffiuclty and counters to signifiy
-  certain game actions*)
 type state = {
   mutable board : (obj option) list list;
   mutable control : control;
@@ -40,8 +31,8 @@ let extract_player state=
     | Some (Player p) -> p
     | _ -> failwith "not a player"
 
-(*Helper functions to traverse through the 2d list board and insert objects
-in the appropriate coordinate of the board*)
+(*[find_coord] and [find_row] are helper functions to traverse through the 2D
+  list board and insert objects in the appropriate coordinate of the board*)
 let rec find_coord row j obj new_row =
   let last_col = if j = 0 then true else false in
   match row with
@@ -56,10 +47,13 @@ let rec find_row board i j obj new_board =
   |h::t-> let next = if last_row then find_coord h j obj [] else h in
     find_row t (i-1) j obj ((next)::new_board)
 
+
+(*[place_obj board i j obj] places the [obj] on the board at the coordinates
+  (i, j)*)
 let place_obj board i j obj = find_row board i j obj []
 
-(*places all objects on the board given list of objects with coordinates of
-  where they are. *)
+(*[place_objects_list board objs] places all objects in list [objs] onto the
+  board [board]*)
 let rec place_objects_list board objs =
   match objs with
   | [] -> board
@@ -69,18 +63,19 @@ let rec place_objects_list board objs =
     | Some (Monster m) -> place_objects_list (place_obj board (m.i) (m.j) obj) t
     | _ -> place_objects_list board t (*if monster was turned to None*)
 
-(*lowers a given object on the screen by one row, if it is a monster*)
+(*[lower_mons_obj obj] lowers [obj] on the screen by one row, if [obj]
+  is a monster*)
 let lower_mons_obj mons_obj =
   match mons_obj with
   | Some (Monster m) -> if m.hp <= 0 then None else Some (Monster (lower_mons m))
   | _ -> None (*will never be this case*)
 
-(*lowers all the monsters (that are listed in mons_info_list) *)
+(*[lower_monster_list lst] lowers all the monsters in [lst] on the board*)
 let lower_monster_list mons_obj_list =
   List.map lower_mons_obj mons_obj_list
 
-(*[raise_projectile_obj] is a helper function that individually moves one
-peojectile object up one in the board*)
+(*[raise_projectile_obj obj] raises [obj] on the screen by one y coordinate, if
+  [obj] is a projectile*)
 let raise_projectile_obj proj_obj =
   match proj_obj with
   | Some (Projectile p)-> Some (Projectile (raise_proj p))
@@ -91,8 +86,8 @@ let raise_projectile_obj proj_obj =
 let raise_projectile projectile_list =
   List.map raise_projectile_obj projectile_list
 
-(*replaces ((i, j) obj) with the object as none if object was monster*)
-(*returns a list of where the monsters or projectileswere*)
+(*[coord_of_obj_list lst] returns a list of the coordinates (i, j) of the
+  objects in list [lst]*)
 let rec coord_of_obj_list obj_list init=
   match obj_list with
   | [] -> init
@@ -100,13 +95,15 @@ let rec coord_of_obj_list obj_list init=
   | (Some (Projectile p))::t -> coord_of_obj_list t ((p.i, p.j)::init)
   | _::t -> coord_of_obj_list t init
 
-(*puts None on every coordinate in coord_list
-returns a new board*)
+(*[replace_with_none lst board] places None on every coordinate in [lst] on
+  a [board]*)
 let rec replace_with_none coord_list board =
   match coord_list with
   | [] -> board
   | (i, j)::t -> replace_with_none t (place_obj board i j None)
 
+(*[new_row_monsters3] creates a new row of level 3 mosnters and updates
+the level field in the current state*)
 let rec new_row_monsters3 count difficulty state =
   state.level <- (state.level + 1) mod 8;
   new_row_monsters3_init count difficulty
@@ -120,11 +117,11 @@ let new_location_j state j control =
     | Stop -> j
 
 
-(*[move_player] is called continuously in the main loop.
-  This updates the player position by calling other Helper
-  functions, updates counters which will determine certain
-  events in the game such as health recovery and incoming comets.
-  The board is also updated in [move_player].*)
+(*[update_state] is called continuously in the main loop.
+  This updates the board, such as updating player position by calling other
+  helper functions, updating counters which will determine certain
+  events in the game such as health recovery and incoming comets, and updating
+  monster and projectile locations.*)
 let update_state state (player: player) =
   let i = player.i and j = player.j in
   let j' = new_location_j state j state.control in
@@ -198,26 +195,25 @@ let update_state state (player: player) =
   else state.board <- (place_obj state.board i j (Some (Player player)))
   (****************************************************************************)
 
-(**END MOVEPLAYER LOOP*********************************************************)
+(**END UPDATE_STATE LOOP*******************************************************)
 
-(*These functions create the board at the start of the Active phase*)
+
+(*[init_row] and [init_board] create the board at the start of the Active phase*)
 let rec init_row len arr =
   if (len = 0) then arr else init_row (len-1) (None::arr)
 
 let rec init_board rows cols arr =
   if rows = 0 then arr else init_board (rows-1) cols ((init_row cols [])::arr)
 
-
-
-(*Initializes state at the start of the Active phase*)
+(*[make_state] initializes state at the start of the Active phase*)
 let make_state rows cols =
   let board = init_board rows cols ([]) in
   let i = rows-3 and j = cols/2 in
   let main_player = Some (Player {i=i;j=j;hp=10}) in
   let monsters = new_row_monsters1 1 in
-  let monsboard = place_objects_list board monsters in (*the board with monsters*)
-  let newboard = place_obj monsboard i j main_player in (*board with monsters and player*)
-  let final_board = place_objects_list newboard new_projectiles in (*board with monsters, players, and projectiles (new_projectiles in Board)*)
+  let monsboard = place_objects_list board monsters in
+  let playerboard = place_obj monsboard i j main_player in
+  let final_board = place_objects_list playerboard new_projectiles in
 
   let state = {
     board = final_board;
@@ -236,7 +232,7 @@ let make_state rows cols =
   } in
   state
 
-(*Draws representation of the state on to the canvas*)
+(*[draw_state] draws representation of the state on to the canvas*)
 let draw_state context state =
   let rows = List.length state.board in
   let cols = List.length (List.nth state.board 0) in

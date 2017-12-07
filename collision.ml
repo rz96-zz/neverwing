@@ -1,7 +1,5 @@
-open Sprite
 open Command
 open Board
-
 
 let get_obj_bounds obj =
   match obj with
@@ -11,7 +9,6 @@ let get_obj_bounds obj =
   | (Some(Projectile pro)) -> (pro.i, pro.j, pro.i, pro.j)
   | None -> (0, 0, 0, 0)
 
-(*true if collisions*)
 let check_collision obj1 obj2 =
   let bounds1 = get_obj_bounds obj1 and bounds2 = get_obj_bounds obj2 in
   match (bounds1, bounds2) with

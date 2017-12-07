@@ -7,25 +7,27 @@ open Command
 (*Initialize*)
 let () = Random.self_init ()
 
-(*[set_control] changes [state]'s' control field to [control]*)
+(*[set_control control state] changes [state]'s control field to [control]*)
 let set_control control state =
   state.control <- control
 
-(*[set_phase] changes [state]'s' control field to phase]*)
+(*[set_phase phase state] changes [state]'s' control field to [phase]*)
 let set_phase phase state =
   state.phase <- phase
 
-(*starts game by changing state to Active*)
+(*[start_game state pressed] starts game by changing [state] to Active when
+  [pressed]*)
 let start_game state = function
   | _ -> set_phase Active state
 
-(*extracts player from state to allow us to change fields in player*)
+(*[extract_player state] extracts [player] from [state] to allow us to
+  change fields in [player]*)
 let extract_player state=
   match state.player with
     | Some (Player p) -> p
     | _ -> failwith "not a player" (*will never be this case*)
 
-(*Main game Loop when state is Active and game is ongoing*)
+(*[main_loop] is the main game loop when state is Active and game is ongoing*)
 let rec main_loop context state =
   Lwt_js.sleep 0.05 >>= fun () ->
   update_state state (extract_player state);
@@ -42,8 +44,8 @@ let rec main_loop context state =
   start_loop context state
   else main_loop context state
 
-(*Game loop before game begins. detects key presses to change to active state
-to go to main loop.*)
+(*[start_loop] is the game loop before game begins. Detects key presses
+  to change to active state in order to go to main game loop.*)
 and start_loop context state =
   Lwt_js.sleep 0.05 >>= fun () ->
   let key_elt = Dom_html.getElementById "score" in
@@ -55,8 +57,9 @@ and start_loop context state =
   if (state.phase = Active) then main_loop context state
   else start_loop context state
 
-(*Helper functions that respond to key presses to change
-  the [control] field in [state] based on user input*)
+(*[key_up], [key_down], [detect_keyup] [detect_keydown] are helper functions
+  that respond to key presses to change the [control] field in [state]
+  based on user input*)
 let key_up state = function
   | "d" -> set_control Stop state
   | "a" -> set_control Stop state
@@ -92,12 +95,14 @@ let detect_keydown state =
        else if (state.phase = Start) then start_game state (Js.to_string key_pressed);
        Lwt.return ())
 
+(*[flip f x y] reverses the inputs [x] and [y] into function [f]*)
 let flip f x y = f y x
 
 (*Coerce to canvas*)
 let _ : unit Lwt.t =
   let%lwt () = Lwt_js_events.domContentLoaded () in
-  let canvas = Dom_html.getElementById "canvas" |> Dom_html.CoerceTo.canvas |> flip Js.Opt.get (fun () -> assert false) in
+  let canvas = Dom_html.getElementById "canvas" |> Dom_html.CoerceTo.canvas
+               |> flip Js.Opt.get (fun () -> assert false) in
   let context = canvas##getContext Dom_html._2d_ in
   let state = make_state 50 30 in
 

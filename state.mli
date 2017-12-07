@@ -1,23 +1,19 @@
 open Board
-open Sprite
 open Command
 
 (*Type board represents the coordinate board with objects in it*)
 type board = Board.board
 
+(*Type phase represents the phase the current game is in*)
 type phase =
   |Start
   |Active
   |End
-(*Type state represents the current game state, including information
-  such as monster locations, HP levels, rows until next boss, and game over
-  type state = {
-    bgd: sprite;
-    context: Dom_html.canvasRenderingContext2D Js.t;
-    mutable score: int;
-    mutable game_over: bool;
-  }*)
 
+(*Type state represents the game state which consists of the game board
+  user input (control), the player, lists of everything on the board (monsters
+  and projectiles), score, game phase, messages to display to the user, and
+  various counters to signify certain game features and actions*)
 type state = {
   mutable board : (obj option) list list;
   mutable control : control;
@@ -34,20 +30,13 @@ type state = {
   mutable item_msg : string
 }
 
-(*[update_state] changes the state according to the command that was given
-and moving the rows of monsters down by one each iteration*)
-(* val update_state : Command.command -> state -> state *)
-(*every command, you should also update the hp of the monsters
-  and of the sprite itself *)
-
-(*val update_state : Dom_html.canvasElement Js.t
-  -> unit*)
-
-
+(*[update_state] updates the state of the game*)
 val update_state: state -> player -> unit
 
+(*[make_state] initializes state at the start of the Active phase*)
 val make_state: int -> int -> state
 
+(*[draw_state] draws representation of the state on to the canvas*)
 val draw_state: Dom_html.canvasRenderingContext2D Js.t -> state -> unit
 
 val update_objs_loop: state -> unit list
