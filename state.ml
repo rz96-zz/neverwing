@@ -559,13 +559,14 @@ let draw_state context state =
   done;
   context##fill
 
-let hide_projectile projectile projectile_list =
-  List.filter (fun proj -> projectile <> proj) projectile_list
-
-  (*match projectile_list with
+(*let rec hide_projectile projectile projectile_list =
+  match projectile_list with
   |[] -> []
   |h::t -> if (h = projectile) then None :: hide_projectile projectile t else
-            h :: hide_projectile projectile t*)
+      h :: hide_projectile projectile t
+
+let filter_projectile projectile projectile_list =
+  List.filter (fun proj -> projectile <> proj) projectile_list*)
 
 (*true if collisions exists between projectile list and the monster*)
 let rec iter_mons_list state monster_list projectile affected_list =
@@ -573,7 +574,8 @@ let rec iter_mons_list state monster_list projectile affected_list =
   |[] -> []
   |h::t -> if check_collision h projectile
     then
-      ((state.projectile_list <- hide_projectile projectile state.projectile_list);
+      ((*state.projectile_list <-
+          filter_projectile projectile (hide_projectile projectile state.projectile_list)*)
       (h :: iter_mons_list state t None affected_list))
     else iter_mons_list state t projectile affected_list
         (*also need to change monster's hp if collision is true*)
