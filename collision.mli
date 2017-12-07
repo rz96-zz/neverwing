@@ -1,4 +1,3 @@
-(*characters are moveable items*)
 open Sprite
 open Board
 

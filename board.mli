@@ -53,5 +53,5 @@ val new_row_monsters3_init : int -> int -> (obj option) list
 (*[raise_proj] raises a projectile entity on the board, away from player*)
 val raise_proj : projectile -> projectile
 
-(*Initializes new projectiles*)
+(*[new_projectiles] initializes new projectiles*)
 val new_projectiles : (obj option) list

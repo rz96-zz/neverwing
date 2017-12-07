@@ -249,11 +249,10 @@ let new_row_monsters3_init count difficulty =
       Some (Monster {i=0;j=24;hp=20+(difficulty*5);level=3});
     ]
 
-
 let raise_proj (proj : projectile): projectile =
   {proj with i = proj.i-1}
 
-(*Initializes new projectiles*)
+(*Initializes the first three projectiles*)
 let new_projectiles =
   [Some (Projectile {i=42;j=16;collided = false});
    Some (Projectile {i=44;j=16;collided = false});
