@@ -38,7 +38,8 @@ let rec main_loop context state =
   let key_elt = Dom_html.getElementById "powerups" in
   key_elt##.innerHTML := (Js.string ("Power Ups: " ^ state.item_msg));
   let key_elt = Dom_html.getElementById "temp" in
-  key_elt##.innerHTML := (Js.string ("HP: " ^ string_of_int (extract_player state).hp));
+  key_elt##.innerHTML :=
+    (Js.string ("HP: " ^ string_of_int (extract_player state).hp));
   if ((extract_player state).hp = 0) then state.phase <- End;
   if (state.phase <> Active) then
   start_loop context state
@@ -52,7 +53,8 @@ and start_loop context state =
   if (state.phase = Start) then
     key_elt##.innerHTML := (Js.string ("Press any key to begin the game"))
   else if (state.phase = End) then
-    key_elt##.innerHTML := (Js.string ("Game over. Your score is "^ string_of_int state.score));
+    key_elt##.innerHTML :=
+      (Js.string ("Game over. Your score is "^ string_of_int state.score));
     state = make_state 50 30;
   if (state.phase = Active) then main_loop context state
   else start_loop context state
@@ -90,9 +92,10 @@ let detect_keydown state =
        let key_pressed =
          Js.Optdef.get ev##.key
            (fun () -> assert false) in
-       if (state.phase = Active) then
-         key_down state (Js.to_string key_pressed)
-       else if (state.phase = Start) then start_game state (Js.to_string key_pressed);
+       if (state.phase = Active)
+       then key_down state (Js.to_string key_pressed)
+       else if (state.phase = Start)
+       then start_game state (Js.to_string key_pressed);
        Lwt.return ())
 
 (*[flip f x y] reverses the inputs [x] and [y] into function [f]*)

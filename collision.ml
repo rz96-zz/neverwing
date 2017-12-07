@@ -17,7 +17,8 @@ let get_obj_bounds obj =
 let check_collision obj1 obj2 =
   let bounds1 = get_obj_bounds obj1 and bounds2 = get_obj_bounds obj2 in
   match (bounds1, bounds2) with
-  | ((bottom_row1, left_col1, top_row1, right_col1), (bottom_row2, left_col2, top_row2, right_col2))
+  | ((bottom_row1, left_col1, top_row1, right_col1),
+     (bottom_row2, left_col2, top_row2, right_col2))
     -> if  (top_row1 = bottom_row2 || top_row2 = bottom_row1) &&
          (left_col1 <= right_col2) && (right_col1 >= left_col2)
     then true else false

@@ -58,23 +58,26 @@ let rec place_objects_list board objs =
   | [] -> board
   | obj::t ->
     match obj with
-    | Some (Projectile p) -> place_objects_list (place_obj board (p.i) (p.j) obj) t
-    | Some (Monster m) -> place_objects_list (place_obj board (m.i) (m.j) obj) t
+    | Some(Projectile p)
+      -> place_objects_list (place_obj board (p.i) (p.j) obj) t
+    | Some (Monster m)
+      -> place_objects_list (place_obj board (m.i) (m.j) obj) t
     | _ -> place_objects_list board t (*if monster was turned to None*)
 
 (*[lower_mons_obj obj] lowers [obj] on the screen by one row, if [obj]
   is a monster*)
 let lower_mons_obj mons_obj =
   match mons_obj with
-  | Some (Monster m) -> if m.hp <= 0 then None else Some (Monster (lower_mons m))
+  | Some (Monster m)
+    -> if m.hp <= 0 then None else Some (Monster (lower_mons m))
   | _ -> None (*will never be this case*)
 
 (*[lower_monster_list lst] lowers all the monsters in [lst] on the board*)
 let lower_monster_list mons_obj_list =
   List.map lower_mons_obj mons_obj_list
 
-(*[raise_projectile_obj obj] raises [obj] on the screen by one y coordinate, if
-  [obj] is a projectile*)
+(*[raise_projectile_obj obj] raises [obj] on the screen by one y coordinate,
+  if [obj] is a projectile*)
 let raise_projectile_obj proj_obj =
   match proj_obj with
   | Some (Projectile p)-> Some (Projectile (raise_proj p))
@@ -120,20 +123,22 @@ let update_state state (player: player) =
   let i = player.i and j = player.j in
   let j' = new_location_j state j state.control in
   state.item_count <- state.item_count + 1;
-  state.comet_interval <- (state.comet_interval + 1) mod (90 / (state.level)) ;
+  state.comet_interval <- (state.comet_interval + 1) mod (70) ;
 
   (******************************PROJECTILES***********************************)
   let new_projectile_list =
-    (Some (Projectile {i=i;j=j'+1;collided = false}))::(raise_projectile state.projectile_list) in
-  state.board <- replace_with_none (coord_of_obj_list state.projectile_list []) state.board;
+    (Some (Projectile {i=i;j=j'+1;collided = false}))
+    ::(raise_projectile state.projectile_list) in
+  state.board <- replace_with_none (coord_of_obj_list state.projectile_list [])
+                                   state.board;
   (*updates board with new projectiles*)
   let replaced_projectiles = (raise_projectile new_projectile_list) in
 
-  let filtered_projectiles = List.filter (fun x -> match x with | Some _ -> true | _ -> false)
-                              replaced_projectiles in
+  let filtered_projectiles =
+    List.filter (fun x -> match x with | Some _ -> true | _ -> false)
+                replaced_projectiles in
 
   state.board <- (place_objects_list state.board filtered_projectiles);
-  (*update the projectile list: the new coordinate list of where projectiles are*)
   state.projectile_list <- filtered_projectiles;
   (****************************************************************************)
 
@@ -144,21 +149,25 @@ let update_state state (player: player) =
                 lowered_monsters in
   let new_mons_list =
     if state.mons_row_counter = 0 then
-      (if state.score > 70 then lowmons_filtered@(new_row_monsters3 state.mons_type_counter)
-       else if state.score > 25 then lowmons_filtered@(new_row_monsters2 state.mons_type_counter)
+      (if state.score > 70
+       then lowmons_filtered@(new_row_monsters3 state.mons_type_counter)
+       else if state.score > 25
+       then lowmons_filtered@(new_row_monsters2 state.mons_type_counter)
        else lowmons_filtered@(new_row_monsters1 state.mons_type_counter))
     else lowmons_filtered in (*an obj option list)*)
 
   let new_mons_list = if (state.comet_interval = 30)
-    then (Some (Monster {i=0;j=(extract_player state).j;hp=999;level=4}))::new_mons_list
+    then (Some (Monster {i=0;j=(extract_player state).j;hp=999;level=4}))
+         ::new_mons_list
     else new_mons_list in
 
   if (state.mons_row_counter = 0) then
     state.mons_type_counter <- (state.mons_type_counter + 1) mod 13;
 
   (*update board: the row that used to have monsters is replaced with None*)
-  state.board <- replace_with_none (coord_of_obj_list state.mons_list []) state.board;
-  (*update board: the new row with monsters now is updated to reflect the monsters*)
+  state.board <- replace_with_none (coord_of_obj_list state.mons_list [])
+                                   state.board;
+  (*update board: the new row with monsters updated to reflect the monsters*)
   state.board <- (place_objects_list state.board new_mons_list);
   (*update mons_coord_list: the new coordinate list of where the monsters are*)
 
@@ -167,13 +176,15 @@ let update_state state (player: player) =
   (****************************************************************************)
 
   state.score <- state.score +
-                 (List.length lowered_monsters) - (List.length lowmons_filtered);
+              (List.length lowered_monsters) - (List.length lowmons_filtered);
 
   (********************************ITEMS**************************************)
   (*Examines counters and health to determine if player has earned a health
     recovery*)
-  if ((state.item_count mod 201)  = 200 && (extract_player state).hp < 8) then (extract_player state).hp <- (extract_player state).hp+1;
-  if ((state.item_count mod 201)  = 200 && (extract_player state).hp < 8) then state.item_msg <- "Undamaged streak: HP +1";
+  if ((state.item_count mod 201)  = 200 && (extract_player state).hp < 8)
+  then (extract_player state).hp <- (extract_player state).hp+1;
+  if ((state.item_count mod 201)  = 200 && (extract_player state).hp < 8)
+  then state.item_msg <- "Undamaged streak: HP +1";
   if ((state.item_count mod 201)  = 70) then state.item_msg <- "";
   (****************************************************************************)
 
@@ -192,7 +203,7 @@ let update_state state (player: player) =
 (**END UPDATE_STATE LOOP*******************************************************)
 
 
-(*[init_row] and [init_board] create the board at the start of the Active phase*)
+(*[init_row] & [init_board] create the board at the start of the Active phase*)
 let rec init_row len arr =
   if (len = 0) then arr else init_row (len-1) (None::arr)
 
@@ -242,9 +253,9 @@ let draw_state context state =
 (*[iter_mons_list state monster_list projectile affected_list] takes
   [monster_list] and iterates through the list to check if any of the
   monsters have collided with [projectile]. If there is a collision, then
-  the [collided] field of [projectile] is changed to true, and the collided monster
-  [h] is appended to [affected_list]. If a collision does not exist, then
-  [iter_mons_list] is called to continue iterating through [monster_list].*)
+  the [collided] field of [projectile] is changed to true, and the collided
+  monster [h] is appended to [affected_list]. If a collision does not exist,
+  then [iter_mons_list] is called to continue iterating through [monster_list].*)
 let rec iter_mons_list state monster_list projectile affected_list =
   match monster_list with
   | [] -> []
@@ -257,17 +268,20 @@ let rec iter_mons_list state monster_list projectile affected_list =
     else iter_mons_list state t projectile affected_list
 
 (*[iter_project_list state projectile_list mons_list affected_list] takes
-  [projectile_list] and iterates through the projectiles, calling [iter_mons_list]
-    to check if collisions occur between each projectile and [mons_list].*)
-let rec iter_project_list state projectile_list mons_list affected_list : (obj option list) list =
+  [projectile_list] and iterates through the projectiles, calling
+  [iter_mons_list] to check if collisions occur between each projectile
+  and [mons_list].*)
+let rec iter_project_list state projectile_list mons_list affected_list
+  : (obj option list) list =
   match projectile_list with
   | [] -> []
   | h::t -> iter_mons_list state mons_list h affected_list ::
            iter_project_list state t mons_list affected_list
 
-(*[iter_collision player mon_list] takes [mon_list] and iterates through, checking
-  if it has collided with [player]. If a collision exists, then true is returned,
-  else [iter_collision] is called and the iteration continues.*)
+(*[iter_collision player mon_list] takes [mon_list] and iterates through,
+  checking if it has collided with [player]. If a collision exists, then
+  true is returned, else [iter_collision] is called and the iteration
+  continues.*)
 let rec iter_collision player mon_list =
   match mon_list with
   | [] -> false
@@ -280,15 +294,16 @@ let update_monsters monster =
   | Some (Monster m) -> (m.hp <- m.hp - 2)
   | _ -> failwith "not a monster"
 
-(*[update_obj state player mon_list projectile_list] runs the collision checks with
-  [iter_collision] and [iter_project_list], and updates the state and health points of
-  [player] and [mon_list] accordingly *)
+(*[update_obj state player mon_list projectile_list] runs the collision
+  checks with [iter_collision] and [iter_project_list], and updates the
+  state and health points of [player] and [mon_list] accordingly *)
 let update_obj state player mon_list projectile_list=
   if iter_collision player mon_list then
     (extract_player state).hp <- (extract_player state).hp-1;
   if iter_collision player mon_list then
     state.item_count <- 0;
-  List.map update_monsters (List.concat (iter_project_list state projectile_list mon_list []))
+  List.map update_monsters
+    (List.concat (iter_project_list state projectile_list mon_list []))
 
 let update_objs_loop state =
   let mon_list = state.mons_list and player = state.player
