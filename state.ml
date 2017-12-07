@@ -431,23 +431,20 @@ let move_player state (player: player) =
   let i = player.i and j = player.j in
   let j' = new_location_j state j state.control in
   state.item_count <- state.item_count + 1;
+  state.comet_interval <- (state.comet_interval + 1) mod (90 / (state.level)) ;
 
-  (*let new_projectile_list = raise_projectile state.projectile_list in*)
-  (*the next three lines of code updates the projectiles*)
-  (*here*)
+  (******************************PROJECTILES***********************************)
   let new_projectile_list =
     (Some (Projectile {i=i;j=j'+1}))::(raise_projectile state.projectile_list) in
-
-  state.comet_interval <- (state.comet_interval + 1) mod (90 / (state.level)) ;
   state.board <- replace_with_none (coord_of_obj_list state.projectile_list []) state.board;
-
   (*updates board with new projectiles*)
   let replaced_projectiles = (raise_projectile new_projectile_list) in
   state.board <- (place_objects_list state.board replaced_projectiles);
   (*update the projectile list: the new coordinate list of where projectiles are*)
   state.projectile_list <- replaced_projectiles;
+  (****************************************************************************)
 
-
+  (*******************************MONSTERS*************************************)
   let lowered_monsters = lower_monster_list state.mons_list in
   let lowmons_filtered =
     List.filter (fun x -> match x with | Some _ -> true | _ -> false)
@@ -465,9 +462,6 @@ let move_player state (player: player) =
   if (state.mons_row_counter = 0) then
     state.mons_type_counter <- (state.mons_type_counter + 1) mod 13;
 
-  if ((state.item_count mod 201)  = 200) then (extract_player state).hp <- (extract_player state).hp+2;
-  if ((state.item_count mod 201)  = 200) then state.item_msg <- "Undamaged streak: HP +2";
-  if ((state.item_count mod 201)  = 70) then state.item_msg <- "";
   (*the next three lines of code updates the monster*)
   (*update board: the row that used to have monsters is replaced with None*)
   state.board <- replace_with_none (coord_of_obj_list state.mons_list []) state.board;
@@ -476,10 +470,19 @@ let move_player state (player: player) =
   (*update mons_coord_list: the new coordinate list of where the monsters are*)
   state.mons_list <- new_mons_list;
   state.mons_row_counter <- (state.mons_row_counter + 1) mod 20;
+  (****************************************************************************)
+
+  (********************************ITEMS**************************************)
+  if ((state.item_count mod 201)  = 200) then (extract_player state).hp <- (extract_player state).hp+2;
+  if ((state.item_count mod 201)  = 200) then state.item_msg <- "Undamaged streak: HP +2";
+  if ((state.item_count mod 201)  = 70) then state.item_msg <- "";
+  (****************************************************************************)
+
 
   state.score <- state.score +
                  (List.length lowered_monsters) - (List.length lowmons_filtered);
 
+  (********************************PLAYER**************************************)
   (*these updates the player's location*)
   state.board <- place_obj state.board i j' (Some (Player player));
   player.j <- j'; (*THIS ISN'T MUTABLE!!! HOW DID MONSTERS UPDATE??*)
@@ -489,17 +492,10 @@ let move_player state (player: player) =
   if (state.control != Stop) then
     state.board <- (place_obj state.board i j None)
   else state.board <- (place_obj state.board i j (Some (Player player)))
+  (****************************************************************************)
 
+(**END MOVEPLAYER LOOP*********************************************************)
 
-(*let update_state canvas =
-  let ctx = canvas##getContext (Dom_html._2d_) in
-  let state = {
-      bgd = Sprite.init_bgd ctx;
-      context = ctx;
-      score = 0;
-      game_over = false;
-  } in
-  Gui.draw_bgd state.bgd 100.*)
 
   let rec init_row len arr =
     if (len = 0) then arr else init_row (len-1) (None::arr)
@@ -512,13 +508,6 @@ let move_player state (player: player) =
 let rec new_projectiles =
   [Some (Projectile {i=42;j=16});Some (Projectile {i=44;j=16});Some (Projectile {i=46;j=16})]
 
-
-(*run_collision should pattern match for each possible collision that could happen
-  and execute what happens during the collision eg. new items being made or disappearing*)
-
-(*update_collision should constantly check through update loop if there is a collision occuring*)
-
-(*update_obj updates objects when something collides*)
 
 
 let make_state rows cols =
@@ -544,7 +533,6 @@ let make_state rows cols =
     comet_interval = 0;
     item_count = 0;
     item_msg = ""
-    (*coordinates of the monsters*)
   } in
   state
 
