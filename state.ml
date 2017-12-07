@@ -133,7 +133,7 @@ let move_player state (player: player) =
 
   (******************************PROJECTILES***********************************)
   let new_projectile_list =
-    (Some (Projectile {i=i;j=j'+1}))::(raise_projectile state.projectile_list) in
+    (Some (Projectile {i=i;j=j'+1;collided = false}))::(raise_projectile state.projectile_list) in
   state.board <- replace_with_none (coord_of_obj_list state.projectile_list []) state.board;
   (*updates board with new projectiles*)
   let replaced_projectiles = (raise_projectile new_projectile_list) in
@@ -261,9 +261,16 @@ let rec iter_mons_list state monster_list projectile affected_list =
   | [] -> []
   | h::t -> if check_collision h projectile
     then
+<<<<<<< HEAD
       (state.projectile_list <-
         (update_projectile_list projectile state.projectile_list);
         (h :: iter_mons_list state t None affected_list))
+=======
+      ((match projectile with
+        | Some (Projectile(p)) -> p.collided <- true
+        | _ -> ());
+      (h :: iter_mons_list state t None affected_list))
+>>>>>>> 5d44b904c6c662ff38e0ddb313f1b5e9fdcd1d89
     else iter_mons_list state t projectile affected_list
 
         (***********LOL WHAT*******************************************************************************************)
