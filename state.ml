@@ -579,7 +579,7 @@ let rec iter_mons_list state monster_list projectile affected_list =
           filter_projectile projectile (hide_projectile projectile state.projectile_list)*)
       (h :: iter_mons_list state t None affected_list))
     else iter_mons_list state t projectile affected_list
-        (*also need to change monster's hp if collision is true*)
+
 
 (*true if collisions exist between projectile list and monster list*)
 let rec iter_project_list state projectile_list mons_list affected_list : (obj option list) list =
@@ -602,23 +602,18 @@ let update_monsters monster =
 
 
 (*this updates the object and runs the collision check*)
-let update_obj state player mon_list projectile_list=
+let update_obj state player mon_list projectile_list =
   (*replace update score w/ actual collision processing later*)
 
   if iter_collision player mon_list then
     (extract_player state).hp <- (extract_player state).hp-1;
   List.map update_monsters (List.concat (iter_project_list state projectile_list mon_list []))
 
-
   (*if iter_collision player mon_list then state.score <- state.score + 1*)
-
-
 
 let update_objs_loop state =
   let mon_list = state.mons_list and player = state.player
       and projectile_list = state.projectile_list in
   update_obj state player mon_list projectile_list
 
-(*object list -- iterate through monster list, projectile list, player.
-  change this later when have projectile list, currently only iterating
-  through player and monster list*)
+(*object list -- iterate through monster list, projectile list, player.*)
