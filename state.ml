@@ -245,13 +245,13 @@ let draw_state context state =
   done;
   context##fill
 
-let rec update_projectile_list projectile proj_list =
-  match proj_list with
-  | [] -> []
-  | h::t -> if (h = projectile) then None :: t
-    else h :: update_projectile_list projectile t
 
-(*true if collisions exists between projectile list and the monster*)
+(*[iter_mons_list state monster_list projectile affected_list] takes
+  [monster_list] and iterates through the list to check if any of the
+  monsters have collided with [projectile]. If there is a collision, then
+  the [collided] field of [projectile] is changed to true, and the collided monster
+  [h] is appended to [affected_list]. If a collision does not exist, then
+  [iter_mons_list] is called to continue iterating through [monster_list].*)
 let rec iter_mons_list state monster_list projectile affected_list =
   match monster_list with
   | [] -> []
@@ -263,15 +263,18 @@ let rec iter_mons_list state monster_list projectile affected_list =
       (h :: iter_mons_list state t None affected_list))
     else iter_mons_list state t projectile affected_list
 
-        (***********LOL WHAT*******************************************************************************************)
-(*true if collisions exist between projectile list and monster list*)
+(*[iter_project_list state projectile_list mons_list affected_list] takes
+  [projectile_list] and iterates through the projectiles, calling [iter_mons_list]
+    to check if collisions occur between each projectile and [mons_list].*)
 let rec iter_project_list state projectile_list mons_list affected_list : (obj option list) list =
   match projectile_list with
   | [] -> []
   | h::t -> iter_mons_list state mons_list h affected_list ::
            iter_project_list state t mons_list affected_list
 
-(*true if collision between player and monster list*)
+(*[iter_collision player mon_list] takes [mon_list] and iterates through, checking
+  if it has collided with [player]. If a collision exists, then true is returned,
+  else [iter_collision] is called and the iteration continues.*)
 let rec iter_collision player mon_list =
   match mon_list with
   | [] -> false
@@ -284,16 +287,15 @@ let update_monsters monster =
   | Some (Monster m) -> (m.hp <- m.hp - 2)
   | _ -> failwith "not a monster"
 
-
-
-(*this updates the object and runs the collision check*)
+(*[update_obj state player mon_list projectile_list] runs the collision checks with
+  [iter_collision] and [iter_project_list], and updates the state and health points of
+  [player] and [mon_list] accordingly *)
 let update_obj state player mon_list projectile_list=
   if iter_collision player mon_list then
     (extract_player state).hp <- (extract_player state).hp-1;
   if iter_collision player mon_list then
     state.item_count <- 0;
   List.map update_monsters (List.concat (iter_project_list state projectile_list mon_list []))
-
 
 let update_objs_loop state =
   let mon_list = state.mons_list and player = state.player
