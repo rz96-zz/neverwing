@@ -113,6 +113,17 @@ let new_location_j state j control =
     | Left -> if j - 1 < 0 then j else j - 1
     | Stop -> j
 
+(*[filter_row] returns true if the object [object_option] is an object that
+  moves vertically on the screen and is within the viewable area of the GUI*)
+let filter_row obj_option =
+  match obj_option with
+  | Some obj ->
+    (match obj with
+    | Player _ -> false
+    | Monster m -> if m.i < 55 then true else false
+    | Projectile p -> if p.i > -5 then true else false)
+  | None -> false
+
 
 (*[update_state] is called continuously in the main loop.
   This updates the board, such as updating player position by calling other
@@ -137,24 +148,27 @@ let update_state state (player: player) =
   let filtered_projectiles =
     List.filter (fun x -> match x with | Some _ -> true | _ -> false)
                 replaced_projectiles in
-
+  let filtered_row_projectiles =
+    List.filter filter_row filtered_projectiles in
   state.board <- (place_objects_list state.board filtered_projectiles);
-  state.projectile_list <- filtered_projectiles;
+  state.projectile_list <- filtered_row_projectiles;
   (****************************************************************************)
 
   (*******************************MONSTERS*************************************)
   let lowered_monsters = lower_monster_list state.mons_list in
   let lowmons_filtered =
     List.filter (fun x -> match x with | Some _ -> true | _ -> false)
-                lowered_monsters in
+      lowered_monsters in
+  let lowmons_filtered_row =
+    List.filter filter_row lowmons_filtered in
   let new_mons_list =
     if state.mons_row_counter = 0 then
       (if state.score > 70
-       then lowmons_filtered@(new_row_monsters3 state.mons_type_counter)
+       then lowmons_filtered_row@(new_row_monsters3 state.mons_type_counter)
        else if state.score > 25
-       then lowmons_filtered@(new_row_monsters2 state.mons_type_counter)
-       else lowmons_filtered@(new_row_monsters1 state.mons_type_counter))
-    else lowmons_filtered in (*an obj option list)*)
+       then lowmons_filtered_row@(new_row_monsters2 state.mons_type_counter)
+       else lowmons_filtered_row@(new_row_monsters1 state.mons_type_counter))
+    else lowmons_filtered_row in (*an obj option list*)
 
   let new_mons_list = if (state.comet_interval = 30)
     then (Some (Monster {i=0;j=(extract_player state).j;hp=999;level=4}))
